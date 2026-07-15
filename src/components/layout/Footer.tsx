@@ -1,150 +1,141 @@
 import { Link } from "@tanstack/react-router";
-import { Logo } from "@/components/brand/Logo";
-import { Twitter, Linkedin, Instagram, Facebook, Youtube, Mail, MapPin, ArrowRight } from "lucide-react";
+import { ArrowRight, ArrowUpRight, Linkedin, Twitter, Youtube, Github } from "lucide-react";
+import logoUrl from "@/assets/tradecode-logo.png.asset.json";
 
-const socials = [
-  { Icon: Twitter,   label: "Twitter",   href: "https://twitter.com/tradecode_in" },
-  { Icon: Linkedin,  label: "LinkedIn",  href: "https://linkedin.com/company/tradecode-innovations" },
-  { Icon: Instagram, label: "Instagram", href: "https://instagram.com/tradecode.in" },
-  { Icon: Facebook,  label: "Facebook",  href: "https://facebook.com/tradecode.in" },
-  { Icon: Youtube,   label: "YouTube",   href: "https://youtube.com/@tradecode" },
-  { Icon: Mail,      label: "Email",     href: "mailto:hello@tradecode.in" },
-];
-
-const columns = [
+const footerNav = [
+  {
+    title: "Services",
+    links: [
+      { label: "Agentic AI & Automation", to: "/services/agentic-ai" },
+      { label: "Generative AI", to: "/services/generative-ai" },
+      { label: "Robotics", to: "/services/robotics" },
+      { label: "AI Chatbots", to: "/services/chatbots" },
+      { label: "Data Science", to: "/services/data-science" },
+      { label: "Software Development", to: "/services/software" },
+      { label: "Web Development", to: "/services/web" },
+      { label: "ML / Deep Learning", to: "/services/ml-dl" },
+      { label: "Consulting", to: "/services/consulting" },
+      { label: "Training", to: "/services/training" },
+    ],
+  },
   {
     title: "Company",
     links: [
       { label: "About Tradecode", to: "/about" },
-      { label: "Our Team",        to: "/team" },
-      { label: "R&D",             to: "/rnd" },
-      { label: "Press & Notices", to: "/press" },
-      { label: "Careers",         to: "/careers" },
-    ],
-  },
-  {
-    title: "Services",
-    links: [
-      { label: "Agentic AI",       to: "/services/agentic-ai" },
-      { label: "Generative AI",    to: "/services/generative-ai" },
-      { label: "Robotics",         to: "/services/robotics" },
-      { label: "Data Science",     to: "/services/data-science" },
-      { label: "Consulting",       to: "/services/consulting" },
+      { label: "Leadership Team", to: "/team" },
+      { label: "R&D Program", to: "/rnd" },
+      { label: "Partners", to: "/partners" },
+      { label: "Become a Partner", to: "/become-partner" },
+      { label: "Careers", to: "/careers" },
+      { label: "Press", to: "/press" },
     ],
   },
   {
     title: "Resources",
     links: [
-      { label: "Blog",            to: "/blog" },
-      { label: "Gallery",         to: "/gallery" },
-      { label: "Client Reviews",  to: "/reviews" },
-      { label: "Partners",        to: "/partners" },
-      { label: "Become a Partner",to: "/become-partner" },
+      { label: "Blog", to: "/blog" },
+      { label: "Client Reviews", to: "/reviews" },
+      { label: "Gallery", to: "/gallery" },
+      { label: "Contact Us", to: "/contact" },
     ],
   },
   {
     title: "Legal",
     links: [
-      { label: "Terms & Conditions", to: "/legal/terms" },
-      { label: "Terms of Use",       to: "/legal/terms-of-use" },
-      { label: "Privacy Policy",     to: "/legal/privacy" },
-      { label: "Disclaimer",         to: "/legal/disclaimer" },
-      { label: "Contact Us",         to: "/contact" },
+      { label: "Terms of Service", to: "/legal/terms" },
+      { label: "Privacy Policy", to: "/legal/privacy" },
+      { label: "Terms of Use", to: "/legal/terms-of-use" },
+      { label: "Disclaimer", to: "/legal/disclaimer" },
     ],
   },
 ];
 
+const social = [
+  { icon: Linkedin, label: "LinkedIn", href: "https://linkedin.com/company/tradecode" },
+  { icon: Twitter,  label: "Twitter / X", href: "https://twitter.com/tradecode" },
+  { icon: Youtube,  label: "YouTube", href: "https://youtube.com/@tradecode" },
+  { icon: Github,   label: "GitHub", href: "https://github.com/Anish2483/tradecode" },
+];
+
 export function Footer() {
   return (
-    <footer className="border-t border-border bg-secondary/40">
-      {/* Newsletter bar */}
-      <div className="border-b border-border">
-        <div className="container-x py-10 flex flex-col md:flex-row items-center justify-between gap-6">
+    <footer className="bg-[#0a0e1a] text-white/70 border-t border-white/8">
+      {/* CTA strip */}
+      <div className="border-b border-white/8">
+        <div className="container-x py-16 grid md:grid-cols-2 gap-8 items-center">
           <div>
-            <p className="font-display text-lg font-semibold">Stay ahead of the curve.</p>
-            <p className="text-sm text-muted-foreground mt-1">
-              Get AI, robotics & automation insights delivered to your inbox.
+            <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-[#78a9ff] mb-3">
+              Start today
+            </p>
+            <h2 className="text-3xl md:text-4xl font-light text-white leading-tight">
+              Ready to build something remarkable?
+            </h2>
+            <p className="mt-3 text-white/60 text-sm leading-relaxed max-w-lg">
+              Tell us about your AI, automation or robotics challenge. We respond within one business day.
             </p>
           </div>
-          <form
-            className="flex w-full max-w-sm gap-2"
-            onSubmit={(e) => e.preventDefault()}
-          >
-            <input
-              type="email"
-              required
-              placeholder="your@email.com"
-              className="flex-1 rounded-lg border border-border bg-card px-3 py-2.5 text-sm outline-none focus:border-brand transition-colors placeholder:text-muted-foreground"
-            />
-            <button
-              type="submit"
-              className="inline-flex items-center gap-1.5 rounded-lg bg-brand px-4 py-2.5 text-sm font-semibold text-brand-foreground hover:opacity-90 transition-opacity"
+          <div className="flex flex-wrap gap-3 md:justify-end">
+            <Link
+              to="/contact"
+              className="inline-flex items-center gap-2 px-6 py-3 bg-[#0f62fe] text-white text-sm font-semibold hover:bg-[#0353e9] transition-colors"
             >
-              Subscribe <ArrowRight className="h-3.5 w-3.5" />
-            </button>
-          </form>
+              Start a Project <ArrowRight className="h-4 w-4" />
+            </Link>
+            <Link
+              to="/services/consulting"
+              className="inline-flex items-center gap-2 px-6 py-3 border border-white/20 text-white text-sm hover:bg-white/5 transition-colors"
+            >
+              Book a Consultation
+            </Link>
+          </div>
         </div>
       </div>
 
-      {/* Main columns */}
-      <div className="container-x py-16">
-        <div className="grid gap-10 lg:grid-cols-[1.4fr_repeat(4,1fr)]">
-          {/* Brand col */}
-          <div className="max-w-sm">
-            <Logo />
-            <p className="mt-4 text-sm text-muted-foreground leading-relaxed">
-              Tradecode is a deep-tech consultancy building agentic AI, robotics and automation for founders,
-              enterprises and institutions.
+      {/* Main footer links */}
+      <div className="container-x py-14 grid grid-cols-2 md:grid-cols-4 gap-10">
+        {footerNav.map((col) => (
+          <div key={col.title}>
+            <p className="text-[11px] font-semibold uppercase tracking-[0.14em] text-white/40 mb-5">
+              {col.title}
             </p>
-            {/* Location */}
-            <div className="mt-5 flex items-start gap-2 text-sm text-muted-foreground">
-              <MapPin className="h-4 w-4 shrink-0 text-brand-glow mt-0.5" />
-              <span>Rajpur Road, Dehradun, Uttarakhand 248001, India</span>
-            </div>
-            {/* Socials */}
-            <div className="mt-5 flex items-center gap-2 flex-wrap">
-              {socials.map(({ Icon, label, href }) => (
-                <a
-                  key={label}
-                  href={href}
-                  aria-label={label}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="grid h-8 w-8 place-items-center rounded-md border border-border text-muted-foreground hover:bg-brand hover:text-brand-foreground hover:border-brand transition-all duration-200"
-                >
-                  <Icon className="h-3.5 w-3.5" />
-                </a>
+            <ul className="space-y-3">
+              {col.links.map((l) => (
+                <li key={l.to}>
+                  <Link
+                    to={l.to}
+                    className="text-sm text-white/60 hover:text-white transition-colors"
+                  >
+                    {l.label}
+                  </Link>
+                </li>
               ))}
-            </div>
+            </ul>
           </div>
+        ))}
+      </div>
 
-          {/* Link columns */}
-          {columns.map((col) => (
-            <div key={col.title}>
-              <h4 className="text-xs font-semibold uppercase tracking-wider text-foreground">{col.title}</h4>
-              <ul className="mt-4 space-y-2.5">
-                {col.links.map((l) => (
-                  <li key={l.to}>
-                    <Link
-                      to={l.to}
-                      className="text-sm text-muted-foreground hover:text-foreground transition-colors"
-                    >
-                      {l.label}
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          ))}
-        </div>
-
-        {/* Bottom bar */}
-        <div className="mt-12 pt-6 border-t border-border flex flex-col md:flex-row items-center justify-between gap-3 text-xs text-muted-foreground">
-          <p>© {new Date().getFullYear()} Tradecode Technologies. All rights reserved.</p>
+      {/* Bottom bar */}
+      <div className="border-t border-white/8">
+        <div className="container-x py-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
           <div className="flex items-center gap-4">
-            <Link to="/legal/privacy" className="hover:text-foreground transition-colors">Privacy</Link>
-            <Link to="/legal/terms" className="hover:text-foreground transition-colors">Terms</Link>
-            <Link to="/legal/disclaimer" className="hover:text-foreground transition-colors">Disclaimer</Link>
+            <img src={logoUrl.url} alt="Tradecode" className="h-7 w-auto opacity-70" />
+            <span className="text-xs text-white/30">
+              © {new Date().getFullYear()} Tradecode Innovations Pvt. Ltd. All rights reserved.
+            </span>
+          </div>
+          <div className="flex items-center gap-3">
+            {social.map((s) => (
+              <a
+                key={s.label}
+                href={s.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label={s.label}
+                className="grid h-8 w-8 place-items-center text-white/30 hover:text-white border border-white/10 hover:border-white/30 transition-all"
+              >
+                <s.icon className="h-3.5 w-3.5" />
+              </a>
+            ))}
           </div>
         </div>
       </div>

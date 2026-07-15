@@ -5,9 +5,9 @@
 @custom-variant dark (&:is(.dark *));
 
 @theme inline {
-  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
-  --font-display: "Fraunces", ui-serif, Georgia, serif;
-  --font-mono: "JetBrains Mono", ui-monospace, monospace;
+  --font-sans: "IBM Plex Sans", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "IBM Plex Sans", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, monospace;
 
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);
@@ -40,61 +40,63 @@
 }
 
 :root {
-  --radius: 0.75rem;
+  --radius: 0px;
 
-  /* Tradecode blue — Retrofly-clean, editorial */
-  --brand: oklch(0.42 0.16 260);
-  --brand-foreground: oklch(0.99 0 0);
-  --brand-glow: oklch(0.65 0.19 260);
+  /* IBM Blue — Kyndryl palette */
+  --brand: #0f62fe;
+  --brand-foreground: #ffffff;
+  --brand-glow: #4589ff;
 
-  --background: oklch(0.995 0.002 260);
-  --foreground: oklch(0.18 0.03 265);
-  --card: oklch(1 0 0);
-  --card-foreground: oklch(0.18 0.03 265);
-  --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.18 0.03 265);
-  --primary: oklch(0.42 0.16 260);
-  --primary-foreground: oklch(0.99 0 0);
-  --secondary: oklch(0.97 0.008 260);
-  --secondary-foreground: oklch(0.22 0.05 265);
-  --muted: oklch(0.96 0.008 260);
-  --muted-foreground: oklch(0.5 0.03 260);
-  --accent: oklch(0.94 0.03 260);
-  --accent-foreground: oklch(0.22 0.05 265);
-  --destructive: oklch(0.6 0.22 27);
-  --destructive-foreground: oklch(0.99 0 0);
-  --border: oklch(0.92 0.008 260);
-  --input: oklch(0.92 0.008 260);
-  --ring: oklch(0.42 0.16 260);
-  --paper: oklch(0.985 0.005 260);
-  --ink: oklch(0.15 0.03 265);
+  /* Light mode — near-white editorial */
+  --background: #f4f4f4;
+  --foreground: #161616;
+  --card: #ffffff;
+  --card-foreground: #161616;
+  --popover: #ffffff;
+  --popover-foreground: #161616;
+  --primary: #0f62fe;
+  --primary-foreground: #ffffff;
+  --secondary: #e8e8e8;
+  --secondary-foreground: #161616;
+  --muted: #e8e8e8;
+  --muted-foreground: #525252;
+  --accent: #e8e8e8;
+  --accent-foreground: #161616;
+  --destructive: #da1e28;
+  --destructive-foreground: #ffffff;
+  --border: #e0e0e0;
+  --input: #e0e0e0;
+  --ring: #0f62fe;
+  --paper: #f4f4f4;
+  --ink: #161616;
 }
 
 .dark {
-  --background: oklch(0.14 0.03 265);
-  --foreground: oklch(0.98 0.003 260);
-  --card: oklch(1 0 0 / 6%);
-  --card-foreground: oklch(0.98 0.003 260);
-  --popover: oklch(0.18 0.04 265 / 92%);
-  --popover-foreground: oklch(0.98 0.003 260);
-  --primary: oklch(0.72 0.17 260);
-  --primary-foreground: oklch(0.15 0.03 265);
-  --secondary: oklch(1 0 0 / 8%);
-  --secondary-foreground: oklch(0.98 0.003 260);
-  --muted: oklch(1 0 0 / 6%);
-  --muted-foreground: oklch(0.82 0.02 260);
-  --accent: oklch(0.72 0.17 260 / 20%);
-  --accent-foreground: oklch(0.98 0.003 260);
-  --destructive: oklch(0.7 0.19 22);
-  --destructive-foreground: oklch(0.98 0.003 260);
-  --border: oklch(1 0 0 / 12%);
-  --input: oklch(1 0 0 / 15%);
-  --ring: oklch(0.72 0.17 260);
-  --paper: oklch(1 0 0 / 6%);
-  --ink: oklch(1 0 0);
-  --brand: oklch(0.72 0.17 260);
-  --brand-foreground: oklch(0.15 0.03 265);
-  --brand-glow: oklch(0.82 0.18 260);
+  /* Kyndryl deep navy */
+  --background: #0a0e1a;
+  --foreground: #f4f4f4;
+  --card: rgba(255,255,255,0.04);
+  --card-foreground: #f4f4f4;
+  --popover: #161b2e;
+  --popover-foreground: #f4f4f4;
+  --primary: #4589ff;
+  --primary-foreground: #0a0e1a;
+  --secondary: rgba(255,255,255,0.06);
+  --secondary-foreground: #f4f4f4;
+  --muted: rgba(255,255,255,0.05);
+  --muted-foreground: #8d8d8d;
+  --accent: rgba(69,137,255,0.12);
+  --accent-foreground: #f4f4f4;
+  --destructive: #fa4d56;
+  --destructive-foreground: #0a0e1a;
+  --border: rgba(255,255,255,0.10);
+  --input: rgba(255,255,255,0.12);
+  --ring: #4589ff;
+  --paper: rgba(255,255,255,0.04);
+  --ink: #f4f4f4;
+  --brand: #4589ff;
+  --brand-foreground: #0a0e1a;
+  --brand-glow: #78a9ff;
 }
 
 @layer base {
@@ -107,43 +109,67 @@
     font-feature-settings: "cv11", "ss01";
     -webkit-font-smoothing: antialiased;
   }
-  h1, h2, h3, h4 { font-family: var(--font-display); letter-spacing: -0.01em; font-weight: 600; }
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-display);
+    font-weight: 300;
+    letter-spacing: -0.02em;
+  }
 }
 
 @utility container-x {
-  @apply mx-auto w-full max-w-7xl px-6 md:px-10;
+  @apply mx-auto w-full max-w-7xl px-6 md:px-12;
 }
 
 @utility text-gradient-brand {
-  background: linear-gradient(135deg, var(--brand) 0%, var(--brand-glow) 100%);
+  background: linear-gradient(90deg, var(--brand) 0%, var(--brand-glow) 100%);
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
 }
 
+/* Kyndryl-style fine dot grid */
 @utility bg-grid {
   background-image: radial-gradient(
     circle,
-    color-mix(in oklch, var(--brand-glow) 35%, transparent) 1px,
+    rgba(69, 137, 255, 0.25) 1px,
     transparent 1px
   );
-  background-size: 28px 28px;
+  background-size: 32px 32px;
 }
 
+/* Kyndryl blue radial gradient overlay */
 @utility bg-brand-radial {
   background: radial-gradient(
-    ellipse 80% 50% at 50% 100%,
-    color-mix(in oklch, var(--brand) 18%, transparent),
+    ellipse 70% 60% at 50% 100%,
+    rgba(15, 98, 254, 0.20),
     transparent
   );
 }
 
-/* Retrofly-style clean card */
+/* Kyndryl-style diagonal line pattern */
+@utility bg-diagonal-lines {
+  background-image: repeating-linear-gradient(
+    -45deg,
+    rgba(69,137,255,0.06) 0px,
+    rgba(69,137,255,0.06) 1px,
+    transparent 1px,
+    transparent 8px
+  );
+}
+
+/* Glass card — Kyndryl card style */
 @utility glass-card {
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.10);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+}
+
+/* IBM Carbon-style card with hover */
+@utility ibm-card {
   background: var(--card);
   border: 1px solid var(--border);
-  box-shadow: 0 1px 3px color-mix(in oklab, var(--ink) 4%, transparent);
-  border-radius: var(--radius);
+  transition: border-color 0.2s ease, transform 0.2s ease;
 }
 
 @keyframes marquee {
@@ -151,109 +177,135 @@
   to { transform: translateX(-50%); }
 }
 @utility animate-marquee {
-  animation: marquee 40s linear infinite;
+  animation: marquee 50s linear infinite;
 }
 @utility animate-marquee-fast {
-  animation: marquee 25s linear infinite;
+  animation: marquee 28s linear infinite;
 }
 
 @keyframes float {
-  0%, 100% { transform: translateY(0px); }
-  50%       { transform: translateY(-12px); }
+  0%, 100% { transform: translateY(0px) rotate(0deg); }
+  33%       { transform: translateY(-10px) rotate(1deg); }
+  66%       { transform: translateY(-6px) rotate(-1deg); }
 }
 @utility animate-float {
-  animation: float 5s ease-in-out infinite;
+  animation: float 6s ease-in-out infinite;
 }
 
 @keyframes glow-pulse {
-  0%, 100% { opacity: 0.5; filter: blur(40px); }
-  50%       { opacity: 0.85; filter: blur(56px); }
+  0%, 100% { opacity: 0.4; }
+  50%       { opacity: 0.8; }
 }
 @utility animate-glow-pulse {
-  animation: glow-pulse 4s ease-in-out infinite;
+  animation: glow-pulse 3s ease-in-out infinite;
 }
 
 @keyframes fade-slide-up {
-  from { opacity: 0; transform: translateY(24px); }
+  from { opacity: 0; transform: translateY(32px); }
   to   { opacity: 1; transform: translateY(0); }
 }
 @utility animate-fade-slide-up {
-  animation: fade-slide-up 0.7s cubic-bezier(0.22,1,0.36,1) both;
+  animation: fade-slide-up 0.8s cubic-bezier(0.22,1,0.36,1) both;
 }
 
+@keyframes fade-in {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+@utility animate-fade-in {
+  animation: fade-in 1s ease both;
+}
+
+/* Kyndryl-style shimmer sweep */
 @keyframes shimmer {
-  from { background-position: -200% center; }
-  to   { background-position: 200% center; }
+  from { background-position: -400% center; }
+  to   { background-position: 400% center; }
 }
 @utility animate-shimmer {
   background: linear-gradient(
     90deg,
     transparent 0%,
-    color-mix(in oklch, var(--brand-glow) 30%, transparent) 50%,
+    rgba(69,137,255,0.35) 50%,
     transparent 100%
   );
-  background-size: 200% auto;
-  animation: shimmer 3s linear infinite;
+  background-size: 400% auto;
+  animation: shimmer 4s linear infinite;
 }
 
-/* Receipt-paper card (Expenseit polaroid feel) */
-@utility receipt-frame {
-  background: var(--paper);
-  padding: 0.5rem 0.5rem 1.75rem 0.5rem;
-  box-shadow:
-    0 22px 40px -24px color-mix(in oklab, var(--ink) 45%, transparent),
-    0 6px 14px -8px color-mix(in oklab, var(--ink) 25%, transparent);
-  border-radius: calc(var(--radius) - 4px);
+/* Scan line animation — Kyndryl video overlay feel */
+@keyframes scanline {
+  0%   { transform: translateY(-100%); }
+  100% { transform: translateY(100vh); }
+}
+@utility animate-scanline {
+  animation: scanline 8s linear infinite;
 }
 
-/* Liquid-glass surfaces in dark mode — auto-applied to translucent
-   semantic surfaces so cards inherit the Expenseit glass feel. */
-.dark .bg-card,
-.dark .bg-popover,
-.dark .bg-secondary,
-.dark .bg-muted,
-.dark .bg-accent {
-  backdrop-filter: blur(22px) saturate(160%);
-  -webkit-backdrop-filter: blur(22px) saturate(160%);
-  box-shadow:
-    inset 0 1px 0 0 rgba(255, 255, 255, 0.08),
-    0 1px 0 0 rgba(0, 0, 0, 0.25);
+/* Particle pulse */
+@keyframes particle-pulse {
+  0%, 100% { opacity: 0; transform: scale(0.5); }
+  50%       { opacity: 1; transform: scale(1.2); }
+}
+@utility animate-particle {
+  animation: particle-pulse 3s ease-in-out infinite;
 }
 
-/* Soft emerald noise-like grain background */
-@utility bg-paper-grain {
-  background:
-    radial-gradient(1200px 700px at 20% -10%, color-mix(in oklab, var(--brand-glow) 18%, transparent), transparent 60%),
-    radial-gradient(900px 500px at 100% 10%, color-mix(in oklab, var(--brand) 14%, transparent), transparent 60%),
-    var(--background);
+/* Kyndryl text reveal */
+@keyframes text-reveal {
+  from { clip-path: inset(0 100% 0 0); }
+  to   { clip-path: inset(0 0% 0 0); }
+}
+@utility animate-text-reveal {
+  animation: text-reveal 1.2s cubic-bezier(0.22,1,0.36,1) both;
 }
 
+/* Border glow */
+@utility border-glow {
+  box-shadow: 0 0 0 1px rgba(69,137,255,0.4), 0 0 20px rgba(69,137,255,0.15);
+}
 
+/* Dark hero surface */
+@utility hero-dark {
+  background: #0a0e1a;
+  color: #f4f4f4;
+}
+
+/* Kyndryl large number style */
+@utility stat-num {
+  font-size: clamp(3rem, 6vw, 5rem);
+  font-weight: 300;
+  letter-spacing: -0.04em;
+  line-height: 1;
+  color: var(--brand-glow);
+}
+
+/* Section divider */
+@utility section-divider {
+  border-top: 1px solid var(--border);
+}
+
+/* IBM Carbon left border accent */
+@utility left-accent {
+  border-left: 3px solid var(--brand);
+  padding-left: 1.25rem;
+}
+
+/* Kyndryl overline label style */
+@utility kd-label {
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--brand-glow);
+}
+
+/* Slide layout utilities */
 .slide-content {
   width: 1920px;
   height: 1080px;
   overflow: hidden;
   position: relative;
-  --slide-title-lg: 104px;
-  --slide-title: 88px;
-  --slide-subtitle: 52px;
-  --slide-body-lg: 40px;
-  --slide-body: 32px;
-  --slide-caption: 24px;
-  --slide-kicker: 22px;
-  --slide-chrome: 20px;
 }
-.slide-title-lg { font-size: var(--slide-title-lg); line-height: 1.0; letter-spacing: -0.05em; }
-.slide-title    { font-size: var(--slide-title); line-height: 1.05; letter-spacing: -0.04em; }
-.slide-subtitle { font-size: var(--slide-subtitle); line-height: 1.15; letter-spacing: -0.025em; }
-.slide-body-lg  { font-size: var(--slide-body-lg); line-height: 1.22; }
-.slide-body     { font-size: var(--slide-body); line-height: 1.28; }
-.slide-caption  { font-size: var(--slide-caption); line-height: 1.25; }
-.slide-kicker   { font-size: var(--slide-kicker); line-height: 1.1; letter-spacing: 0.12em; text-transform: uppercase; }
-.slide-chrome, .slide-badge, .slide-footer, .slide-page {
-  font-size: var(--slide-chrome); line-height: 1.15;
-}
-.slide-badge, .slide-page { white-space: nowrap; }
 
 .slide-wrapper {
   position: absolute;

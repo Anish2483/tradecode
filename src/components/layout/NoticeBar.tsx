@@ -1,40 +1,38 @@
 import { useState } from "react";
-import { X, Zap } from "lucide-react";
 import { Link } from "@tanstack/react-router";
+import { X, ArrowRight } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 
 export function NoticeBar() {
-  const [visible, setVisible] = useState(true);
+  const [dismissed, setDismissed] = useState(false);
+
   return (
     <AnimatePresence>
-      {visible && (
+      {!dismissed && (
         <motion.div
-          initial={{ height: 0, opacity: 0 }}
-          animate={{ height: "auto", opacity: 1 }}
+          initial={{ height: "auto", opacity: 1 }}
           exit={{ height: 0, opacity: 0 }}
-          transition={{ duration: 0.25 }}
-          className="overflow-hidden bg-brand text-brand-foreground"
+          transition={{ duration: 0.3, ease: "easeInOut" }}
+          className="overflow-hidden bg-[#0f62fe] text-white"
         >
           <div className="container-x flex items-center justify-between gap-4 py-2.5">
-            <div className="flex-1" />
-            <div className="flex items-center gap-2 text-sm font-medium text-center">
-              <Zap className="h-3.5 w-3.5 shrink-0" />
-              <span>
-                🚀 Tradecode is now accepting AI & Robotics projects for Q3 2025.{" "}
-                <Link to="/contact" className="underline underline-offset-2 hover:opacity-80 font-semibold">
-                  Book a free consultation →
-                </Link>
-              </span>
-            </div>
-            <div className="flex-1 flex justify-end">
-              <button
-                onClick={() => setVisible(false)}
-                aria-label="Dismiss notice"
-                className="grid h-6 w-6 place-items-center rounded hover:bg-white/20 transition-colors"
+            <p className="text-xs font-medium flex items-center gap-2 flex-1 justify-center">
+              <span className="hidden sm:inline text-white/70">New:</span>
+              Tradecode Agentic AI Platform is now available for enterprise teams.{" "}
+              <Link
+                to="/services/agentic-ai"
+                className="inline-flex items-center gap-1 font-semibold underline underline-offset-2 hover:no-underline"
               >
-                <X className="h-3.5 w-3.5" />
-              </button>
-            </div>
+                Learn more <ArrowRight className="h-3 w-3" />
+              </Link>
+            </p>
+            <button
+              onClick={() => setDismissed(true)}
+              aria-label="Dismiss notice"
+              className="shrink-0 grid h-6 w-6 place-items-center text-white/70 hover:text-white transition-colors"
+            >
+              <X className="h-3.5 w-3.5" />
+            </button>
           </div>
         </motion.div>
       )}
