@@ -1,10 +1,8 @@
-import { Link, useRouter } from "@tanstack/react-router";
+import { Link } from "@tanstack/react-router";
 import { useState, useEffect, useRef } from "react";
 import { Menu, X, ChevronDown, ArrowRight, ArrowUpRight } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
-
-// Tradecode logo — uploaded by user
-import logoUrl from "@/assets/tradecode-logo.png.asset.json";
+import { SmallLogo } from "@/components/brand/AnimatedLogo";
 
 const services = [
   { label: "Agentic AI & Automation", to: "/services/agentic-ai" },
@@ -63,7 +61,7 @@ export function Header() {
       <div className="container-x flex h-14 items-center gap-6">
         {/* Tradecode Logo */}
         <Link to="/" aria-label="Tradecode home" className="flex items-center gap-3 shrink-0">
-          <img src={logoUrl.url} alt="Tradecode" className="h-8 w-auto" />
+          <SmallLogo height={34} />
         </Link>
 
         {/* Desktop Nav */}

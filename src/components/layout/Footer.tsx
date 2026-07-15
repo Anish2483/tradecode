@@ -1,6 +1,6 @@
 import { Link } from "@tanstack/react-router";
 import { ArrowRight, ArrowUpRight, Linkedin, Twitter, Youtube, Github } from "lucide-react";
-import logoUrl from "@/assets/tradecode-logo.png.asset.json";
+import { SmallLogo } from "@/components/brand/AnimatedLogo";
 
 const footerNav = [
   {
@@ -118,7 +118,7 @@ export function Footer() {
       <div className="border-t border-white/8">
         <div className="container-x py-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
           <div className="flex items-center gap-4">
-            <img src={logoUrl.url} alt="Tradecode" className="h-7 w-auto opacity-70" />
+          <SmallLogo height={28} className="opacity-70" />
             <span className="text-xs text-white/30">
               © {new Date().getFullYear()} Tradecode Innovations Pvt. Ltd. All rights reserved.
             </span>

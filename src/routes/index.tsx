@@ -7,7 +7,7 @@ import {
   Shield, Zap, Users, Search, Lightbulb, Hammer, HeartHandshake,
   Star, CheckCircle2, TrendingUp, ChevronRight, Play
 } from "lucide-react";
-import logoUrl from "@/assets/tradecode-logo.png.asset.json";
+import { AnimatedLogo, SmallLogo } from "@/components/brand/AnimatedLogo";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -260,24 +260,18 @@ function Home() {
               </motion.div>
             </div>
 
-            {/* Logo visual — animated */}
+            {/* Logo visual — full animated SVG draw-in */}
             <motion.div
-              initial={{ opacity: 0, scale: 0.8 }}
+              initial={{ opacity: 0, scale: 0.85 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 1.2, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
               className="hidden lg:flex flex-col items-center gap-6"
             >
-              {/* Glow ring */}
+              {/* Glow halo */}
               <div className="relative">
-                <div className="absolute inset-0 rounded-full animate-glow-pulse"
-                  style={{ background: "radial-gradient(circle, rgba(69,137,255,0.3) 0%, transparent 70%)", filter: "blur(20px)" }} />
-                <motion.img
-                  src={logoUrl.url}
-                  alt="Tradecode"
-                  className="relative w-52 h-52 object-contain"
-                  animate={{ y: [0, -12, 0], rotate: [0, 1, -1, 0] }}
-                  transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
-                />
+                <div className="absolute inset-[-20%] rounded-full animate-glow-pulse pointer-events-none"
+                  style={{ background: "radial-gradient(circle, rgba(69,137,255,0.25) 0%, transparent 70%)", filter: "blur(24px)" }} />
+                <AnimatedLogo size={200} showText={true} color="#ffffff" glowColor="#4589ff" />
               </div>
               {/* Floating data cards around logo */}
               <motion.div
@@ -484,13 +478,13 @@ function Home() {
               style={{ background: "radial-gradient(circle, rgba(15,98,254,0.15) 0%, transparent 70%)", filter: "blur(30px)" }} />
 
             <div className="relative p-12 flex flex-col items-center text-center">
-              <motion.img
-                src={logoUrl.url}
-                alt="Tradecode"
-                className="w-32 h-32 object-contain mb-8"
+              <motion.div
+                className="mb-8"
                 animate={{ y: [0, -8, 0] }}
                 transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-              />
+              >
+                <SmallLogo height={100} />
+              </motion.div>
               <div className="text-[clamp(3rem,5vw,4rem)] font-light text-[#4589ff] leading-none tracking-tight">74%</div>
               <div className="mt-2 text-sm text-white/50">reduction in QA cycle time</div>
               <div className="mt-6 border-t border-white/8 pt-6 text-xs text-white/35 uppercase tracking-wider">
