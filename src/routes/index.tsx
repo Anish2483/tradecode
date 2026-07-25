@@ -1,4 +1,4 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+﻿import { createFileRoute, Link } from "@tanstack/react-router";
 import { motion, useScroll, useTransform, useInView } from "framer-motion";
 import { useRef, useEffect, useState } from "react";
 import {
@@ -32,15 +32,36 @@ function ParticleCanvas() {
     let W = (canvas.width = canvas.offsetWidth);
     let H = (canvas.height = canvas.offsetHeight);
 
-    const BLUE = "#4589ff";
-    const COUNT = Math.min(60, Math.floor((W * H) / 14000));
+    // Network particles (boosted)
+    const COUNT = Math.min(220, Math.floor((W * H) / 5000));
     const pts = Array.from({ length: COUNT }, () => ({
       x: Math.random() * W,
       y: Math.random() * H,
-      vx: (Math.random() - 0.5) * 0.4,
-      vy: (Math.random() - 0.5) * 0.4,
-      r: Math.random() * 1.5 + 0.5,
+      vx: (Math.random() - 0.5) * 0.5,
+      vy: (Math.random() - 0.5) * 0.5,
+      r: Math.random() * 2.2 + 0.6,
+      opacity: Math.random() * 0.5 + 0.3,
+      phase: Math.random() * Math.PI * 2,
+      speed: Math.random() * 0.02 + 0.008,
     }));
+    // 4-point twinkling star sparkles
+    const STAR_COUNT = Math.min(140, Math.floor((W * H) / 9000));
+    const stars = Array.from({ length: STAR_COUNT }, () => ({
+      x: Math.random() * W, y: Math.random() * H,
+      size: Math.random() * 2.5 + 0.8,
+      phase: Math.random() * Math.PI * 2,
+      speed: Math.random() * 0.025 + 0.008,
+      color: Math.random() > 0.6 ? "255,255,255" : "69,137,255",
+    }));
+    // Tiny dust particles
+    const DUST_COUNT = Math.min(200, Math.floor((W * H) / 6000));
+    const dust = Array.from({ length: DUST_COUNT }, () => ({
+      x: Math.random() * W, y: Math.random() * H,
+      vx: (Math.random() - 0.5) * 0.15, vy: (Math.random() - 0.5) * 0.15,
+      r: Math.random() * 0.8 + 0.2,
+      opacity: Math.random() * 0.35 + 0.1,
+    }));
+    let t = 0;
 
     const resize = () => {
       W = canvas.width = canvas.offsetWidth;
@@ -49,27 +70,56 @@ function ParticleCanvas() {
     window.addEventListener("resize", resize);
 
     const draw = () => {
+      t += 0.016;
       ctx.clearRect(0, 0, W, H);
+      // Dust layer
+      dust.forEach((d) => {
+        d.x += d.vx; d.y += d.vy;
+        if (d.x < 0 || d.x > W) d.vx *= -1;
+        if (d.y < 0 || d.y > H) d.vy *= -1;
+        ctx.beginPath(); ctx.arc(d.x, d.y, d.r, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(120,169,255,${d.opacity})`; ctx.fill();
+      });
+      // Star sparkles
+      stars.forEach((s) => {
+        const alpha = (Math.sin(t * s.speed * 60 + s.phase) + 1) / 2;
+        const a = alpha * 0.75 + 0.1;
+        const sz = s.size * (0.7 + alpha * 0.6);
+        ctx.save(); ctx.globalAlpha = a;
+        ctx.strokeStyle = `rgb(${s.color})`; ctx.lineWidth = sz * 0.5; ctx.lineCap = "round";
+        ctx.beginPath(); ctx.moveTo(s.x - sz, s.y); ctx.lineTo(s.x + sz, s.y); ctx.stroke();
+        ctx.beginPath(); ctx.moveTo(s.x, s.y - sz); ctx.lineTo(s.x, s.y + sz); ctx.stroke();
+        const d2 = sz * 0.55; ctx.globalAlpha = a * 0.4;
+        ctx.beginPath(); ctx.moveTo(s.x - d2, s.y - d2); ctx.lineTo(s.x + d2, s.y + d2); ctx.stroke();
+        ctx.beginPath(); ctx.moveTo(s.x + d2, s.y - d2); ctx.lineTo(s.x - d2, s.y + d2); ctx.stroke();
+        ctx.restore();
+      });
       pts.forEach((p) => {
         p.x += p.vx; p.y += p.vy;
         if (p.x < 0 || p.x > W) p.vx *= -1;
         if (p.y < 0 || p.y > H) p.vy *= -1;
+        const twinkle = (Math.sin(t * (p.speed || 0.01) * 60 + (p.phase || 0)) + 1) / 2;
+        const ptAlpha = (p.opacity || 0.5) * (0.5 + twinkle * 0.5);
         ctx.beginPath();
         ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
-        ctx.fillStyle = "rgba(69,137,255,0.5)";
+        ctx.fillStyle = `rgba(69,137,255,${ptAlpha})`;
         ctx.fill();
+        if (p.r > 1.4) {
+          ctx.beginPath(); ctx.arc(p.x, p.y, p.r * 2.5, 0, Math.PI * 2);
+          ctx.fillStyle = `rgba(69,137,255,${ptAlpha * 0.12})`; ctx.fill();
+        }
       });
       for (let i = 0; i < pts.length; i++) {
         for (let j = i + 1; j < pts.length; j++) {
           const dx = pts[i].x - pts[j].x;
           const dy = pts[i].y - pts[j].y;
           const d = Math.sqrt(dx * dx + dy * dy);
-          if (d < 120) {
+          if (d < 160) {
             ctx.beginPath();
             ctx.moveTo(pts[i].x, pts[i].y);
             ctx.lineTo(pts[j].x, pts[j].y);
-            ctx.strokeStyle = `rgba(69,137,255,${(1 - d / 120) * 0.18})`;
-            ctx.lineWidth = 0.5;
+            ctx.strokeStyle = `rgba(69,137,255,${(1 - d / 160) * 0.25})`;
+            ctx.lineWidth = 0.7;
             ctx.stroke();
           }
         }
