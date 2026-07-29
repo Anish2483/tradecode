@@ -1,6 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { motion } from "framer-motion";
 import { Linkedin, Twitter, Github, Globe } from "lucide-react";
+import yogendraImg from "@/assets/tradecode.jpeg";
 import { PageHeader } from "@/components/layout/PageShell";
 
 export const Route = createFileRoute("/team")({
@@ -9,7 +10,7 @@ export const Route = createFileRoute("/team")({
 });
 
 const team = [
-  { name: "Yogendra Bhardwaj", role: "Founder & CEO", bio: "Sets strategic vision, leads enterprise partnerships and long-term product bets across the Tradecode portfolio.", initials: "YB" },
+  { name: "Yogendra Bhardwaj", role: "Founder & CEO", bio: "Sets strategic vision, leads enterprise partnerships and long-term product bets across the Tradecode portfolio.", initials: "YB", image: yogendraImg },
   { name: "Anissh Kumar", role: "Co-Founder & CTO", bio: "Leads engineering, agentic AI research and the robotics practice. Accountable for delivery quality and technical excellence.", initials: "AK" },
   { name: "Dr. Neha Kapoor", role: "Head of Data Science", bio: "20+ years in applied ML. Leads the senior data science team and enterprise analytics programs.", initials: "NK" },
   { name: "Rahul Mehta", role: "Head of Robotics", bio: "Robotics systems engineer specializing in vision, ROS2 and industrial deployments.", initials: "RM" },
@@ -29,10 +30,16 @@ function Team() {
             <motion.div key={m.name} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.05 }}
               className="group relative overflow-hidden rounded-2xl border border-border bg-card hover:border-brand/50 transition-colors">
               <div className="relative aspect-[4/3] bg-brand overflow-hidden">
-                <div className="absolute inset-0 bg-grid opacity-20" />
-                <div className="absolute inset-0 grid place-items-center font-display text-6xl font-bold text-brand-foreground/90">
-                  {m.initials}
-                </div>
+                {m.image ? (
+                  <img src={m.image} alt={m.name} className="absolute inset-0 h-full w-full object-cover object-top" />
+                ) : (
+                  <>
+                    <div className="absolute inset-0 bg-grid opacity-20" />
+                    <div className="absolute inset-0 grid place-items-center font-display text-6xl font-bold text-brand-foreground/90">
+                      {m.initials}
+                    </div>
+                  </>
+                )}
               </div>
               <div className="p-6">
                 <div className="font-display text-xl font-semibold">{m.name}</div>

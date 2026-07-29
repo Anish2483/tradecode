@@ -1,4 +1,4 @@
-﻿import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { motion, useScroll, useTransform, useInView } from "framer-motion";
 import { useRef, useEffect, useState } from "react";
 import {
@@ -8,6 +8,7 @@ import {
   Star, CheckCircle2, TrendingUp, ChevronRight, Play
 } from "lucide-react";
 import { AnimatedLogo, SmallLogo } from "@/components/brand/AnimatedLogo";
+import yogendraImg from "@/assets/tradecode.jpeg";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -605,7 +606,7 @@ function Home() {
 
           <div className="grid md:grid-cols-2 gap-px bg-white/6">
             {[
-              { name: "Yogendra Bhardwaj", role: "Founder & CEO", bio: "Sets the strategic vision for Tradecode — leading enterprise partnerships, R&D programs and long-term product bets." },
+              { name: "Yogendra Bhardwaj", role: "Founder & CEO", bio: "Sets the strategic vision for Tradecode — leading enterprise partnerships, R&D programs and long-term product bets.", image: yogendraImg },
               { name: "Anissh Kumar", role: "Co-Founder & CTO", bio: "Leads engineering, agentic AI research and the robotics practice — accountable for delivery quality and technical excellence." },
             ].map((p) => (
               <motion.div
@@ -614,9 +615,13 @@ function Home() {
                 className="bg-[#0d1120] p-10 hover:bg-[#111827] transition-colors"
               >
                 <div className="flex items-start gap-5">
-                  <div className="grid h-14 w-14 shrink-0 place-items-center bg-[#0f62fe] text-white font-semibold text-lg">
-                    {p.name.split(" ").map((n) => n[0]).join("")}
-                  </div>
+                  {p.image ? (
+                    <img src={p.image} alt={p.name} className="h-14 w-14 shrink-0 object-cover object-top" />
+                  ) : (
+                    <div className="grid h-14 w-14 shrink-0 place-items-center bg-[#0f62fe] text-white font-semibold text-lg">
+                      {p.name.split(" ").map((n) => n[0]).join("")}
+                    </div>
+                  )}
                   <div>
                     <div className="text-xl font-semibold text-white">{p.name}</div>
                     <div className="text-sm text-[#4589ff] font-medium mt-0.5">{p.role}</div>
