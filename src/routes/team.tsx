@@ -16,7 +16,7 @@ const team = [
   { name: "Rahul Mehta", role: "Head of Robotics", bio: "Robotics systems engineer specializing in vision, ROS2 and industrial deployments.", initials: "RM" },
   { name: "Priya Sharma", role: "Head of Delivery", bio: "Runs the delivery organization — 40+ engineers, program managers and analysts across four practices.", initials: "PS" },
   { name: "Aakash Verma", role: "Principal AI Engineer", bio: "Agentic AI systems, LLM fine-tuning and evaluation infrastructure lead.", initials: "AV" },
-  { name: "Tanuja Karki", role: "Head of HR", bio: "Drives people strategy, talent acquisition, and culture at Tradecode — ensuring a high-performing and inclusive workplace.", initials: "TK" },
+  { name: "Tanuja Karki", role: "Head of HR", bio: "Drives people strategy, talent acquisition, and culture at Tradecode — ensuring a high-performing and inclusive workplace.", initials: "TK", showFullName: true },
 ];
 
 const socials = [Linkedin, Twitter, Github, Globe];
@@ -36,8 +36,11 @@ function Team() {
                 ) : (
                   <>
                     <div className="absolute inset-0 bg-grid opacity-20" />
-                    <div className="absolute inset-0 grid place-items-center font-display text-6xl font-bold text-brand-foreground/90">
-                      {m.initials}
+                    <div className="absolute inset-0 grid place-items-center font-display font-bold text-brand-foreground/90 px-4 text-center">
+                      {(m as any).showFullName
+                        ? <span className="text-2xl leading-tight">{m.name}</span>
+                        : <span className="text-6xl">{m.initials}</span>
+                      }
                     </div>
                   </>
                 )}
