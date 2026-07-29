@@ -16,6 +16,7 @@ const team = [
   { name: "Rahul Mehta", role: "Head of Robotics", bio: "Robotics systems engineer specializing in vision, ROS2 and industrial deployments.", initials: "RM" },
   { name: "Priya Sharma", role: "Head of Delivery", bio: "Runs the delivery organization — 40+ engineers, program managers and analysts across four practices.", initials: "PS" },
   { name: "Aakash Verma", role: "Principal AI Engineer", bio: "Agentic AI systems, LLM fine-tuning and evaluation infrastructure lead.", initials: "AV" },
+  { name: "Tanuja Karki", role: "Head of HR", bio: "Drives people strategy, talent acquisition, and culture at Tradecode — ensuring a high-performing and inclusive workplace.", initials: "TK" },
 ];
 
 const socials = [Linkedin, Twitter, Github, Globe];
