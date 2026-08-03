@@ -77,10 +77,13 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
   errorComponent: ErrorComponent,
 });
 
+import { CursorTrail } from "@/components/effects/CursorTrail";
+
 function RootComponent() {
   const { queryClient } = Route.useRouteContext();
   return (
     <QueryClientProvider client={queryClient}>
+      <CursorTrail />
       <div className="flex min-h-screen flex-col">
         <NoticeBar />
         <Header />
