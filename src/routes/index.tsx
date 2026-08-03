@@ -79,7 +79,7 @@ function ParticleCanvas() {
         if (d.x < 0 || d.x > W) d.vx *= -1;
         if (d.y < 0 || d.y > H) d.vy *= -1;
         ctx.beginPath(); ctx.arc(d.x, d.y, d.r, 0, Math.PI * 2);
-        ctx.fillStyle = `rgba(99,102,241,${d.opacity * 0.4})`; ctx.fill();
+        ctx.fillStyle = `rgba(0,200,255,${d.opacity * 0.5})`; ctx.fill();
       });
       // Star sparkles
       stars.forEach((s) => {
@@ -87,7 +87,7 @@ function ParticleCanvas() {
         const a = alpha * 0.85 + 0.15;
         const sz = s.size * (0.7 + alpha * 0.6);
         ctx.save(); ctx.globalAlpha = a;
-        ctx.strokeStyle = s.color === "255,255,255" ? `rgb(0,82,255)` : `rgb(99,102,241)`; ctx.lineWidth = sz * 0.5; ctx.lineCap = "round";
+        ctx.strokeStyle = s.color === "255,255,255" ? `rgb(0,200,255)` : `rgb(124,58,237)`; ctx.lineWidth = sz * 0.5; ctx.lineCap = "round";
         ctx.beginPath(); ctx.moveTo(s.x - sz, s.y); ctx.lineTo(s.x + sz, s.y); ctx.stroke();
         ctx.beginPath(); ctx.moveTo(s.x, s.y - sz); ctx.lineTo(s.x, s.y + sz); ctx.stroke();
         const d2 = sz * 0.55; ctx.globalAlpha = a * 0.4;
@@ -103,11 +103,11 @@ function ParticleCanvas() {
         const ptAlpha = (p.opacity || 0.5) * (0.6 + twinkle * 0.4);
         ctx.beginPath();
         ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
-        ctx.fillStyle = `rgba(0,82,255,${ptAlpha * 0.6})`;
+        ctx.fillStyle = `rgba(0,82,255,${ptAlpha * 0.7})`;
         ctx.fill();
         if (p.r > 1.4) {
           ctx.beginPath(); ctx.arc(p.x, p.y, p.r * 2.5, 0, Math.PI * 2);
-          ctx.fillStyle = `rgba(99,102,241,${ptAlpha * 0.15})`; ctx.fill();
+          ctx.fillStyle = `rgba(0,200,255,${ptAlpha * 0.2})`; ctx.fill();
         }
       });
       for (let i = 0; i < pts.length; i++) {
@@ -119,8 +119,8 @@ function ParticleCanvas() {
             ctx.beginPath();
             ctx.moveTo(pts[i].x, pts[i].y);
             ctx.lineTo(pts[j].x, pts[j].y);
-            ctx.strokeStyle = `rgba(0,82,255,${(1 - d / 160) * 0.18})`;
-            ctx.lineWidth = 0.7;
+            ctx.strokeStyle = `rgba(0,200,255,${(1 - d / 160) * 0.25})`;
+            ctx.lineWidth = 0.8;
             ctx.stroke();
           }
         }

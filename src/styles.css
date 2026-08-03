@@ -40,23 +40,22 @@
 }
 
 /* ─────────────────────────────────────────────────────────────────────────────
-   BRIGHT / LIGHT LUXURY THEME PALETTE
-   Inspiration: OpenAI / ChatGPT Codex clean studio aesthetics
-   Primary Accent: #0052FF (Electric OpenAI/Tech Blue) + #6366F1 (Indigo Glow)
-   Backgrounds: High-contrast warm porcelain white (#FAFAFB, #FFFFFF)
-   Text: Deep Obsidian (#0F172A), Charcoal (#334155), Muted (#64748B)
+   ULTRA-PREMIUM BRIGHT CYBER-TECH PALETTE (AI + ROBOTICS + HARDWARE POV)
+   Backgrounds: Pure Studio Alabaster (#F8FAFC), Crystal White (#FFFFFF), Warm Cream Accent (#F1F5F9)
+   Primary Accents: Vivid Cyber Cyan (#00C8FF) + Deep Cobalt Blue (#0052FF) + Hyper Violet (#7C3AED)
+   Text: Deep Ink Slate (#0F172A), Charcoal Slate (#334155), Cool Grey (#64748B)
    ───────────────────────────────────────────────────────────────────────────── */
 
 :root {
-  --radius: 12px;
+  --radius: 14px;
 
-  /* Electric Tech Blue & Indigo Accent */
+  /* Vivid Cyber Cyan & Cobalt Blue Accent */
   --brand: #0052FF;
   --brand-foreground: #FFFFFF;
-  --brand-glow: #6366F1;
+  --brand-glow: #00C8FF;
 
-  /* Bright Palette Tokens */
-  --background: #FAFAFB;
+  /* Bright Luxury Tokens */
+  --background: #F8FAFC;
   --foreground: #0F172A;
   --card: #FFFFFF;
   --card-foreground: #0F172A;
@@ -66,15 +65,15 @@
   --primary-foreground: #FFFFFF;
   --secondary: #F1F5F9;
   --secondary-foreground: #0F172A;
-  --muted: #F8FAFC;
+  --muted: #F1F5F9;
   --muted-foreground: #64748B;
-  --accent: rgba(0, 82, 255, 0.08);
+  --accent: rgba(0, 200, 255, 0.1);
   --accent-foreground: #0052FF;
   --destructive: #EF4444;
   --destructive-foreground: #FFFFFF;
   --border: #E2E8F0;
   --input: #E2E8F0;
-  --ring: #0052FF;
+  --ring: #00C8FF;
   --paper: #FFFFFF;
   --ink: #0F172A;
 }
@@ -92,7 +91,7 @@
   h1, h2, h3, h4, h5, h6 {
     font-family: var(--font-display);
     font-weight: 400;
-    letter-spacing: -0.025em;
+    letter-spacing: -0.03em;
   }
 }
 
@@ -100,64 +99,65 @@
   @apply mx-auto w-full max-w-7xl px-6 md:px-12;
 }
 
+/* Holographic Cyber Gradient for Headings & Accents */
 @utility text-gradient-brand {
-  background: linear-gradient(135deg, #0052FF 0%, #6366F1 50%, #8B5CF6 100%);
+  background: linear-gradient(135deg, #0052FF 0%, #00C8FF 50%, #7C3AED 100%);
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
 }
 
-/* Subtle architectural grid pattern on light background */
+/* Futuristic Tech Grid Pattern */
 @utility bg-grid {
   background-image: radial-gradient(
     circle,
-    rgba(0, 82, 255, 0.12) 1.5px,
+    rgba(0, 200, 255, 0.18) 1.5px,
     transparent 1.5px
   );
-  background-size: 32px 32px;
+  background-size: 28px 28px;
 }
 
-/* Bright ambient aura overlay */
+/* Glowing Ambient Hologram Overlay */
 @utility bg-brand-radial {
   background: radial-gradient(
     circle at 50% 0%,
-    rgba(0, 82, 255, 0.08) 0%,
-    rgba(99, 102, 241, 0.04) 50%,
+    rgba(0, 200, 255, 0.12) 0%,
+    rgba(124, 58, 237, 0.06) 50%,
     transparent 100%
   );
 }
 
-/* Diagonal stripe mesh */
+/* Mesh Diagonal Grid Overlay */
 @utility bg-diagonal-lines {
   background-image: repeating-linear-gradient(
     -45deg,
-    rgba(0, 82, 255, 0.03) 0px,
-    rgba(0, 82, 255, 0.03) 1px,
+    rgba(0, 82, 255, 0.04) 0px,
+    rgba(0, 82, 255, 0.04) 1px,
     transparent 1px,
-    transparent 16px
+    transparent 14px
   );
 }
 
-/* Glass card — Bright mode */
+/* Glass Card with Holographic Cyber Border Glow */
 @utility glass-card {
-  background: rgba(255, 255, 255, 0.85);
-  border: 1px solid rgba(226, 232, 240, 0.8);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  box-shadow: 0 4px 20px -2px rgba(15, 23, 42, 0.04);
+  background: rgba(255, 255, 255, 0.9);
+  border: 1px solid rgba(0, 200, 255, 0.25);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  box-shadow: 0 10px 30px -10px rgba(0, 82, 255, 0.08), 0 0 15px 0 rgba(0, 200, 255, 0.05);
 }
 
-/* Soft elevational card */
+/* Premium Elevational Card */
 @utility ibm-card {
   background: #FFFFFF;
   border: 1px solid #E2E8F0;
-  box-shadow: 0 4px 16px -4px rgba(15, 23, 42, 0.05);
-  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 4px 20px -4px rgba(15, 23, 42, 0.06);
+  transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
 }
 .ibm-card:hover {
-  border-color: rgba(0, 82, 255, 0.4);
-  transform: translateY(-3px);
-  box-shadow: 0 12px 32px -8px rgba(0, 82, 255, 0.12);
+  border-color: rgba(0, 200, 255, 0.6);
+  transform: translateY(-4px) scale(1.01);
+  box-shadow: 0 16px 40px -10px rgba(0, 82, 255, 0.15), 0 0 20px 0 rgba(0, 200, 255, 0.1);
 }
 
 /* Keyframe animations */
@@ -178,43 +178,42 @@
 }
 
 @keyframes pulse-glow {
-  0%, 100% { opacity: 0.4; transform: scale(1); }
-  50% { opacity: 0.8; transform: scale(1.05); }
+  0%, 100% { opacity: 0.5; transform: scale(1); }
+  50% { opacity: 0.9; transform: scale(1.06); }
 }
 @utility animate-pulse-glow {
   animation: pulse-glow 4s ease-in-out infinite;
 }
 
-/* Bright stat number utility */
+/* Bright Cyber Stat Number */
 @utility stat-num {
   font-size: clamp(3rem, 5.5vw, 4.5rem);
   font-weight: 300;
   letter-spacing: -0.04em;
   line-height: 1;
-  background: linear-gradient(135deg, #0F172A 0%, #0052FF 100%);
+  background: linear-gradient(135deg, #0F172A 0%, #0052FF 50%, #00C8FF 100%);
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
 }
 
-/* Sub-label accent */
+/* Sub-label Accent */
 @utility kd-label {
   font-size: 0.6875rem;
   font-weight: 700;
-  letter-spacing: 0.18em;
+  letter-spacing: 0.2em;
   text-transform: uppercase;
   color: #0052FF;
 }
 
 /* ─────────────────────────────────────────────────────────────────────────────
-   GLOBAL CLASS RE-MAPPING FOR BRIGHT THEME UNIFICATION
-   Remaps hardcoded Tailwind dark classes across all components cleanly.
+   GLOBAL CLASS RE-MAPPING FOR THE NEW BRIGHT CYBER PALETTE
    ───────────────────────────────────────────────────────────────────────────── */
 
 .bg-\[\#0a0e1a\],
 .bg-\[\#0d1120\],
 .bg-\[\#0f172a\] {
-  background-color: #FAFAFB !important;
+  background-color: #F8FAFC !important;
 }
 
 .bg-\[\#111827\],
@@ -252,7 +251,7 @@
 .bg-white\/10,
 .bg-white\/\[0\.04\],
 .bg-white\/\[0\.06\] {
-  background-color: #F8FAFC !important;
+  background-color: #F1F5F9 !important;
 }
 
 .text-\[\#78a9ff\],
@@ -267,11 +266,11 @@
 }
 
 .border-\[\#4589ff\] {
-  border-color: #0052FF !important;
+  border-color: #00C8FF !important;
 }
 
-/* Hero section light container */
+/* Hero Section Container */
 .hero-dark {
-  background: #FAFAFB !important;
+  background: #F8FAFC !important;
   color: #0F172A !important;
 }
