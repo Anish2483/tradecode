@@ -51,12 +51,12 @@ export function Header() {
     <header
       className={`sticky top-0 z-50 transition-all duration-300 ${
         scrolled
-          ? "bg-[#0a0e1a]/95 backdrop-blur-xl border-b border-white/8 shadow-[0_1px_0_rgba(255,255,255,0.06)]"
-          : "bg-[#0a0e1a]/80 backdrop-blur-md border-b border-white/5"
+          ? "bg-white/96 backdrop-blur-xl border-b border-gray-200 shadow-sm"
+          : "bg-white/80 backdrop-blur-md border-b border-gray-100"
       }`}
     >
       {/* Top thin brand line */}
-      <div className="h-[2px] w-full bg-gradient-to-r from-transparent via-[#4589ff] to-transparent opacity-60" />
+      <div className="h-[2px] w-full bg-gradient-to-r from-transparent via-violet-400/60 to-transparent" />
 
       <div className="container-x flex h-14 items-center gap-6">
         {/* Tradecode Logo */}
@@ -76,7 +76,7 @@ export function Header() {
             <button
               aria-expanded={servicesOpen}
               aria-haspopup="true"
-              className="flex items-center gap-1.5 px-4 py-4 text-sm font-normal text-white/70 hover:text-white transition-colors border-b-2 border-transparent hover:border-[#4589ff]"
+              className="flex items-center gap-1.5 px-4 py-4 text-sm font-normal text-gray-600 hover:text-gray-900 transition-colors border-b-2 border-transparent hover:border-violet-500"
             >
               Services
               <ChevronDown className={`h-3 w-3 transition-transform duration-200 ${servicesOpen ? "rotate-180" : ""}`} />
@@ -90,23 +90,23 @@ export function Header() {
                   transition={{ duration: 0.15, ease: "easeOut" }}
                   className="absolute left-0 top-full w-80 z-50"
                 >
-                  <div className="bg-[#161b2e] border border-white/10 shadow-2xl shadow-black/60">
+                  <div className="bg-white border border-gray-200 shadow-xl shadow-gray-100/80">
                     {services.map((s, i) => (
                       <Link
                         key={s.to}
                         to={s.to}
                         onClick={() => setServicesOpen(false)}
-                        className="group flex items-center justify-between px-5 py-3.5 text-sm text-white/70 hover:text-white hover:bg-white/5 border-b border-white/5 last:border-0 transition-all"
+                        className="group flex items-center justify-between px-5 py-3.5 text-sm text-gray-600 hover:text-gray-900 hover:bg-violet-50 border-b border-gray-100 last:border-0 transition-all"
                       >
                         <span>{s.label}</span>
                         <ArrowRight className="h-3.5 w-3.5 opacity-0 group-hover:opacity-100 transition-all -translate-x-2 group-hover:translate-x-0 text-[#4589ff]" />
                       </Link>
                     ))}
-                    <div className="px-5 py-3 border-t border-white/8 bg-[#0f62fe]/10">
+                    <div className="px-5 py-3 border-t border-gray-100 bg-violet-50">
                       <Link
                         to="/services"
                         onClick={() => setServicesOpen(false)}
-                        className="flex items-center gap-2 text-xs font-semibold text-[#78a9ff] hover:text-white transition-colors uppercase tracking-wider"
+                        className="flex items-center gap-2 text-xs font-semibold text-violet-600 hover:text-violet-800 transition-colors uppercase tracking-wider"
                       >
                         View All Services <ArrowUpRight className="h-3 w-3" />
                       </Link>
@@ -121,8 +121,8 @@ export function Header() {
             <Link
               key={n.to}
               to={n.to}
-              className="px-4 py-4 text-sm font-normal text-white/70 hover:text-white transition-colors border-b-2 border-transparent hover:border-[#4589ff]"
-              activeProps={{ className: "px-4 py-4 text-sm font-normal text-white border-b-2 border-[#4589ff]" }}
+              className="px-4 py-4 text-sm font-normal text-gray-600 hover:text-gray-900 transition-colors border-b-2 border-transparent hover:border-violet-500"
+              activeProps={{ className: "px-4 py-4 text-sm font-normal text-violet-700 border-b-2 border-violet-500" }}
             >
               {n.label}
             </Link>
@@ -133,13 +133,13 @@ export function Header() {
           <div className="flex items-center gap-3">
             <Link
               to="/contact"
-              className="px-4 py-2 text-sm font-normal text-white/80 hover:text-white border border-white/20 hover:border-white/50 transition-all"
+              className="px-4 py-2 text-sm font-normal text-gray-700 hover:text-gray-900 border border-gray-300 hover:border-violet-400 transition-all hover:bg-violet-50"
             >
               Contact
             </Link>
             <Link
               to="/become-partner"
-              className="px-4 py-2 text-sm font-semibold text-white bg-[#0f62fe] hover:bg-[#0353e9] transition-colors"
+              className="px-4 py-2 text-sm font-semibold text-white bg-violet-600 hover:bg-violet-700 transition-all shadow-md shadow-violet-200"
             >
               Become a Partner
             </Link>
@@ -150,7 +150,7 @@ export function Header() {
         <div className="flex-1 lg:hidden" />
         <button
           aria-label={open ? "Close menu" : "Open menu"}
-          className="lg:hidden grid h-9 w-9 place-items-center text-white/70 hover:text-white transition-colors"
+          className="lg:hidden grid h-9 w-9 place-items-center text-gray-600 hover:text-gray-900 transition-colors"
           onClick={() => setOpen(!open)}
         >
           <AnimatePresence mode="wait" initial={false}>
@@ -175,26 +175,26 @@ export function Header() {
             animate={{ opacity: 1, height: "auto" }}
             exit={{ opacity: 0, height: 0 }}
             transition={{ duration: 0.22, ease: "easeInOut" }}
-            className="lg:hidden overflow-hidden border-t border-white/8 bg-[#0a0e1a]"
+            className="lg:hidden overflow-hidden border-t border-gray-100 bg-white"
           >
             <div className="py-4 flex flex-col">
-              <p className="px-6 py-2 text-[10px] font-semibold uppercase tracking-[0.16em] text-white/40">Services</p>
+              <p className="px-6 py-2 text-[10px] font-semibold uppercase tracking-[0.16em] text-gray-400">Services</p>
               {services.map((n) => (
                 <Link
                   key={n.to}
                   to={n.to}
-                  className="px-6 py-3 text-sm text-white/70 hover:text-white hover:bg-white/5 transition-colors border-b border-white/5"
+                  className="px-6 py-3 text-sm text-gray-600 hover:text-gray-900 hover:bg-violet-50 transition-colors border-b border-gray-100"
                   onClick={() => setOpen(false)}
                 >
                   {n.label}
                 </Link>
               ))}
-              <p className="px-6 py-2 mt-2 text-[10px] font-semibold uppercase tracking-[0.16em] text-white/40">Company</p>
+              <p className="px-6 py-2 mt-2 text-[10px] font-semibold uppercase tracking-[0.16em] text-gray-400">Company</p>
               {nav.map((n) => (
                 <Link
                   key={n.to}
                   to={n.to}
-                  className="px-6 py-3 text-sm text-white/70 hover:text-white hover:bg-white/5 transition-colors border-b border-white/5"
+                  className="px-6 py-3 text-sm text-gray-600 hover:text-gray-900 hover:bg-violet-50 transition-colors border-b border-gray-100"
                   onClick={() => setOpen(false)}
                 >
                   {n.label}
@@ -203,14 +203,14 @@ export function Header() {
               <div className="px-6 pt-4 pb-2 flex flex-col gap-2">
                 <Link
                   to="/contact"
-                  className="py-3 text-sm text-center text-white border border-white/20"
+                  className="py-3 text-sm text-center text-gray-700 border border-gray-300 hover:bg-violet-50 hover:border-violet-400 transition-all"
                   onClick={() => setOpen(false)}
                 >
                   Contact
                 </Link>
                 <Link
                   to="/become-partner"
-                  className="py-3 text-sm font-semibold text-center text-white bg-[#0f62fe]"
+                  className="py-3 text-sm font-semibold text-center text-white bg-violet-600"
                   onClick={() => setOpen(false)}
                 >
                   Become a Partner

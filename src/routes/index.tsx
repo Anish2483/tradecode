@@ -22,116 +22,38 @@ export const Route = createFileRoute("/")({
   component: Home,
 });
 
-// ─── Animated particle network (Kyndryl-style background) ──────────────────
-function ParticleCanvas() {
-  const canvasRef = useRef<HTMLCanvasElement>(null);
-  useEffect(() => {
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-    const ctx = canvas.getContext("2d")!;
-    let animId: number;
-    let W = (canvas.width = canvas.offsetWidth);
-    let H = (canvas.height = canvas.offsetHeight);
-
-    // Network particles (boosted)
-    const COUNT = Math.min(220, Math.floor((W * H) / 5000));
-    const pts = Array.from({ length: COUNT }, () => ({
-      x: Math.random() * W,
-      y: Math.random() * H,
-      vx: (Math.random() - 0.5) * 0.5,
-      vy: (Math.random() - 0.5) * 0.5,
-      r: Math.random() * 2.2 + 0.6,
-      opacity: Math.random() * 0.5 + 0.3,
-      phase: Math.random() * Math.PI * 2,
-      speed: Math.random() * 0.02 + 0.008,
-    }));
-    // 4-point twinkling star sparkles
-    const STAR_COUNT = Math.min(140, Math.floor((W * H) / 9000));
-    const stars = Array.from({ length: STAR_COUNT }, () => ({
-      x: Math.random() * W, y: Math.random() * H,
-      size: Math.random() * 2.5 + 0.8,
-      phase: Math.random() * Math.PI * 2,
-      speed: Math.random() * 0.025 + 0.008,
-      color: Math.random() > 0.6 ? "255,255,255" : "69,137,255",
-    }));
-    // Tiny dust particles
-    const DUST_COUNT = Math.min(200, Math.floor((W * H) / 6000));
-    const dust = Array.from({ length: DUST_COUNT }, () => ({
-      x: Math.random() * W, y: Math.random() * H,
-      vx: (Math.random() - 0.5) * 0.15, vy: (Math.random() - 0.5) * 0.15,
-      r: Math.random() * 0.8 + 0.2,
-      opacity: Math.random() * 0.35 + 0.1,
-    }));
-    let t = 0;
-
-    const resize = () => {
-      W = canvas.width = canvas.offsetWidth;
-      H = canvas.height = canvas.offsetHeight;
-    };
-    window.addEventListener("resize", resize);
-
-    const draw = () => {
-      t += 0.016;
-      ctx.clearRect(0, 0, W, H);
-      // Dust layer
-      dust.forEach((d) => {
-        d.x += d.vx; d.y += d.vy;
-        if (d.x < 0 || d.x > W) d.vx *= -1;
-        if (d.y < 0 || d.y > H) d.vy *= -1;
-        ctx.beginPath(); ctx.arc(d.x, d.y, d.r, 0, Math.PI * 2);
-        ctx.fillStyle = `rgba(0,200,255,${d.opacity * 0.5})`; ctx.fill();
-      });
-      // Star sparkles
-      stars.forEach((s) => {
-        const alpha = (Math.sin(t * s.speed * 60 + s.phase) + 1) / 2;
-        const a = alpha * 0.85 + 0.15;
-        const sz = s.size * (0.7 + alpha * 0.6);
-        ctx.save(); ctx.globalAlpha = a;
-        ctx.strokeStyle = s.color === "255,255,255" ? `rgb(0,200,255)` : `rgb(124,58,237)`; ctx.lineWidth = sz * 0.5; ctx.lineCap = "round";
-        ctx.beginPath(); ctx.moveTo(s.x - sz, s.y); ctx.lineTo(s.x + sz, s.y); ctx.stroke();
-        ctx.beginPath(); ctx.moveTo(s.x, s.y - sz); ctx.lineTo(s.x, s.y + sz); ctx.stroke();
-        const d2 = sz * 0.55; ctx.globalAlpha = a * 0.4;
-        ctx.beginPath(); ctx.moveTo(s.x - d2, s.y - d2); ctx.lineTo(s.x + d2, s.y + d2); ctx.stroke();
-        ctx.beginPath(); ctx.moveTo(s.x + d2, s.y - d2); ctx.lineTo(s.x - d2, s.y + d2); ctx.stroke();
-        ctx.restore();
-      });
-      pts.forEach((p) => {
-        p.x += p.vx; p.y += p.vy;
-        if (p.x < 0 || p.x > W) p.vx *= -1;
-        if (p.y < 0 || p.y > H) p.vy *= -1;
-        const twinkle = (Math.sin(t * (p.speed || 0.01) * 60 + (p.phase || 0)) + 1) / 2;
-        const ptAlpha = (p.opacity || 0.5) * (0.6 + twinkle * 0.4);
-        ctx.beginPath();
-        ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
-        ctx.fillStyle = `rgba(0,82,255,${ptAlpha * 0.7})`;
-        ctx.fill();
-        if (p.r > 1.4) {
-          ctx.beginPath(); ctx.arc(p.x, p.y, p.r * 2.5, 0, Math.PI * 2);
-          ctx.fillStyle = `rgba(0,200,255,${ptAlpha * 0.2})`; ctx.fill();
-        }
-      });
-      for (let i = 0; i < pts.length; i++) {
-        for (let j = i + 1; j < pts.length; j++) {
-          const dx = pts[i].x - pts[j].x;
-          const dy = pts[i].y - pts[j].y;
-          const d = Math.sqrt(dx * dx + dy * dy);
-          if (d < 160) {
-            ctx.beginPath();
-            ctx.moveTo(pts[i].x, pts[i].y);
-            ctx.lineTo(pts[j].x, pts[j].y);
-            ctx.strokeStyle = `rgba(0,200,255,${(1 - d / 160) * 0.25})`;
-            ctx.lineWidth = 0.8;
-            ctx.stroke();
-          }
-        }
-      }
-      animId = requestAnimationFrame(draw);
-    };
-    draw();
-    return () => { window.removeEventListener("resize", resize); cancelAnimationFrame(animId); };
-  }, []);
-  return <canvas ref={canvasRef} className="absolute inset-0 w-full h-full" />;
+// ─── Aurora Gradient Orbs (ChatGPT Codex-style floating blobs) ─────────────
+function AuroraOrbs() {
+  return (
+    <div className="absolute inset-0 overflow-hidden pointer-events-none">
+      {/* Violet blob — top-left */}
+      <div className="aurora-orb aurora-orb-1" style={{
+        width: "800px", height: "800px",
+        background: "radial-gradient(circle at center, rgba(124,58,237,0.38) 0%, rgba(167,139,250,0.18) 45%, transparent 70%)",
+        top: "-20%", left: "-15%",
+      }} />
+      {/* Amber/Gold blob — bottom-right */}
+      <div className="aurora-orb aurora-orb-2" style={{
+        width: "700px", height: "700px",
+        background: "radial-gradient(circle at center, rgba(245,158,11,0.28) 0%, rgba(251,191,36,0.12) 40%, transparent 70%)",
+        bottom: "-18%", right: "-12%",
+      }} />
+      {/* Indigo blob — top-right */}
+      <div className="aurora-orb aurora-orb-3" style={{
+        width: "580px", height: "580px",
+        background: "radial-gradient(circle at center, rgba(79,70,229,0.22) 0%, rgba(99,102,241,0.1) 50%, transparent 70%)",
+        top: "15%", right: "-8%",
+      }} />
+      {/* Rose accent blob — center-left */}
+      <div className="aurora-orb aurora-orb-4" style={{
+        width: "480px", height: "480px",
+        background: "radial-gradient(circle at center, rgba(236,72,153,0.16) 0%, rgba(251,113,133,0.06) 50%, transparent 70%)",
+        top: "45%", left: "15%",
+      }} />
+    </div>
+  );
 }
+
 
 // ─── Animated counter ───────────────────────────────────────────────────────
 function Counter({ to, suffix = "", duration = 2000 }: { to: number; suffix?: string; duration?: number }) {
@@ -209,21 +131,15 @@ function Home() {
   return (
     <>
       {/* ── HERO ──────────────────────────────────────────────────────────── */}
-      <section ref={heroRef} className="relative min-h-screen flex flex-col justify-center overflow-hidden bg-[#0a0e1a] text-white">
-        {/* Particle background */}
-        <div className="absolute inset-0">
-          <ParticleCanvas />
-        </div>
+      <section ref={heroRef} className="relative min-h-screen flex flex-col justify-center overflow-hidden bg-white">
+        {/* Aurora orb background — ChatGPT Codex style */}
+        <AuroraOrbs />
 
-        {/* Radial gradient overlays */}
-        <div className="absolute top-0 left-1/4 w-[600px] h-[600px] rounded-full pointer-events-none"
-          style={{ background: "radial-gradient(circle, rgba(15,98,254,0.18) 0%, transparent 70%)", filter: "blur(40px)" }} />
-        <div className="absolute bottom-0 right-1/4 w-[500px] h-[500px] rounded-full pointer-events-none"
-          style={{ background: "radial-gradient(circle, rgba(69,137,255,0.12) 0%, transparent 70%)", filter: "blur(60px)" }} />
+        {/* Architectural dot grid overlay */}
+        <div className="absolute inset-0 pointer-events-none opacity-40 bg-grid" />
 
-        {/* Diagonal line overlay — Kyndryl feel */}
-        <div className="absolute inset-0 pointer-events-none opacity-30"
-          style={{ backgroundImage: "repeating-linear-gradient(-45deg, rgba(69,137,255,0.04) 0px, rgba(69,137,255,0.04) 1px, transparent 1px, transparent 40px)" }} />
+        {/* Top gradient bar */}
+        <div className="absolute top-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-violet-400/50 to-transparent" />
 
         <motion.div style={{ opacity: heroOpacity, y: heroY }} className="relative container-x pt-32 pb-20">
           <div className="grid lg:grid-cols-[1fr_auto] gap-16 items-center">
@@ -235,22 +151,22 @@ function Home() {
                 transition={{ duration: 0.6 }}
                 className="flex items-center gap-3 mb-8"
               >
-                <div className="h-[1px] w-12 bg-[#4589ff]" />
-                <span className="text-xs font-semibold uppercase tracking-[0.18em] text-[#78a9ff]">
+                <div className="h-[1px] w-12 bg-violet-500" />
+                <span className="text-xs font-semibold uppercase tracking-[0.18em] text-violet-600">
                   Agentic AI · Robotics · Automation
                 </span>
               </motion.div>
 
-              {/* Headline — Kyndryl large editorial style */}
+              {/* Headline — Aurora Studio editorial style */}
               <motion.h1
                 initial={{ opacity: 0, y: 40 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.9, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
-                className="text-[clamp(2.8rem,6vw,5.5rem)] font-light leading-[1.04] tracking-tight text-white"
+                className="text-[clamp(2.8rem,6vw,5.5rem)] font-light leading-[1.04] tracking-tight text-gray-900"
               >
                 Building intelligent<br />
                 solutions for a{" "}
-                <span className="text-[#4589ff]">smarter</span><br />
+                <span className="text-gradient-brand">smarter</span><br />
                 tomorrow.
               </motion.h1>
 
@@ -258,7 +174,7 @@ function Home() {
                 initial={{ opacity: 0, y: 30 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.8, delay: 0.25 }}
-                className="mt-8 max-w-2xl text-lg text-white/60 leading-relaxed font-light"
+                className="mt-8 max-w-2xl text-lg text-gray-500 leading-relaxed font-light"
               >
                 Tradecode empowers businesses with AI, Automation, Data Science, Robotics
                 and scalable digital solutions — engineered by senior operators, documented
@@ -274,14 +190,14 @@ function Home() {
               >
                 <Link
                   to="/services"
-                  className="group inline-flex items-center gap-2 px-7 py-4 bg-[#0f62fe] text-white text-sm font-semibold hover:bg-[#0353e9] transition-colors"
+                  className="group inline-flex items-center gap-2 px-7 py-4 bg-violet-600 text-white text-sm font-semibold hover:bg-violet-700 transition-all shadow-lg shadow-violet-200 hover:shadow-violet-300"
                 >
                   Explore Services
                   <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
                 </Link>
                 <Link
                   to="/contact"
-                  className="group inline-flex items-center gap-2 px-7 py-4 border border-white/25 text-white text-sm hover:bg-white/5 transition-colors"
+                  className="group inline-flex items-center gap-2 px-7 py-4 border border-gray-300 text-gray-700 text-sm hover:bg-gray-50 hover:border-violet-400 transition-all"
                 >
                   Book a Consultation
                   <ArrowUpRight className="h-4 w-4" />
@@ -293,20 +209,20 @@ function Home() {
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ delay: 0.6, duration: 0.6 }}
-                className="mt-12 flex items-center gap-5 border-t border-white/8 pt-8"
+                className="mt-12 flex items-center gap-5 border-t border-gray-200 pt-8"
               >
                 <div className="flex gap-0.5">
                   {[...Array(5)].map((_, i) => (
-                    <Star key={i} className="h-4 w-4 fill-[#4589ff] text-[#4589ff]" />
+                    <Star key={i} className="h-4 w-4 fill-amber-400 text-amber-400" />
                   ))}
                 </div>
                 <div>
-                  <div className="text-sm font-semibold text-white">4.9 / 5 rating</div>
-                  <div className="text-xs text-white/40">from 100+ enterprise clients</div>
+                  <div className="text-sm font-semibold text-gray-900">4.9 / 5 rating</div>
+                  <div className="text-xs text-gray-400">from 100+ enterprise clients</div>
                 </div>
-                <div className="w-px h-8 bg-white/10" />
-                <div className="text-sm text-white/50 font-light">
-                  Trusted across <span className="text-white font-medium">18 countries</span>
+                <div className="w-px h-8 bg-gray-200" />
+                <div className="text-sm text-gray-500 font-light">
+                  Trusted across <span className="text-gray-900 font-medium">18 countries</span>
                 </div>
               </motion.div>
             </div>
@@ -321,19 +237,19 @@ function Home() {
               {/* Glow halo */}
               <div className="relative">
                 <div className="absolute inset-[-20%] rounded-full animate-glow-pulse pointer-events-none"
-                  style={{ background: "radial-gradient(circle, rgba(69,137,255,0.25) 0%, transparent 70%)", filter: "blur(24px)" }} />
-                <AnimatedLogo size={200} showText={true} color="#ffffff" glowColor="#4589ff" />
+                  style={{ background: "radial-gradient(circle, rgba(124,58,237,0.22) 0%, transparent 70%)", filter: "blur(24px)" }} />
+                <AnimatedLogo size={200} showText={true} color="#7C3AED" glowColor="#A78BFA" />
               </div>
               {/* Floating data cards around logo */}
               <motion.div
                 initial={{ opacity: 0, x: 40 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ delay: 0.8, duration: 0.6 }}
-                className="bg-[#161b2e] border border-white/10 px-5 py-3 text-left"
+                className="bg-white border border-violet-100 px-5 py-3 text-left shadow-lg shadow-violet-100/50 rounded-xl"
               >
-                <div className="text-[10px] text-white/40 uppercase tracking-wider mb-1">Live Production</div>
-                <div className="text-sm font-semibold text-white flex items-center gap-2">
-                  <span className="h-2 w-2 rounded-full bg-[#42be65] animate-pulse" />
+                <div className="text-[10px] text-gray-400 uppercase tracking-wider mb-1">Live Production</div>
+                <div className="text-sm font-semibold text-gray-900 flex items-center gap-2">
+                  <span className="h-2 w-2 rounded-full bg-emerald-500 animate-pulse" />
                   40M+ automated runs / month
                 </div>
               </motion.div>
