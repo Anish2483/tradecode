@@ -131,9 +131,10 @@ function Home() {
 
   return (
     <>
-      <CursorTrail />
       {/* ── HERO ──────────────────────────────────────────────────────────── */}
       <section ref={heroRef} className="relative min-h-screen flex flex-col justify-center overflow-hidden bg-white">
+        {/* Particle animation — contained to hero only */}
+        <CursorTrail />
         {/* Aurora orb background — ChatGPT Codex style */}
         <AuroraOrbs />
 

@@ -90,8 +90,9 @@ export function CursorTrail() {
       clearTimeout(resizeTimer);
       resizeTimer = setTimeout(() => {
         const dpr = Math.min(window.devicePixelRatio || 1, 2);
-        const W = window.innerWidth;
-        const H = window.innerHeight;
+        const parent = canvas.parentElement!;
+        const W = parent.offsetWidth;
+        const H = parent.offsetHeight;
         canvas.width = W * dpr;
         canvas.height = H * dpr;
         canvas.style.width = W + "px";
@@ -102,16 +103,19 @@ export function CursorTrail() {
       }, 100);
     };
 
+    // Convert viewport mouse coords to section-relative coords
     const onMove = (e: MouseEvent) => {
-      mouseRef.current.x = e.clientX;
-      mouseRef.current.y = e.clientY;
-      mouseRef.current.active = true;
+      const rect = canvas.parentElement!.getBoundingClientRect();
+      mouseRef.current.x = e.clientX - rect.left;
+      mouseRef.current.y = e.clientY - rect.top;
+      mouseRef.current.active = e.clientY >= rect.top && e.clientY <= rect.bottom;
     };
     const onLeave = () => { mouseRef.current.active = false; };
     const onTouch = (e: TouchEvent) => {
       if (e.touches.length > 0) {
-        mouseRef.current.x = e.touches[0].clientX;
-        mouseRef.current.y = e.touches[0].clientY;
+        const rect = canvas.parentElement!.getBoundingClientRect();
+        mouseRef.current.x = e.touches[0].clientX - rect.left;
+        mouseRef.current.y = e.touches[0].clientY - rect.top;
         mouseRef.current.active = true;
       }
     };
@@ -119,8 +123,9 @@ export function CursorTrail() {
 
     // Initial setup (no debounce)
     const dpr = Math.min(window.devicePixelRatio || 1, 2);
-    const W = window.innerWidth;
-    const H = window.innerHeight;
+    const parent = canvas.parentElement!;
+    const W = parent.offsetWidth;
+    const H = parent.offsetHeight;
     canvas.width = W * dpr;
     canvas.height = H * dpr;
     canvas.style.width = W + "px";
@@ -288,7 +293,7 @@ export function CursorTrail() {
   return (
     <canvas
       ref={canvasRef}
-      className="fixed inset-0 z-[9999] pointer-events-none"
+      className="absolute inset-0 z-[10] pointer-events-none"
       aria-hidden="true"
     />
   );
