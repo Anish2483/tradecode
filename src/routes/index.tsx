@@ -10,6 +10,10 @@ import {
 import { AnimatedLogo, SmallLogo } from "@/components/brand/AnimatedLogo";
 import { CursorTrail } from "@/components/effects/CursorTrail";
 import yogendraImg from "@/assets/tradecode.jpeg";
+import showcaseAiDashboard from "@/assets/showcase-ai-dashboard.jpg";
+import showcaseRobotics from "@/assets/showcase-robotics.jpg";
+import showcaseChatbot from "@/assets/showcase-chatbot.jpg";
+import showcaseIot from "@/assets/showcase-iot.jpg";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -120,6 +124,13 @@ const partners = [
   "NeuralForge", "Helix Robotics", "Kairos Data", "Vertex Labs", "Northwind AI",
   "OrbitStack", "Prism Analytics", "Quanta Systems", "Sentinel Cloud", "Meridian Tech",
   "DeepVision", "AeroLogix", "DataCore", "CipherAI", "FusionTech",
+];
+
+const showcaseProjects = [
+  { image: showcaseAiDashboard, title: "NeuralForge Analytics",    category: "Agentic AI",     desc: "Real-time AI analytics dashboard with predictive insights" },
+  { image: showcaseRobotics,    title: "Helix Robotics Control",   category: "Robotics",       desc: "Industrial robotic arm control and monitoring platform" },
+  { image: showcaseChatbot,     title: "Kairos Support Agent",     category: "Conversational AI", desc: "Autonomous customer support chatbot with sentiment analysis" },
+  { image: showcaseIot,         title: "Meridian IoT Monitor",     category: "IoT / Hardware",  desc: "Smart factory sensor monitoring and predictive maintenance" },
 ];
 
 // ─── Component ───────────────────────────────────────────────────────────────
@@ -555,6 +566,82 @@ function Home() {
             <Link to="/team" className="inline-flex items-center gap-2 text-sm text-[#4589ff] hover:text-[#78a9ff] transition-colors">
               Meet the full team <ArrowRight className="h-4 w-4" />
             </Link>
+          </div>
+        </div>
+      </section>
+
+      {/* ── MADE WITH TRADECODE (Squarespace-style showcase) ──────────────────── */}
+      <section className="relative py-28 md:py-36 bg-[#f5f3ff] overflow-hidden">
+        {/* Section heading */}
+        <div className="container-x text-center mb-16">
+          <motion.p
+            {...fadeUp}
+            className="text-xs font-semibold uppercase tracking-[0.2em] text-violet-500 mb-4"
+          >
+            Portfolio
+          </motion.p>
+          <motion.h2
+            {...fadeUp}
+            className="text-[clamp(2.5rem,5vw,4.5rem)] font-light tracking-tight text-gray-900 leading-[1.1]"
+          >
+            Made with{" "}
+            <span className="text-violet-600 font-medium">Tradecode</span>
+          </motion.h2>
+          <motion.p
+            {...fadeUp}
+            className="mt-5 text-gray-500 max-w-lg mx-auto text-base leading-relaxed"
+          >
+            Real products we've shipped for founders and enterprises — from agentic AI dashboards to industrial robotics platforms.
+          </motion.p>
+        </div>
+
+        {/* Auto-scrolling marquee — Squarespace showcase style */}
+        <div className="relative w-full">
+          {/* Fade edges */}
+          <div className="absolute left-0 top-0 bottom-0 w-24 md:w-40 bg-gradient-to-r from-[#f5f3ff] to-transparent z-10 pointer-events-none" />
+          <div className="absolute right-0 top-0 bottom-0 w-24 md:w-40 bg-gradient-to-l from-[#f5f3ff] to-transparent z-10 pointer-events-none" />
+
+          {/* Row 1 — scroll left */}
+          <div className="flex gap-6 mb-6 animate-marquee" style={{ width: "max-content" }}>
+            {[...showcaseProjects, ...showcaseProjects].map((project, i) => (
+              <div
+                key={`row1-${i}`}
+                className="group relative w-[340px] md:w-[420px] shrink-0 rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-shadow duration-500"
+              >
+                <img
+                  src={project.image}
+                  alt={project.title}
+                  className="w-full aspect-[16/10] object-cover transition-transform duration-700 group-hover:scale-105"
+                />
+                {/* Overlay on hover */}
+                <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex flex-col justify-end p-6">
+                  <span className="text-xs font-semibold uppercase tracking-[0.15em] text-violet-300 mb-1">{project.category}</span>
+                  <h3 className="text-lg font-medium text-white">{project.title}</h3>
+                  <p className="text-sm text-white/70 mt-1">{project.desc}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          {/* Row 2 — scroll right (reverse) */}
+          <div className="flex gap-6 animate-marquee" style={{ width: "max-content", animationDirection: "reverse", animationDuration: "60s" }}>
+            {[...showcaseProjects.slice().reverse(), ...showcaseProjects.slice().reverse()].map((project, i) => (
+              <div
+                key={`row2-${i}`}
+                className="group relative w-[340px] md:w-[420px] shrink-0 rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-shadow duration-500"
+              >
+                <img
+                  src={project.image}
+                  alt={project.title}
+                  className="w-full aspect-[16/10] object-cover transition-transform duration-700 group-hover:scale-105"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex flex-col justify-end p-6">
+                  <span className="text-xs font-semibold uppercase tracking-[0.15em] text-violet-300 mb-1">{project.category}</span>
+                  <h3 className="text-lg font-medium text-white">{project.title}</h3>
+                  <p className="text-sm text-white/70 mt-1">{project.desc}</p>
+                </div>
+              </div>
+            ))}
           </div>
         </div>
       </section>
