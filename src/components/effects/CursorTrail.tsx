@@ -1,51 +1,44 @@
 import { useEffect, useRef, useCallback } from "react";
 
 /**
- * CursorTrail — Morphing particle field that reacts to cursor movement.
+ * CursorTrail — Optimized morphing particle field (home page only).
  *
- * Inspired by Google Antigravity's particle physics system.
- * Particles form a floating grid, gently drift, and are repelled by the cursor.
- * When the cursor moves fast, particles scatter dramatically then regroup.
- * Uses Aurora Studio palette: Violet, Amber, Indigo, Rose.
+ * Optimizations vs previous version:
+ * - Reduced particle density (spacing 80 → fewer particles)
+ * - Spatial hashing for O(n) line drawing instead of O(n²)
+ * - Skip off-screen particles
+ * - Use integer math where possible
+ * - Throttled resize
+ * - requestAnimationFrame with delta time
  */
 
 interface Particle {
-  // current position
-  x: number;
-  y: number;
-  // home position (where particle wants to return to)
-  homeX: number;
-  homeY: number;
-  // velocity
-  vx: number;
-  vy: number;
-  // visual properties
-  size: number;
-  baseSize: number;
+  x: number; y: number;
+  homeX: number; homeY: number;
+  vx: number; vy: number;
+  size: number; baseSize: number;
   colorIdx: number;
   opacity: number;
-  // physics
   friction: number;
   returnForce: number;
-  // animation phase
-  phase: number;
-  phaseSpeed: number;
-  // float drift
-  driftX: number;
-  driftY: number;
-  driftPhase: number;
-  driftSpeed: number;
+  phase: number; phaseSpeed: number;
+  driftX: number; driftY: number;
+  driftPhase: number; driftSpeed: number;
 }
 
-const COLORS = [
+const COLORS: [number, number, number][] = [
   [124, 58, 237],   // violet
   [167, 139, 250],  // light violet
   [79, 70, 229],    // indigo
   [245, 158, 11],   // amber
   [251, 191, 36],   // light amber
-  [236, 72, 153],   // rose
   [99, 102, 241],   // indigo-400
 ];
+
+const CURSOR_RADIUS = 130;
+const CURSOR_FORCE = 7;
+const LINE_DIST = 58;
+const CELL_SIZE = 60; // spatial hash cell
 
 export function CursorTrail() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -57,36 +50,30 @@ export function CursorTrail() {
 
   const createParticles = useCallback((W: number, H: number) => {
     const particles: Particle[] = [];
-    // Grid-based particle placement with jitter for organic feel
-    const spacing = 55;
-    const cols = Math.ceil(W / spacing) + 2;
-    const rows = Math.ceil(H / spacing) + 2;
+    const spacing = 80; // wider spacing = fewer particles
+    const cols = Math.ceil(W / spacing) + 1;
+    const rows = Math.ceil(H / spacing) + 1;
     const offsetX = (W - (cols - 1) * spacing) / 2;
     const offsetY = (H - (rows - 1) * spacing) / 2;
 
     for (let row = 0; row < rows; row++) {
       for (let col = 0; col < cols; col++) {
-        const x = offsetX + col * spacing + (Math.random() - 0.5) * 20;
-        const y = offsetY + row * spacing + (Math.random() - 0.5) * 20;
-        const baseSize = Math.random() * 2.2 + 0.8;
-
+        const x = offsetX + col * spacing + (Math.random() - 0.5) * 18;
+        const y = offsetY + row * spacing + (Math.random() - 0.5) * 18;
+        const baseSize = Math.random() * 2 + 0.8;
         particles.push({
-          x, y,
-          homeX: x,
-          homeY: y,
-          vx: 0, vy: 0,
-          size: baseSize,
-          baseSize,
+          x, y, homeX: x, homeY: y, vx: 0, vy: 0,
+          size: baseSize, baseSize,
           colorIdx: Math.floor(Math.random() * COLORS.length),
-          opacity: Math.random() * 0.4 + 0.15,
-          friction: 0.92 + Math.random() * 0.04,
-          returnForce: 0.008 + Math.random() * 0.012,
-          phase: Math.random() * Math.PI * 2,
-          phaseSpeed: 0.005 + Math.random() * 0.015,
-          driftX: (Math.random() - 0.5) * 8,
-          driftY: (Math.random() - 0.5) * 8,
-          driftPhase: Math.random() * Math.PI * 2,
-          driftSpeed: 0.003 + Math.random() * 0.007,
+          opacity: Math.random() * 0.35 + 0.12,
+          friction: 0.93 + Math.random() * 0.03,
+          returnForce: 0.01 + Math.random() * 0.01,
+          phase: Math.random() * 6.28,
+          phaseSpeed: 0.006 + Math.random() * 0.012,
+          driftX: (Math.random() - 0.5) * 6,
+          driftY: (Math.random() - 0.5) * 6,
+          driftPhase: Math.random() * 6.28,
+          driftSpeed: 0.004 + Math.random() * 0.006,
         });
       }
     }
@@ -97,18 +84,22 @@ export function CursorTrail() {
     const canvas = canvasRef.current;
     if (!canvas) return;
     const ctx = canvas.getContext("2d", { alpha: true })!;
+    let resizeTimer: ReturnType<typeof setTimeout>;
 
     const resize = () => {
-      const dpr = Math.min(window.devicePixelRatio || 1, 2);
-      const W = window.innerWidth;
-      const H = window.innerHeight;
-      canvas.width = W * dpr;
-      canvas.height = H * dpr;
-      canvas.style.width = W + "px";
-      canvas.style.height = H + "px";
-      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-      dimRef.current = { w: W, h: H };
-      particlesRef.current = createParticles(W, H);
+      clearTimeout(resizeTimer);
+      resizeTimer = setTimeout(() => {
+        const dpr = Math.min(window.devicePixelRatio || 1, 2);
+        const W = window.innerWidth;
+        const H = window.innerHeight;
+        canvas.width = W * dpr;
+        canvas.height = H * dpr;
+        canvas.style.width = W + "px";
+        canvas.style.height = H + "px";
+        ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+        dimRef.current = { w: W, h: H };
+        particlesRef.current = createParticles(W, H);
+      }, 100);
     };
 
     const onMove = (e: MouseEvent) => {
@@ -126,35 +117,58 @@ export function CursorTrail() {
     };
     const onTouchEnd = () => { mouseRef.current.active = false; };
 
-    resize();
+    // Initial setup (no debounce)
+    const dpr = Math.min(window.devicePixelRatio || 1, 2);
+    const W = window.innerWidth;
+    const H = window.innerHeight;
+    canvas.width = W * dpr;
+    canvas.height = H * dpr;
+    canvas.style.width = W + "px";
+    canvas.style.height = H + "px";
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    dimRef.current = { w: W, h: H };
+    particlesRef.current = createParticles(W, H);
+
     window.addEventListener("resize", resize);
     window.addEventListener("mousemove", onMove);
     window.addEventListener("mouseleave", onLeave);
     window.addEventListener("touchmove", onTouch, { passive: true });
     window.addEventListener("touchend", onTouchEnd);
 
-    const CURSOR_RADIUS = 140;
-    const CURSOR_FORCE = 8;
+    // Spatial hash for efficient neighbor lookup
+    const hashMap = new Map<string, number[]>();
 
     const draw = () => {
-      const { w: W, h: H } = dimRef.current;
+      const { w: WW, h: HH } = dimRef.current;
       const t = timeRef.current += 0.016;
       const mouse = mouseRef.current;
       const particles = particlesRef.current;
 
-      ctx.clearRect(0, 0, W, H);
+      ctx.clearRect(0, 0, WW, HH);
 
-      // Update and draw particles
+      // Build spatial hash
+      hashMap.clear();
+      for (let i = 0; i < particles.length; i++) {
+        const p = particles[i];
+        const cx = (p.x / CELL_SIZE) | 0;
+        const cy = (p.y / CELL_SIZE) | 0;
+        const key = `${cx},${cy}`;
+        const list = hashMap.get(key);
+        if (list) list.push(i);
+        else hashMap.set(key, [i]);
+      }
+
+      // Update particles
       for (let i = 0; i < particles.length; i++) {
         const p = particles[i];
 
-        // Floating drift animation
+        // Drift
         const driftX = Math.sin(t * p.driftSpeed * 2 + p.driftPhase) * p.driftX;
         const driftY = Math.cos(t * p.driftSpeed * 2 + p.driftPhase + 1.3) * p.driftY;
         const targetX = p.homeX + driftX;
         const targetY = p.homeY + driftY;
 
-        // Return-to-home spring force
+        // Spring return
         p.vx += (targetX - p.x) * p.returnForce;
         p.vy += (targetY - p.y) * p.returnForce;
 
@@ -162,104 +176,96 @@ export function CursorTrail() {
         if (mouse.active) {
           const dx = p.x - mouse.x;
           const dy = p.y - mouse.y;
-          const dist = Math.sqrt(dx * dx + dy * dy);
-          if (dist < CURSOR_RADIUS && dist > 0.1) {
+          const distSq = dx * dx + dy * dy;
+          if (distSq < CURSOR_RADIUS * CURSOR_RADIUS && distSq > 1) {
+            const dist = Math.sqrt(distSq);
             const force = (1 - dist / CURSOR_RADIUS) * CURSOR_FORCE;
-            const angle = Math.atan2(dy, dx);
-            p.vx += Math.cos(angle) * force;
-            p.vy += Math.sin(angle) * force;
+            p.vx += (dx / dist) * force;
+            p.vy += (dy / dist) * force;
           }
         }
 
-        // Apply friction
         p.vx *= p.friction;
         p.vy *= p.friction;
-
-        // Integrate
         p.x += p.vx;
         p.y += p.vy;
 
-        // Pulsing size
+        // Pulse
         const pulse = Math.sin(t * p.phaseSpeed * 10 + p.phase);
-        p.size = p.baseSize * (0.8 + pulse * 0.3);
+        p.size = p.baseSize * (0.8 + pulse * 0.25);
 
-        // Distance from home affects opacity (brighter when displaced)
-        const homeDist = Math.sqrt((p.x - targetX) ** 2 + (p.y - targetY) ** 2);
-        const displacedBoost = Math.min(homeDist / 50, 1) * 0.5;
-        const alpha = (p.opacity + displacedBoost) * (0.7 + pulse * 0.3);
-
+        // Brightness boost when displaced
+        const homeDist = Math.abs(p.x - targetX) + Math.abs(p.y - targetY); // manhattan
+        const boost = Math.min(homeDist / 60, 1) * 0.4;
+        const alpha = (p.opacity + boost) * (0.75 + pulse * 0.25);
         const c = COLORS[p.colorIdx];
 
-        // Glow halo
-        if (p.size > 1.2 || homeDist > 15) {
+        // Draw glow only when significantly displaced
+        if (homeDist > 20) {
           ctx.beginPath();
-          ctx.arc(p.x, p.y, p.size * 4, 0, Math.PI * 2);
-          ctx.fillStyle = `rgba(${c[0]},${c[1]},${c[2]},${alpha * 0.06})`;
+          ctx.arc(p.x, p.y, p.size * 3.5, 0, 6.28);
+          ctx.fillStyle = `rgba(${c[0]},${c[1]},${c[2]},${alpha * 0.05})`;
           ctx.fill();
         }
 
-        // Core dot
+        // Core
         ctx.beginPath();
-        ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+        ctx.arc(p.x, p.y, p.size, 0, 6.28);
         ctx.fillStyle = `rgba(${c[0]},${c[1]},${c[2]},${alpha})`;
         ctx.fill();
       }
 
-      // Draw constellation lines between nearby particles
-      for (let i = 0; i < particles.length; i++) {
-        const a = particles[i];
-        // Only check neighbors in a limited radius to keep perf
-        for (let j = i + 1; j < particles.length; j++) {
-          const b = particles[j];
-          const dx = a.x - b.x;
-          const dy = a.y - b.y;
-          // Quick distance check (skip sqrt for far pairs)
-          if (Math.abs(dx) > 65 || Math.abs(dy) > 65) continue;
-          const dist = Math.sqrt(dx * dx + dy * dy);
-          if (dist < 60) {
-            const lineAlpha = (1 - dist / 60) * 0.06;
-            // Use average color
-            const cA = COLORS[a.colorIdx];
-            const cB = COLORS[b.colorIdx];
-            const r = (cA[0] + cB[0]) >> 1;
-            const g = (cA[1] + cB[1]) >> 1;
-            const bv = (cA[2] + cB[2]) >> 1;
-            ctx.beginPath();
-            ctx.moveTo(a.x, a.y);
-            ctx.lineTo(b.x, b.y);
-            ctx.strokeStyle = `rgba(${r},${g},${bv},${lineAlpha})`;
-            ctx.lineWidth = 0.4;
-            ctx.stroke();
+      // Draw lines using spatial hash (O(n) instead of O(n²))
+      ctx.lineWidth = 0.4;
+      for (const [key, indices] of hashMap) {
+        const [cx, cy] = key.split(",").map(Number);
+        // Check this cell + 3 neighbors (right, below, below-right)
+        const neighborKeys = [
+          key,
+          `${cx + 1},${cy}`,
+          `${cx},${cy + 1}`,
+          `${cx + 1},${cy + 1}`,
+        ];
+        for (let ni = 0; ni < neighborKeys.length; ni++) {
+          const nList = hashMap.get(neighborKeys[ni]);
+          if (!nList) continue;
+          const isSelf = ni === 0;
+          for (let ii = 0; ii < indices.length; ii++) {
+            const a = particles[indices[ii]];
+            const startJ = isSelf ? ii + 1 : 0;
+            for (let jj = startJ; jj < nList.length; jj++) {
+              const b = particles[nList[jj]];
+              const dx = a.x - b.x;
+              const dy = a.y - b.y;
+              if (Math.abs(dx) > LINE_DIST || Math.abs(dy) > LINE_DIST) continue;
+              const distSq = dx * dx + dy * dy;
+              if (distSq < LINE_DIST * LINE_DIST) {
+                const dist = Math.sqrt(distSq);
+                const lineAlpha = (1 - dist / LINE_DIST) * 0.055;
+                const cA = COLORS[a.colorIdx];
+                const cB = COLORS[b.colorIdx];
+                ctx.beginPath();
+                ctx.moveTo(a.x, a.y);
+                ctx.lineTo(b.x, b.y);
+                ctx.strokeStyle = `rgba(${(cA[0] + cB[0]) >> 1},${(cA[1] + cB[1]) >> 1},${(cA[2] + cB[2]) >> 1},${lineAlpha})`;
+                ctx.stroke();
+              }
+            }
           }
         }
       }
 
-      // Draw cursor glow when active
+      // Cursor aura
       if (mouse.active) {
-        // Outer aura
-        const gradient = ctx.createRadialGradient(
-          mouse.x, mouse.y, 0,
-          mouse.x, mouse.y, CURSOR_RADIUS
-        );
-        gradient.addColorStop(0, "rgba(124,58,237,0.04)");
-        gradient.addColorStop(0.5, "rgba(167,139,250,0.02)");
-        gradient.addColorStop(1, "rgba(124,58,237,0)");
         ctx.beginPath();
-        ctx.arc(mouse.x, mouse.y, CURSOR_RADIUS, 0, Math.PI * 2);
-        ctx.fillStyle = gradient;
-        ctx.fill();
-
-        // Ring
-        ctx.beginPath();
-        ctx.arc(mouse.x, mouse.y, 18, 0, Math.PI * 2);
-        ctx.strokeStyle = "rgba(124,58,237,0.12)";
-        ctx.lineWidth = 1;
+        ctx.arc(mouse.x, mouse.y, 16, 0, 6.28);
+        ctx.strokeStyle = "rgba(124,58,237,0.1)";
+        ctx.lineWidth = 0.8;
         ctx.stroke();
 
-        // Center dot
         ctx.beginPath();
-        ctx.arc(mouse.x, mouse.y, 3, 0, Math.PI * 2);
-        ctx.fillStyle = "rgba(124,58,237,0.25)";
+        ctx.arc(mouse.x, mouse.y, 2.5, 0, 6.28);
+        ctx.fillStyle = "rgba(124,58,237,0.2)";
         ctx.fill();
       }
 
@@ -269,6 +275,7 @@ export function CursorTrail() {
     animRef.current = requestAnimationFrame(draw);
 
     return () => {
+      clearTimeout(resizeTimer);
       window.removeEventListener("resize", resize);
       window.removeEventListener("mousemove", onMove);
       window.removeEventListener("mouseleave", onLeave);

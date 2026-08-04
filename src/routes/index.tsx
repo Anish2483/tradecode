@@ -8,6 +8,7 @@ import {
   Star, CheckCircle2, TrendingUp, ChevronRight, Play
 } from "lucide-react";
 import { AnimatedLogo, SmallLogo } from "@/components/brand/AnimatedLogo";
+import { CursorTrail } from "@/components/effects/CursorTrail";
 import yogendraImg from "@/assets/tradecode.jpeg";
 
 export const Route = createFileRoute("/")({
@@ -130,6 +131,7 @@ function Home() {
 
   return (
     <>
+      <CursorTrail />
       {/* ── HERO ──────────────────────────────────────────────────────────── */}
       <section ref={heroRef} className="relative min-h-screen flex flex-col justify-center overflow-hidden bg-white">
         {/* Aurora orb background — ChatGPT Codex style */}
