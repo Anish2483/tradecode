@@ -144,7 +144,7 @@ function Home() {
         {/* Top gradient bar */}
         <div className="absolute top-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-violet-400/50 to-transparent" />
 
-        <motion.div style={{ opacity: heroOpacity, y: heroY }} className="relative container-x pt-32 pb-20">
+        <motion.div style={{ opacity: heroOpacity, y: heroY }} className="relative container-x pt-20 pb-16 md:pt-32 md:pb-20">
           <div className="grid lg:grid-cols-[1fr_auto] gap-16 items-center">
             <div className="max-w-4xl">
               {/* Eyebrow */}
