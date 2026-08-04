@@ -1,136 +1,130 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useCallback } from "react";
 
 /**
- * CursorTrail — A full-page canvas overlay that renders an interactive
- * particle constellation that reacts to cursor movement.
+ * CursorTrail — Morphing particle field that reacts to cursor movement.
  *
- * Inspired by Google Antigravity's cursor-reactive field.
- * Uses the Aurora Studio palette: Violet (#7C3AED), Amber (#F59E0B),
- * Indigo (#4F46E5), and Rose (#EC4899).
- *
- * Renders behind interactive content via pointer-events: none.
+ * Inspired by Google Antigravity's particle physics system.
+ * Particles form a floating grid, gently drift, and are repelled by the cursor.
+ * When the cursor moves fast, particles scatter dramatically then regroup.
+ * Uses Aurora Studio palette: Violet, Amber, Indigo, Rose.
  */
 
 interface Particle {
+  // current position
   x: number;
   y: number;
+  // home position (where particle wants to return to)
+  homeX: number;
+  homeY: number;
+  // velocity
   vx: number;
   vy: number;
-  life: number;
-  maxLife: number;
+  // visual properties
   size: number;
-  hue: number;     // index into palette
+  baseSize: number;
+  colorIdx: number;
+  opacity: number;
+  // physics
   friction: number;
+  returnForce: number;
+  // animation phase
+  phase: number;
+  phaseSpeed: number;
+  // float drift
+  driftX: number;
+  driftY: number;
+  driftPhase: number;
+  driftSpeed: number;
 }
 
-interface Orb {
-  x: number;
-  y: number;
-  targetX: number;
-  targetY: number;
-  size: number;
-  color: string;
-  glowColor: string;
-  speed: number;    // lerp speed
-  offset: number;   // angular offset for orbit
-  orbitRadius: number;
-}
-
-const PALETTE = [
-  { r: 124, g: 58,  b: 237 },  // violet
-  { r: 167, g: 139, b: 250 },  // light violet
-  { r: 245, g: 158, b: 11  },  // amber
-  { r: 251, g: 191, b: 36  },  // light amber
-  { r: 79,  g: 70,  b: 229 },  // indigo
-  { r: 236, g: 72,  b: 153 },  // rose
+const COLORS = [
+  [124, 58, 237],   // violet
+  [167, 139, 250],  // light violet
+  [79, 70, 229],    // indigo
+  [245, 158, 11],   // amber
+  [251, 191, 36],   // light amber
+  [236, 72, 153],   // rose
+  [99, 102, 241],   // indigo-400
 ];
 
 export function CursorTrail() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  const mouseRef = useRef({ x: -9999, y: -9999, active: false });
+  const particlesRef = useRef<Particle[]>([]);
+  const animRef = useRef<number>(0);
+  const timeRef = useRef(0);
+  const dimRef = useRef({ w: 0, h: 0 });
+
+  const createParticles = useCallback((W: number, H: number) => {
+    const particles: Particle[] = [];
+    // Grid-based particle placement with jitter for organic feel
+    const spacing = 55;
+    const cols = Math.ceil(W / spacing) + 2;
+    const rows = Math.ceil(H / spacing) + 2;
+    const offsetX = (W - (cols - 1) * spacing) / 2;
+    const offsetY = (H - (rows - 1) * spacing) / 2;
+
+    for (let row = 0; row < rows; row++) {
+      for (let col = 0; col < cols; col++) {
+        const x = offsetX + col * spacing + (Math.random() - 0.5) * 20;
+        const y = offsetY + row * spacing + (Math.random() - 0.5) * 20;
+        const baseSize = Math.random() * 2.2 + 0.8;
+
+        particles.push({
+          x, y,
+          homeX: x,
+          homeY: y,
+          vx: 0, vy: 0,
+          size: baseSize,
+          baseSize,
+          colorIdx: Math.floor(Math.random() * COLORS.length),
+          opacity: Math.random() * 0.4 + 0.15,
+          friction: 0.92 + Math.random() * 0.04,
+          returnForce: 0.008 + Math.random() * 0.012,
+          phase: Math.random() * Math.PI * 2,
+          phaseSpeed: 0.005 + Math.random() * 0.015,
+          driftX: (Math.random() - 0.5) * 8,
+          driftY: (Math.random() - 0.5) * 8,
+          driftPhase: Math.random() * Math.PI * 2,
+          driftSpeed: 0.003 + Math.random() * 0.007,
+        });
+      }
+    }
+    return particles;
+  }, []);
 
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
-    const ctx = canvas.getContext("2d")!;
-    let animId: number;
-    let W = 0, H = 0;
-
-    // Mouse state
-    let mouseX = -9999, mouseY = -9999;
-    let prevMouseX = -9999, prevMouseY = -9999;
-    let mouseActive = false;
-
-    // Particle pool
-    const particles: Particle[] = [];
-    const MAX_PARTICLES = 120;
-
-    // Orbiting follower orbs (always visible, pulled toward cursor)
-    const orbs: Orb[] = [
-      { x: 0, y: 0, targetX: 0, targetY: 0, size: 8, color: "rgba(124,58,237,0.5)", glowColor: "rgba(124,58,237,0.2)", speed: 0.04, offset: 0, orbitRadius: 60 },
-      { x: 0, y: 0, targetX: 0, targetY: 0, size: 6, color: "rgba(245,158,11,0.45)", glowColor: "rgba(245,158,11,0.15)", speed: 0.03, offset: Math.PI * 0.66, orbitRadius: 45 },
-      { x: 0, y: 0, targetX: 0, targetY: 0, size: 5, color: "rgba(79,70,229,0.4)", glowColor: "rgba(79,70,229,0.15)", speed: 0.05, offset: Math.PI * 1.33, orbitRadius: 35 },
-    ];
-
-    let time = 0;
+    const ctx = canvas.getContext("2d", { alpha: true })!;
 
     const resize = () => {
-      W = canvas.width = window.innerWidth;
-      H = canvas.height = window.innerHeight;
+      const dpr = Math.min(window.devicePixelRatio || 1, 2);
+      const W = window.innerWidth;
+      const H = window.innerHeight;
+      canvas.width = W * dpr;
+      canvas.height = H * dpr;
+      canvas.style.width = W + "px";
+      canvas.style.height = H + "px";
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      dimRef.current = { w: W, h: H };
+      particlesRef.current = createParticles(W, H);
     };
 
     const onMove = (e: MouseEvent) => {
-      mouseX = e.clientX;
-      mouseY = e.clientY;
-      mouseActive = true;
+      mouseRef.current.x = e.clientX;
+      mouseRef.current.y = e.clientY;
+      mouseRef.current.active = true;
     };
-
-    const onLeave = () => {
-      mouseActive = false;
-    };
-
+    const onLeave = () => { mouseRef.current.active = false; };
     const onTouch = (e: TouchEvent) => {
       if (e.touches.length > 0) {
-        mouseX = e.touches[0].clientX;
-        mouseY = e.touches[0].clientY;
-        mouseActive = true;
+        mouseRef.current.x = e.touches[0].clientX;
+        mouseRef.current.y = e.touches[0].clientY;
+        mouseRef.current.active = true;
       }
     };
-
-    const onTouchEnd = () => {
-      mouseActive = false;
-    };
-
-    const spawnParticle = (x: number, y: number, velScale: number) => {
-      if (particles.length >= MAX_PARTICLES) {
-        // Recycle oldest
-        const p = particles.shift()!;
-        p.x = x;
-        p.y = y;
-        const angle = Math.random() * Math.PI * 2;
-        const speed = (Math.random() * 2.5 + 0.8) * velScale;
-        p.vx = Math.cos(angle) * speed;
-        p.vy = Math.sin(angle) * speed;
-        p.life = 0;
-        p.maxLife = Math.random() * 40 + 25;
-        p.size = Math.random() * 3.5 + 1;
-        p.hue = Math.floor(Math.random() * PALETTE.length);
-        p.friction = 0.96 + Math.random() * 0.02;
-        particles.push(p);
-      } else {
-        const angle = Math.random() * Math.PI * 2;
-        const speed = (Math.random() * 2.5 + 0.8) * velScale;
-        particles.push({
-          x, y,
-          vx: Math.cos(angle) * speed,
-          vy: Math.sin(angle) * speed,
-          life: 0,
-          maxLife: Math.random() * 40 + 25,
-          size: Math.random() * 3.5 + 1,
-          hue: Math.floor(Math.random() * PALETTE.length),
-          friction: 0.96 + Math.random() * 0.02,
-        });
-      }
-    };
+    const onTouchEnd = () => { mouseRef.current.active = false; };
 
     resize();
     window.addEventListener("resize", resize);
@@ -139,162 +133,140 @@ export function CursorTrail() {
     window.addEventListener("touchmove", onTouch, { passive: true });
     window.addEventListener("touchend", onTouchEnd);
 
-    // Initialize orbs at center
-    orbs.forEach(o => {
-      o.x = W / 2;
-      o.y = H / 2;
-    });
+    const CURSOR_RADIUS = 140;
+    const CURSOR_FORCE = 8;
 
     const draw = () => {
-      time += 0.016;
+      const { w: W, h: H } = dimRef.current;
+      const t = timeRef.current += 0.016;
+      const mouse = mouseRef.current;
+      const particles = particlesRef.current;
+
       ctx.clearRect(0, 0, W, H);
 
-      // Calculate cursor velocity for spawn rate
-      const dx = mouseX - prevMouseX;
-      const dy = mouseY - prevMouseY;
-      const speed = Math.sqrt(dx * dx + dy * dy);
-      prevMouseX = mouseX;
-      prevMouseY = mouseY;
-
-      // Spawn particles on mouse movement
-      if (mouseActive && speed > 2) {
-        const count = Math.min(Math.floor(speed / 6) + 1, 4);
-        for (let i = 0; i < count; i++) {
-          const t = i / count;
-          const sx = mouseX - dx * t + (Math.random() - 0.5) * 10;
-          const sy = mouseY - dy * t + (Math.random() - 0.5) * 10;
-          spawnParticle(sx, sy, Math.min(speed / 20, 1.5));
-        }
-      }
-
-      // Update & draw particles
-      for (let i = particles.length - 1; i >= 0; i--) {
+      // Update and draw particles
+      for (let i = 0; i < particles.length; i++) {
         const p = particles[i];
-        p.life++;
-        if (p.life >= p.maxLife) {
-          particles.splice(i, 1);
-          continue;
+
+        // Floating drift animation
+        const driftX = Math.sin(t * p.driftSpeed * 2 + p.driftPhase) * p.driftX;
+        const driftY = Math.cos(t * p.driftSpeed * 2 + p.driftPhase + 1.3) * p.driftY;
+        const targetX = p.homeX + driftX;
+        const targetY = p.homeY + driftY;
+
+        // Return-to-home spring force
+        p.vx += (targetX - p.x) * p.returnForce;
+        p.vy += (targetY - p.y) * p.returnForce;
+
+        // Cursor repulsion
+        if (mouse.active) {
+          const dx = p.x - mouse.x;
+          const dy = p.y - mouse.y;
+          const dist = Math.sqrt(dx * dx + dy * dy);
+          if (dist < CURSOR_RADIUS && dist > 0.1) {
+            const force = (1 - dist / CURSOR_RADIUS) * CURSOR_FORCE;
+            const angle = Math.atan2(dy, dx);
+            p.vx += Math.cos(angle) * force;
+            p.vy += Math.sin(angle) * force;
+          }
         }
 
+        // Apply friction
         p.vx *= p.friction;
         p.vy *= p.friction;
-        p.vy += 0.02; // tiny gravity
+
+        // Integrate
         p.x += p.vx;
         p.y += p.vy;
 
-        const progress = p.life / p.maxLife;
-        const alpha = progress < 0.15
-          ? progress / 0.15
-          : 1 - ((progress - 0.15) / 0.85);
-        const sz = p.size * (1 - progress * 0.5);
-        const c = PALETTE[p.hue];
+        // Pulsing size
+        const pulse = Math.sin(t * p.phaseSpeed * 10 + p.phase);
+        p.size = p.baseSize * (0.8 + pulse * 0.3);
 
-        // Glow
-        ctx.beginPath();
-        ctx.arc(p.x, p.y, sz * 3, 0, Math.PI * 2);
-        ctx.fillStyle = `rgba(${c.r},${c.g},${c.b},${alpha * 0.08})`;
-        ctx.fill();
+        // Distance from home affects opacity (brighter when displaced)
+        const homeDist = Math.sqrt((p.x - targetX) ** 2 + (p.y - targetY) ** 2);
+        const displacedBoost = Math.min(homeDist / 50, 1) * 0.5;
+        const alpha = (p.opacity + displacedBoost) * (0.7 + pulse * 0.3);
 
-        // Core
+        const c = COLORS[p.colorIdx];
+
+        // Glow halo
+        if (p.size > 1.2 || homeDist > 15) {
+          ctx.beginPath();
+          ctx.arc(p.x, p.y, p.size * 4, 0, Math.PI * 2);
+          ctx.fillStyle = `rgba(${c[0]},${c[1]},${c[2]},${alpha * 0.06})`;
+          ctx.fill();
+        }
+
+        // Core dot
         ctx.beginPath();
-        ctx.arc(p.x, p.y, sz, 0, Math.PI * 2);
-        ctx.fillStyle = `rgba(${c.r},${c.g},${c.b},${alpha * 0.7})`;
+        ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(${c[0]},${c[1]},${c[2]},${alpha})`;
         ctx.fill();
       }
 
-      // Draw connecting lines between nearby particles
+      // Draw constellation lines between nearby particles
       for (let i = 0; i < particles.length; i++) {
+        const a = particles[i];
+        // Only check neighbors in a limited radius to keep perf
         for (let j = i + 1; j < particles.length; j++) {
-          const a = particles[i], b = particles[j];
-          const ddx = a.x - b.x, ddy = a.y - b.y;
-          const dist = Math.sqrt(ddx * ddx + ddy * ddy);
-          if (dist < 80) {
-            const progA = a.life / a.maxLife;
-            const progB = b.life / b.maxLife;
-            const lineAlpha = (1 - dist / 80) * 0.18 * (1 - progA) * (1 - progB);
+          const b = particles[j];
+          const dx = a.x - b.x;
+          const dy = a.y - b.y;
+          // Quick distance check (skip sqrt for far pairs)
+          if (Math.abs(dx) > 65 || Math.abs(dy) > 65) continue;
+          const dist = Math.sqrt(dx * dx + dy * dy);
+          if (dist < 60) {
+            const lineAlpha = (1 - dist / 60) * 0.06;
+            // Use average color
+            const cA = COLORS[a.colorIdx];
+            const cB = COLORS[b.colorIdx];
+            const r = (cA[0] + cB[0]) >> 1;
+            const g = (cA[1] + cB[1]) >> 1;
+            const bv = (cA[2] + cB[2]) >> 1;
             ctx.beginPath();
             ctx.moveTo(a.x, a.y);
             ctx.lineTo(b.x, b.y);
-            ctx.strokeStyle = `rgba(124,58,237,${lineAlpha})`;
-            ctx.lineWidth = 0.6;
+            ctx.strokeStyle = `rgba(${r},${g},${bv},${lineAlpha})`;
+            ctx.lineWidth = 0.4;
             ctx.stroke();
           }
         }
       }
 
-      // Update & draw orbiting follower orbs
-      if (mouseActive) {
-        orbs.forEach((o, idx) => {
-          // Target is an orbital position around cursor
-          const angle = time * (0.8 + idx * 0.3) + o.offset;
-          o.targetX = mouseX + Math.cos(angle) * o.orbitRadius;
-          o.targetY = mouseY + Math.sin(angle) * o.orbitRadius;
-
-          // Smooth lerp
-          o.x += (o.targetX - o.x) * o.speed;
-          o.y += (o.targetY - o.y) * o.speed;
-
-          // Outer glow
-          ctx.beginPath();
-          ctx.arc(o.x, o.y, o.size * 4, 0, Math.PI * 2);
-          ctx.fillStyle = o.glowColor;
-          ctx.fill();
-
-          // Core
-          ctx.beginPath();
-          ctx.arc(o.x, o.y, o.size, 0, Math.PI * 2);
-          ctx.fillStyle = o.color;
-          ctx.fill();
-
-          // Bright center
-          ctx.beginPath();
-          ctx.arc(o.x, o.y, o.size * 0.4, 0, Math.PI * 2);
-          ctx.fillStyle = `rgba(255,255,255,0.6)`;
-          ctx.fill();
-
-          // Draw lines from orbs to cursor
-          const toCursorDist = Math.sqrt(
-            (o.x - mouseX) ** 2 + (o.y - mouseY) ** 2
-          );
-          if (toCursorDist < 120) {
-            ctx.beginPath();
-            ctx.moveTo(o.x, o.y);
-            ctx.lineTo(mouseX, mouseY);
-            ctx.strokeStyle = `rgba(124,58,237,${(1 - toCursorDist / 120) * 0.15})`;
-            ctx.lineWidth = 0.8;
-            ctx.stroke();
-          }
-
-          // Draw lines between orbs
-          orbs.forEach((other, j) => {
-            if (j <= idx) return;
-            const dd = Math.sqrt((o.x - other.x) ** 2 + (o.y - other.y) ** 2);
-            if (dd < 150) {
-              ctx.beginPath();
-              ctx.moveTo(o.x, o.y);
-              ctx.lineTo(other.x, other.y);
-              ctx.strokeStyle = `rgba(167,139,250,${(1 - dd / 150) * 0.12})`;
-              ctx.lineWidth = 0.5;
-              ctx.stroke();
-            }
-          });
-        });
-
-        // Cursor dot
+      // Draw cursor glow when active
+      if (mouse.active) {
+        // Outer aura
+        const gradient = ctx.createRadialGradient(
+          mouse.x, mouse.y, 0,
+          mouse.x, mouse.y, CURSOR_RADIUS
+        );
+        gradient.addColorStop(0, "rgba(124,58,237,0.04)");
+        gradient.addColorStop(0.5, "rgba(167,139,250,0.02)");
+        gradient.addColorStop(1, "rgba(124,58,237,0)");
         ctx.beginPath();
-        ctx.arc(mouseX, mouseY, 3, 0, Math.PI * 2);
-        ctx.fillStyle = "rgba(124,58,237,0.35)";
+        ctx.arc(mouse.x, mouse.y, CURSOR_RADIUS, 0, Math.PI * 2);
+        ctx.fillStyle = gradient;
         ctx.fill();
+
+        // Ring
         ctx.beginPath();
-        ctx.arc(mouseX, mouseY, 12, 0, Math.PI * 2);
-        ctx.fillStyle = "rgba(124,58,237,0.06)";
+        ctx.arc(mouse.x, mouse.y, 18, 0, Math.PI * 2);
+        ctx.strokeStyle = "rgba(124,58,237,0.12)";
+        ctx.lineWidth = 1;
+        ctx.stroke();
+
+        // Center dot
+        ctx.beginPath();
+        ctx.arc(mouse.x, mouse.y, 3, 0, Math.PI * 2);
+        ctx.fillStyle = "rgba(124,58,237,0.25)";
         ctx.fill();
       }
 
-      animId = requestAnimationFrame(draw);
+      animRef.current = requestAnimationFrame(draw);
     };
 
-    draw();
+    animRef.current = requestAnimationFrame(draw);
 
     return () => {
       window.removeEventListener("resize", resize);
@@ -302,15 +274,14 @@ export function CursorTrail() {
       window.removeEventListener("mouseleave", onLeave);
       window.removeEventListener("touchmove", onTouch);
       window.removeEventListener("touchend", onTouchEnd);
-      cancelAnimationFrame(animId);
+      cancelAnimationFrame(animRef.current);
     };
-  }, []);
+  }, [createParticles]);
 
   return (
     <canvas
       ref={canvasRef}
       className="fixed inset-0 z-[9999] pointer-events-none"
-      style={{ mixBlendMode: "normal" }}
       aria-hidden="true"
     />
   );
