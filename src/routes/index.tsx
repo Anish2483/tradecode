@@ -8,6 +8,7 @@ import {
   Star, CheckCircle2, TrendingUp, ChevronRight, Play
 } from "lucide-react";
 import { AnimatedLogo, SmallLogo } from "@/components/brand/AnimatedLogo";
+import { TransparentLogoVideo } from "@/components/brand/TransparentLogoVideo";
 import { CursorTrail } from "@/components/effects/CursorTrail";
 import yogendraImg from "@/assets/tradecode.jpeg";
 import showcaseAiDashboard from "@/assets/showcase-ai-dashboard.jpg";
@@ -158,6 +159,11 @@ function Home() {
         <motion.div style={{ opacity: heroOpacity, y: heroY }} className="relative container-x pt-20 pb-16 md:pt-32 md:pb-20">
           <div className="grid lg:grid-cols-[1fr_auto] gap-16 items-center">
             <div className="max-w-4xl">
+              {/* Mobile logo animation */}
+              <div className="lg:hidden mb-6 flex justify-center">
+                <TransparentLogoVideo size={200} />
+              </div>
+
               {/* Eyebrow */}
               <motion.div
                 initial={{ opacity: 0, x: -20 }}
@@ -241,30 +247,34 @@ function Home() {
               </motion.div>
             </div>
 
-            {/* Logo visual — full animated SVG draw-in */}
+            {/* Logo visual — live video animation with background keying */}
             <motion.div
               initial={{ opacity: 0, scale: 0.85 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 1.2, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
               className="hidden lg:flex flex-col items-center gap-6"
             >
-              {/* Glow halo */}
+              {/* Transparent Video Logo Animation */}
               <div className="relative">
-                <div className="absolute inset-[-20%] rounded-full animate-glow-pulse pointer-events-none"
-                  style={{ background: "radial-gradient(circle, rgba(124,58,237,0.22) 0%, transparent 70%)", filter: "blur(24px)" }} />
-                <AnimatedLogo size={200} showText={true} color="#7C3AED" glowColor="#A78BFA" />
+                <TransparentLogoVideo size={360} />
               </div>
-              {/* Floating data cards around logo */}
+
+              {/* Floating data card under animated logo */}
               <motion.div
-                initial={{ opacity: 0, x: 40 }}
-                animate={{ opacity: 1, x: 0 }}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.8, duration: 0.6 }}
-                className="bg-white border border-violet-100 px-5 py-3 text-left shadow-lg shadow-violet-100/50 rounded-xl"
+                className="bg-white/80 backdrop-blur-md border border-violet-100 px-5 py-3 text-left shadow-lg shadow-violet-100/50 rounded-xl flex items-center gap-4"
               >
-                <div className="text-[10px] text-gray-400 uppercase tracking-wider mb-1">Live Production</div>
-                <div className="text-sm font-semibold text-gray-900 flex items-center gap-2">
-                  <span className="h-2 w-2 rounded-full bg-emerald-500 animate-pulse" />
-                  40M+ automated runs / month
+                <div className="h-8 w-8 rounded-lg bg-violet-50 text-violet-600 flex items-center justify-center font-bold text-xs">
+                  AI
+                </div>
+                <div>
+                  <div className="text-[10px] text-gray-400 uppercase tracking-wider">Engineered Motion</div>
+                  <div className="text-sm font-semibold text-gray-900 flex items-center gap-2">
+                    <span className="h-2 w-2 rounded-full bg-emerald-500 animate-pulse" />
+                    40M+ automated runs / month
+                  </div>
                 </div>
               </motion.div>
             </motion.div>
