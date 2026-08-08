@@ -11,6 +11,7 @@ import { AnimatedLogo, SmallLogo } from "@/components/brand/AnimatedLogo";
 import { TransparentLogoVideo } from "@/components/brand/TransparentLogoVideo";
 import { CursorTrail } from "@/components/effects/CursorTrail";
 import yogendraImg from "@/assets/tradecode.jpeg";
+import ctoImg from "@/assets/myimg.jpeg";
 import showcaseAiDashboard from "@/assets/showcase-ai-dashboard.jpg";
 import showcaseRobotics from "@/assets/showcase-robotics.jpg";
 import showcaseChatbot from "@/assets/showcase-chatbot.jpg";
@@ -547,7 +548,7 @@ function Home() {
           <div className="grid md:grid-cols-2 gap-px bg-white/6">
             {[
               { name: "Yogendra Bhardwaj", role: "Founder & CEO", bio: "Sets the strategic vision for Tradecode — leading enterprise partnerships, R&D programs and long-term product bets.", image: yogendraImg },
-              { name: "Anissh Kumar", role: "Co-Founder & CTO", bio: "Leads engineering, agentic AI research and the robotics practice — accountable for delivery quality and technical excellence." },
+              { name: "Anissh Kumar", role: "Co-Founder & CTO", bio: "Leads engineering, agentic AI research and the robotics practice — accountable for delivery quality and technical excellence.", image: ctoImg },
             ].map((p) => (
               <motion.div
                 key={p.name}

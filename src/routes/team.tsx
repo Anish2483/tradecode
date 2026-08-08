@@ -2,6 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { motion } from "framer-motion";
 import { Linkedin, Twitter, Github, Globe } from "lucide-react";
 import yogendraImg from "@/assets/tradecode.jpeg";
+import ctoImg from "@/assets/myimg.jpeg";
 import { PageHeader } from "@/components/layout/PageShell";
 
 export const Route = createFileRoute("/team")({
@@ -11,7 +12,7 @@ export const Route = createFileRoute("/team")({
 
 const team = [
   { name: "Yogendra Bhardwaj", role: "Founder & CEO", bio: "Sets strategic vision, leads enterprise partnerships and long-term product bets across the Tradecode portfolio.", initials: "YB", image: yogendraImg },
-  { name: "Anissh Kumar", role: "Co-Founder & CTO", bio: "Leads engineering, agentic AI research and the robotics practice. Accountable for delivery quality and technical excellence.", initials: "AK" },
+  { name: "Anissh Kumar", role: "Co-Founder & CTO", bio: "Leads engineering, agentic AI research and the robotics practice. Accountable for delivery quality and technical excellence.", initials: "AK", image: ctoImg },
   { name: "Dr. Neha Kapoor", role: "Head of Data Science", bio: "20+ years in applied ML. Leads the senior data science team and enterprise analytics programs.", initials: "NK" },
   { name: "Rahul Mehta", role: "Head of Robotics", bio: "Robotics systems engineer specializing in vision, ROS2 and industrial deployments.", initials: "RM" },
   { name: "Priya Sharma", role: "Head of Delivery", bio: "Runs the delivery organization — 40+ engineers, program managers and analysts across four practices.", initials: "PS" },
