@@ -145,18 +145,6 @@ function Home() {
     <>
       {/* ── HERO ──────────────────────────────────────────────────────────── */}
       <section ref={heroRef} className="relative min-h-screen flex flex-col justify-center overflow-hidden bg-white">
-        {/* Background animation video — 0% watermark (100% full opacity), fitting hero section */}
-        <div className="absolute inset-0 pointer-events-none overflow-hidden flex items-center justify-center">
-          <video
-            src={`${import.meta.env.BASE_URL}tradecode-animation.mp4`}
-            autoPlay
-            loop
-            muted
-            playsInline
-            className="w-full h-full object-cover"
-          />
-        </div>
-
         {/* Particle animation — contained to hero only */}
         <CursorTrail />
         {/* Aurora orb background — ChatGPT Codex style */}
