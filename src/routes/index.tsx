@@ -145,7 +145,7 @@ function Home() {
     <>
       {/* ── HERO ──────────────────────────────────────────────────────────── */}
       <section ref={heroRef} className="relative min-h-screen flex flex-col justify-center overflow-hidden bg-white">
-        {/* Watermark animation video background — high intensity */}
+        {/* Watermark animation video background — high intensity, zoomed out 10% */}
         <div className="absolute inset-0 pointer-events-none overflow-hidden opacity-35 flex items-center justify-center">
           <video
             src={`${import.meta.env.BASE_URL}tradecode-animation.mp4`}
@@ -153,7 +153,7 @@ function Home() {
             loop
             muted
             playsInline
-            className="w-full h-full object-cover"
+            className="w-full h-full object-cover scale-90"
           />
         </div>
 
