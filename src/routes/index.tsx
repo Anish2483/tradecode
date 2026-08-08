@@ -145,6 +145,18 @@ function Home() {
     <>
       {/* ── HERO ──────────────────────────────────────────────────────────── */}
       <section ref={heroRef} className="relative min-h-screen flex flex-col justify-center overflow-hidden bg-white">
+        {/* Watermark animation video background */}
+        <div className="absolute inset-0 pointer-events-none overflow-hidden opacity-10 flex items-center justify-center">
+          <video
+            src={`${import.meta.env.BASE_URL}tradecode-animation.mp4`}
+            autoPlay
+            loop
+            muted
+            playsInline
+            className="w-full h-full object-cover filter blur-[2px]"
+          />
+        </div>
+
         {/* Particle animation — contained to hero only */}
         <CursorTrail />
         {/* Aurora orb background — ChatGPT Codex style */}
@@ -242,18 +254,27 @@ function Home() {
               </motion.div>
             </div>
 
-            {/* Logo visual — full animated SVG draw-in */}
+            {/* Logo visual — animated logo video */}
             <motion.div
               initial={{ opacity: 0, scale: 0.85 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 1.2, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
               className="hidden lg:flex flex-col items-center gap-6"
             >
-              {/* Glow halo */}
-              <div className="relative">
-                <div className="absolute inset-[-20%] rounded-full animate-glow-pulse pointer-events-none"
-                  style={{ background: "radial-gradient(circle, rgba(124,58,237,0.22) 0%, transparent 70%)", filter: "blur(24px)" }} />
-                <AnimatedLogo size={200} showText={true} color="#7C3AED" glowColor="#A78BFA" />
+              {/* Glow halo & video container */}
+              <div className="relative group">
+                <div className="absolute inset-[-15%] rounded-3xl animate-glow-pulse pointer-events-none"
+                  style={{ background: "radial-gradient(circle, rgba(124,58,237,0.25) 0%, transparent 70%)", filter: "blur(24px)" }} />
+                <div className="relative w-[340px] h-[220px] rounded-2xl overflow-hidden border border-violet-200/80 shadow-2xl shadow-violet-500/10 bg-white">
+                  <video
+                    src={`${import.meta.env.BASE_URL}tradecode-animation.mp4`}
+                    autoPlay
+                    loop
+                    muted
+                    playsInline
+                    className="w-full h-full object-cover"
+                  />
+                </div>
               </div>
               {/* Floating data cards around logo */}
               <motion.div
