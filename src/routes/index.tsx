@@ -145,18 +145,6 @@ function Home() {
     <>
       {/* ── HERO ──────────────────────────────────────────────────────────── */}
       <section ref={heroRef} className="relative min-h-screen flex flex-col justify-center overflow-hidden bg-white">
-        {/* Watermark animation video background — high intensity, zoomed out 10% */}
-        <div className="absolute inset-0 pointer-events-none overflow-hidden opacity-35 flex items-center justify-center">
-          <video
-            src={`${import.meta.env.BASE_URL}tradecode-animation.mp4`}
-            autoPlay
-            loop
-            muted
-            playsInline
-            className="w-full h-full object-cover scale-90"
-          />
-        </div>
-
         {/* Particle animation — contained to hero only */}
         <CursorTrail />
         {/* Aurora orb background — ChatGPT Codex style */}
@@ -168,7 +156,35 @@ function Home() {
         {/* Top gradient bar */}
         <div className="absolute top-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-violet-400/50 to-transparent" />
 
-        <motion.div style={{ opacity: heroOpacity, y: heroY }} className="relative container-x pt-20 pb-16 md:pt-32 md:pb-20">
+        <motion.div style={{ opacity: heroOpacity, y: heroY }} className="relative container-x pt-24 pb-16 md:pt-28 md:pb-20">
+          {/* Featured Video Player — directly below navbar in native 16:9 aspect ratio */}
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+            className="relative w-full max-w-5xl mx-auto mb-12"
+          >
+            {/* Ambient glow halo behind video */}
+            <div
+              className="absolute inset-[-10%] rounded-3xl animate-glow-pulse pointer-events-none"
+              style={{
+                background: "radial-gradient(circle, rgba(124,58,237,0.20) 0%, rgba(245,158,11,0.10) 50%, transparent 75%)",
+                filter: "blur(32px)",
+              }}
+            />
+            {/* Video container in exact 16:9 aspect ratio */}
+            <div className="relative aspect-video w-full rounded-2xl overflow-hidden border border-violet-100/80 shadow-2xl shadow-violet-500/10 bg-black">
+              <video
+                src={`${import.meta.env.BASE_URL}tradecode-animation.mp4`}
+                autoPlay
+                loop
+                muted
+                playsInline
+                className="w-full h-full object-contain"
+              />
+            </div>
+          </motion.div>
+
           <div className="grid lg:grid-cols-[1fr_auto] gap-16 items-center">
             <div className="max-w-4xl">
               {/* Eyebrow */}
@@ -254,27 +270,18 @@ function Home() {
               </motion.div>
             </div>
 
-            {/* Logo visual — animated logo video */}
+            {/* Logo visual — full animated SVG draw-in */}
             <motion.div
               initial={{ opacity: 0, scale: 0.85 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 1.2, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
               className="hidden lg:flex flex-col items-center gap-6"
             >
-              {/* Glow halo & video container */}
-              <div className="relative group">
-                <div className="absolute inset-[-15%] rounded-3xl animate-glow-pulse pointer-events-none"
-                  style={{ background: "radial-gradient(circle, rgba(124,58,237,0.25) 0%, transparent 70%)", filter: "blur(24px)" }} />
-                <div className="relative w-[340px] h-[220px] rounded-2xl overflow-hidden border border-violet-200/80 shadow-2xl shadow-violet-500/10 bg-white">
-                  <video
-                    src={`${import.meta.env.BASE_URL}tradecode-animation.mp4`}
-                    autoPlay
-                    loop
-                    muted
-                    playsInline
-                    className="w-full h-full object-cover"
-                  />
-                </div>
+              {/* Glow halo */}
+              <div className="relative">
+                <div className="absolute inset-[-20%] rounded-full animate-glow-pulse pointer-events-none"
+                  style={{ background: "radial-gradient(circle, rgba(124,58,237,0.22) 0%, transparent 70%)", filter: "blur(24px)" }} />
+                <AnimatedLogo size={200} showText={true} color="#7C3AED" glowColor="#A78BFA" />
               </div>
               {/* Floating data cards around logo */}
               <motion.div
