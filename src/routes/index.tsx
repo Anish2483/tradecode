@@ -145,15 +145,15 @@ function Home() {
     <>
       {/* ── HERO ──────────────────────────────────────────────────────────── */}
       <section ref={heroRef} className="relative min-h-screen flex flex-col justify-center overflow-hidden bg-white">
-        {/* Watermark animation video background */}
-        <div className="absolute inset-0 pointer-events-none overflow-hidden opacity-10 flex items-center justify-center">
+        {/* Watermark animation video background — high intensity */}
+        <div className="absolute inset-0 pointer-events-none overflow-hidden opacity-35 flex items-center justify-center">
           <video
             src={`${import.meta.env.BASE_URL}tradecode-animation.mp4`}
             autoPlay
             loop
             muted
             playsInline
-            className="w-full h-full object-cover filter blur-[2px]"
+            className="w-full h-full object-cover"
           />
         </div>
 
