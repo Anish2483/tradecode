@@ -154,8 +154,8 @@ function Home() {
         />
         {/* Left-weighted dark overlay — text on left, image shows on right */}
         <div className="absolute inset-0 bg-gradient-to-r from-[#050810]/95 via-[#0a0e1a]/80 to-[#0a0e1a]/30" />
-        {/* Bottom fade into next section */}
-        <div className="absolute bottom-0 inset-x-0 h-32 bg-gradient-to-t from-[#0a0e1a] to-transparent" />
+        {/* Bottom fade into next section — matching sub-pages style */}
+        <div className="absolute bottom-0 inset-x-0 h-36 bg-gradient-to-t from-background via-background/60 to-transparent pointer-events-none z-10" />
 
         {/* Particle animation — contained to hero only */}
         <CursorTrail />
