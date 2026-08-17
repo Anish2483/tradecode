@@ -9,6 +9,7 @@ import {
 } from "lucide-react";
 import { AnimatedLogo, SmallLogo } from "@/components/brand/AnimatedLogo";
 import { CursorTrail } from "@/components/effects/CursorTrail";
+import { ShootingStarsLogo } from "@/components/hero/ShootingStarsLogo";
 import yogendraImg from "@/assets/tradecode.jpeg";
 import ctoImg from "@/assets/myimg.jpeg";
 import showcaseAiDashboard from "@/assets/showcase-ai-dashboard.jpg";
@@ -157,87 +158,99 @@ function Home() {
         <div className="absolute top-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-violet-400/50 to-transparent" />
 
         <motion.div style={{ opacity: heroOpacity, y: heroY }} className="relative container-x pt-20 pb-16 md:pt-32 md:pb-20">
-          <div className="max-w-4xl">
-            {/* Eyebrow */}
-            <motion.div
-              initial={{ opacity: 0, x: -20 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.6 }}
-              className="flex items-center gap-3 mb-8"
-            >
-              <div className="h-[1px] w-12 bg-violet-500" />
-              <span className="text-xs font-semibold uppercase tracking-[0.18em] text-violet-600">
-                Agentic AI · Robotics · Automation
-              </span>
-            </motion.div>
-
-            {/* Headline — Aurora Studio editorial style */}
-            <motion.h1
-              initial={{ opacity: 0, y: 40 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.9, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
-              className="text-[clamp(2.8rem,6vw,5.5rem)] font-light leading-[1.04] tracking-tight text-gray-900"
-            >
-              Building intelligent<br />
-              solutions for a{" "}
-              <span className="text-gradient-brand">smarter</span><br />
-              tomorrow.
-            </motion.h1>
-
-            <motion.p
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.25 }}
-              className="mt-8 max-w-2xl text-lg text-gray-500 leading-relaxed font-light"
-            >
-              Tradecode empowers businesses with AI, Automation, Data Science, Robotics
-              and scalable digital solutions — engineered by senior operators, documented
-              and supported for the long term.
-            </motion.p>
-
-            {/* CTAs */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.7, delay: 0.4 }}
-              className="mt-10 flex flex-wrap items-center gap-4"
-            >
-              <Link
-                to="/services"
-                className="group inline-flex items-center gap-2 px-7 py-4 bg-violet-600 text-white text-sm font-semibold hover:bg-violet-700 transition-all shadow-lg shadow-violet-200 hover:shadow-violet-300"
+          <div className="grid lg:grid-cols-[1fr_auto] gap-12 xl:gap-20 items-center">
+            <div className="max-w-3xl">
+              {/* Eyebrow */}
+              <motion.div
+                initial={{ opacity: 0, x: -20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.6 }}
+                className="flex items-center gap-3 mb-8"
               >
-                Explore Services
-                <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
-              </Link>
-              <Link
-                to="/contact"
-                className="group inline-flex items-center gap-2 px-7 py-4 border border-gray-300 text-gray-700 text-sm hover:bg-gray-50 hover:border-violet-400 transition-all"
-              >
-                Book a Consultation
-                <ArrowUpRight className="h-4 w-4" />
-              </Link>
-            </motion.div>
+                <div className="h-[1px] w-12 bg-violet-500" />
+                <span className="text-xs font-semibold uppercase tracking-[0.18em] text-violet-600">
+                  Agentic AI · Robotics · Automation
+                </span>
+              </motion.div>
 
-            {/* Rating */}
+              {/* Headline — Aurora Studio editorial style */}
+              <motion.h1
+                initial={{ opacity: 0, y: 40 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.9, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
+                className="text-[clamp(2.8rem,6vw,5.5rem)] font-light leading-[1.04] tracking-tight text-gray-900"
+              >
+                Building intelligent<br />
+                solutions for a{" "}
+                <span className="text-gradient-brand">smarter</span><br />
+                tomorrow.
+              </motion.h1>
+
+              <motion.p
+                initial={{ opacity: 0, y: 30 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.8, delay: 0.25 }}
+                className="mt-8 max-w-2xl text-lg text-gray-500 leading-relaxed font-light"
+              >
+                Tradecode empowers businesses with AI, Automation, Data Science, Robotics
+                and scalable digital solutions — engineered by senior operators, documented
+                and supported for the long term.
+              </motion.p>
+
+              {/* CTAs */}
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.7, delay: 0.4 }}
+                className="mt-10 flex flex-wrap items-center gap-4"
+              >
+                <Link
+                  to="/services"
+                  className="group inline-flex items-center gap-2 px-7 py-4 bg-violet-600 text-white text-sm font-semibold hover:bg-violet-700 transition-all shadow-lg shadow-violet-200 hover:shadow-violet-300"
+                >
+                  Explore Services
+                  <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
+                </Link>
+                <Link
+                  to="/contact"
+                  className="group inline-flex items-center gap-2 px-7 py-4 border border-gray-300 text-gray-700 text-sm hover:bg-gray-50 hover:border-violet-400 transition-all"
+                >
+                  Book a Consultation
+                  <ArrowUpRight className="h-4 w-4" />
+                </Link>
+              </motion.div>
+
+              {/* Rating */}
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 0.6, duration: 0.6 }}
+                className="mt-12 flex items-center gap-5 border-t border-gray-200 pt-8"
+              >
+                <div className="flex gap-0.5">
+                  {[...Array(5)].map((_, i) => (
+                    <Star key={i} className="h-4 w-4 fill-amber-400 text-amber-400" />
+                  ))}
+                </div>
+                <div>
+                  <div className="text-sm font-semibold text-gray-900">4.9 / 5 rating</div>
+                  <div className="text-xs text-gray-400">from 100+ enterprise clients</div>
+                </div>
+                <div className="w-px h-8 bg-gray-200" />
+                <div className="text-sm text-gray-500 font-light">
+                  Trusted across <span className="text-gray-900 font-medium">18 countries</span>
+                </div>
+              </motion.div>
+            </div>
+
+            {/* ── Shooting Stars → Logo reveal ── */}
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
-              transition={{ delay: 0.6, duration: 0.6 }}
-              className="mt-12 flex items-center gap-5 border-t border-gray-200 pt-8"
+              transition={{ duration: 0.6, delay: 0.3 }}
+              className="hidden lg:flex items-center justify-center shrink-0"
             >
-              <div className="flex gap-0.5">
-                {[...Array(5)].map((_, i) => (
-                  <Star key={i} className="h-4 w-4 fill-amber-400 text-amber-400" />
-                ))}
-              </div>
-              <div>
-                <div className="text-sm font-semibold text-gray-900">4.9 / 5 rating</div>
-                <div className="text-xs text-gray-400">from 100+ enterprise clients</div>
-              </div>
-              <div className="w-px h-8 bg-gray-200" />
-              <div className="text-sm text-gray-500 font-light">
-                Trusted across <span className="text-gray-900 font-medium">18 countries</span>
-              </div>
+              <ShootingStarsLogo />
             </motion.div>
           </div>
         </motion.div>
