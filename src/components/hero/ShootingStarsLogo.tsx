@@ -260,31 +260,31 @@ export function ShootingStarsLogo({ className = "" }: ShootingStarsLogoProps) {
               />
             </motion.div>
 
-            {/* Core glass card */}
+            {/* Core glass card — dark glassmorphism */}
             <motion.div
               animate={{ y: [0, -8, 0] }}
               transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
               className="relative flex flex-col items-center p-10 rounded-3xl z-10"
               style={{
-                background: "rgba(255,255,255,0.55)",
+                background: "rgba(15, 23, 42, 0.45)",
                 backdropFilter: "blur(24px)",
                 WebkitBackdropFilter: "blur(24px)",
-                border: "1px solid rgba(139,92,246,0.18)",
-                boxShadow: "0 8px 60px rgba(124,58,237,0.12), 0 2px 20px rgba(124,58,237,0.06), inset 0 1px 0 rgba(255,255,255,0.9)",
+                border: "1px solid rgba(255, 255, 255, 0.12)",
+                boxShadow: "0 20px 50px rgba(124, 58, 237, 0.25), 0 0 20px rgba(139, 92, 246, 0.15), inset 0 1px 0 rgba(255, 255, 255, 0.2)",
               }}
             >
               {/* Top shimmer bar */}
               <div
                 className="absolute top-0 inset-x-8 h-px rounded-full"
-                style={{ background: "linear-gradient(90deg, transparent, rgba(139,92,246,0.5), transparent)" }}
+                style={{ background: "linear-gradient(90deg, transparent, rgba(167,139,250,0.6), transparent)" }}
               />
 
-              {/* Logo with violet tint overlay */}
+              {/* Logo with violet glow overlay */}
               <div className="relative">
                 {/* Glow behind logo */}
                 <div
                   className="absolute inset-0 rounded-full blur-2xl pointer-events-none"
-                  style={{ background: "radial-gradient(circle, rgba(124,58,237,0.40) 0%, rgba(109,40,217,0.15) 50%, transparent 75%)" }}
+                  style={{ background: "radial-gradient(circle, rgba(139,92,246,0.45) 0%, rgba(124,58,237,0.2) 50%, transparent 75%)" }}
                 />
                 <img
                   src={logoImg}
@@ -292,12 +292,13 @@ export function ShootingStarsLogo({ className = "" }: ShootingStarsLogoProps) {
                   style={{
                     width: 180,
                     height: "auto",
-                    filter: "sepia(1) saturate(8) hue-rotate(220deg) brightness(0.52) contrast(1.5) drop-shadow(0 6px 32px rgba(109,40,217,0.65))",
+                    filter: "brightness(1.2) contrast(1.1) drop-shadow(0 6px 28px rgba(167,139,250,0.75))",
+                    mixBlendMode: "screen",
                   }}
                 />
               </div>
 
-              {/* "TRADECODE" wordmark — matching logo style */}
+              {/* "TRADECODE" wordmark — matching dark glass style */}
               <motion.div
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -305,14 +306,13 @@ export function ShootingStarsLogo({ className = "" }: ShootingStarsLogoProps) {
                 className="mt-5 text-center"
               >
                 <div
-                  className="text-[11px] uppercase tracking-[0.35em] font-semibold"
-                  style={{ color: "rgba(88,28,180,0.92)", letterSpacing: "0.35em" }}
+                  className="text-[11px] uppercase tracking-[0.35em] font-semibold text-white/90"
+                  style={{ letterSpacing: "0.35em" }}
                 >
                   Tradecode
                 </div>
                 <div
-                  className="mt-1 text-[9px] uppercase tracking-[0.2em]"
-                  style={{ color: "rgba(88,28,180,0.65)" }}
+                  className="mt-1 text-[9px] uppercase tracking-[0.2em] text-violet-300/70"
                 >
                   Innovations
                 </div>
