@@ -3,6 +3,30 @@ import { motion } from "framer-motion";
 import { ArrowRight, CheckCircle2 } from "lucide-react";
 import { PageHeader } from "@/components/layout/PageShell";
 
+// Hero images for each service
+import heroAgenticAi from "@/assets/hero-agentic-ai.jpg";
+import heroGenerativeAi from "@/assets/hero-generative-ai.jpg";
+import heroRobotics from "@/assets/hero-robotics.jpg";
+import heroChatbots from "@/assets/hero-chatbots.jpg";
+import heroDataScience from "@/assets/hero-data-science.jpg";
+import heroSoftware from "@/assets/hero-software.jpg";
+import heroWeb from "@/assets/hero-web.jpg";
+import heroMlDl from "@/assets/hero-ml-dl.jpg";
+import heroConsulting from "@/assets/hero-consulting.jpg";
+import heroTraining from "@/assets/hero-training.jpg";
+
+const heroImages: Record<string, string> = {
+  "agentic-ai": heroAgenticAi,
+  "generative-ai": heroGenerativeAi,
+  "robotics": heroRobotics,
+  "chatbots": heroChatbots,
+  "data-science": heroDataScience,
+  "software": heroSoftware,
+  "web": heroWeb,
+  "ml-dl": heroMlDl,
+  "consulting": heroConsulting,
+  "training": heroTraining,
+};
 
 export interface ServiceContent {
   slug: string;
@@ -16,9 +40,16 @@ export interface ServiceContent {
 }
 
 export function ServicePage({ content }: { content: ServiceContent }) {
+  const heroImage = heroImages[content.slug];
+
   return (
     <>
-      <PageHeader eyebrow={content.eyebrow} title={content.title} description={content.intro} />
+      <PageHeader
+        eyebrow={content.eyebrow}
+        title={content.title}
+        description={content.intro}
+        heroImage={heroImage}
+      />
       <section className="border-b border-border bg-secondary/30">
         <div className="container-x py-14 grid gap-6 md:grid-cols-4">
           {content.outcomes.map((o) => (
@@ -90,4 +121,3 @@ export function ServicePage({ content }: { content: ServiceContent }) {
     </>
   );
 }
-
