@@ -236,41 +236,48 @@ export function ShootingStarsLogo({ className = "" }: ShootingStarsLogoProps) {
             transition={{ duration: 1.4, ease: [0.16, 1, 0.3, 1] }}
             className="absolute inset-0 flex flex-col items-center justify-center z-10"
           >
-            {/* Outer ring orbits */}
+            {/* Outer ring orbits — dark violet glass style */}
             <motion.div
-              className="absolute rounded-full border border-violet-200/40"
-              style={{ width: 320, height: 320 }}
+              className="absolute rounded-full border border-violet-500/20"
+              style={{
+                width: 320,
+                height: 320,
+                boxShadow: "0 0 15px rgba(124, 58, 237, 0.08)",
+              }}
               animate={{ rotate: 360 }}
               transition={{ duration: 30, repeat: Infinity, ease: "linear" }}
             >
               {/* Orbit dot */}
               <span
-                className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 w-1.5 h-1.5 rounded-full bg-violet-400/60"
+                className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 w-1.5 h-1.5 rounded-full bg-violet-400/80 shadow-[0_0_8px_rgba(167,139,250,0.8)]"
               />
             </motion.div>
 
             <motion.div
-              className="absolute rounded-full border border-violet-100/30"
-              style={{ width: 380, height: 380 }}
+              className="absolute rounded-full border border-indigo-500/15"
+              style={{
+                width: 380,
+                height: 380,
+              }}
               animate={{ rotate: -360 }}
               transition={{ duration: 45, repeat: Infinity, ease: "linear" }}
             >
               <span
-                className="absolute bottom-0 left-1/2 -translate-x-1/2 translate-y-1/2 w-1 h-1 rounded-full bg-indigo-300/50"
+                className="absolute bottom-0 left-1/2 -translate-x-1/2 translate-y-1/2 w-1 h-1 rounded-full bg-violet-400/60"
               />
             </motion.div>
 
-            {/* Core glass card — dark glassmorphism */}
+            {/* Core glass card — seamless dark glassmorphism */}
             <motion.div
               animate={{ y: [0, -8, 0] }}
               transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
               className="relative flex flex-col items-center p-10 rounded-3xl z-10"
               style={{
-                background: "rgba(15, 23, 42, 0.45)",
-                backdropFilter: "blur(24px)",
-                WebkitBackdropFilter: "blur(24px)",
-                border: "1px solid rgba(255, 255, 255, 0.12)",
-                boxShadow: "0 20px 50px rgba(124, 58, 237, 0.25), 0 0 20px rgba(139, 92, 246, 0.15), inset 0 1px 0 rgba(255, 255, 255, 0.2)",
+                background: "rgba(10, 14, 26, 0.55)",
+                backdropFilter: "blur(28px)",
+                WebkitBackdropFilter: "blur(28px)",
+                border: "1px solid rgba(139, 92, 246, 0.22)",
+                boxShadow: "0 20px 60px rgba(0, 0, 0, 0.4), 0 0 30px rgba(124, 58, 237, 0.2), inset 0 1px 0 rgba(167, 139, 250, 0.15)",
               }}
             >
               {/* Top shimmer bar */}
