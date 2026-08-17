@@ -10,6 +10,7 @@ import {
 import { AnimatedLogo, SmallLogo } from "@/components/brand/AnimatedLogo";
 import { CursorTrail } from "@/components/effects/CursorTrail";
 import { ShootingStarsLogo } from "@/components/hero/ShootingStarsLogo";
+import heroHomepage from "@/assets/hero-homepage.jpg";
 import yogendraImg from "@/assets/tradecode.jpeg";
 import ctoImg from "@/assets/myimg.jpeg";
 import showcaseAiDashboard from "@/assets/showcase-ai-dashboard.jpg";
@@ -145,17 +146,27 @@ function Home() {
   return (
     <>
       {/* ── HERO ──────────────────────────────────────────────────────────── */}
-      <section ref={heroRef} className="relative min-h-screen flex flex-col justify-center overflow-hidden bg-white">
+      <section ref={heroRef} className="relative min-h-screen flex flex-col justify-center overflow-hidden">
+        {/* Cinematic hero background image */}
+        <div
+          className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+          style={{ backgroundImage: `url(${heroHomepage})` }}
+        />
+        {/* Left-weighted dark overlay — text on left, image shows on right */}
+        <div className="absolute inset-0 bg-gradient-to-r from-[#050810]/95 via-[#0a0e1a]/80 to-[#0a0e1a]/30" />
+        {/* Bottom fade into next section */}
+        <div className="absolute bottom-0 inset-x-0 h-32 bg-gradient-to-t from-[#0a0e1a] to-transparent" />
+
         {/* Particle animation — contained to hero only */}
         <CursorTrail />
         {/* Aurora orb background — ChatGPT Codex style */}
         <AuroraOrbs />
 
-        {/* Architectural dot grid overlay */}
-        <div className="absolute inset-0 pointer-events-none opacity-40 bg-grid" />
+        {/* Dot grid — tinted for dark bg */}
+        <div className="absolute inset-0 pointer-events-none opacity-15 bg-grid" />
 
         {/* Top gradient bar */}
-        <div className="absolute top-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-violet-400/50 to-transparent" />
+        <div className="absolute top-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-violet-400/60 to-transparent" />
 
         <motion.div style={{ opacity: heroOpacity, y: heroY }} className="relative container-x pt-20 pb-16 md:pt-32 md:pb-20">
           <div className="grid lg:grid-cols-[1fr_auto] gap-12 xl:gap-20 items-center">
@@ -167,18 +178,18 @@ function Home() {
                 transition={{ duration: 0.6 }}
                 className="flex items-center gap-3 mb-8"
               >
-                <div className="h-[1px] w-12 bg-violet-500" />
-                <span className="text-xs font-semibold uppercase tracking-[0.18em] text-violet-600">
+                <div className="h-[1px] w-12 bg-violet-400" />
+                <span className="text-xs font-semibold uppercase tracking-[0.18em] text-violet-300">
                   Agentic AI · Robotics · Automation
                 </span>
               </motion.div>
 
-              {/* Headline — Aurora Studio editorial style */}
+              {/* Headline */}
               <motion.h1
                 initial={{ opacity: 0, y: 40 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.9, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
-                className="text-[clamp(2.8rem,6vw,5.5rem)] font-light leading-[1.04] tracking-tight text-gray-900"
+                className="text-[clamp(2.8rem,6vw,5.5rem)] font-light leading-[1.04] tracking-tight text-white"
               >
                 Building intelligent<br />
                 solutions for a{" "}
@@ -190,7 +201,7 @@ function Home() {
                 initial={{ opacity: 0, y: 30 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.8, delay: 0.25 }}
-                className="mt-8 max-w-2xl text-lg text-gray-500 leading-relaxed font-light"
+                className="mt-8 max-w-2xl text-lg text-white/70 leading-relaxed font-light"
               >
                 Tradecode empowers businesses with AI, Automation, Data Science, Robotics
                 and scalable digital solutions — engineered by senior operators, documented
@@ -206,14 +217,14 @@ function Home() {
               >
                 <Link
                   to="/services"
-                  className="group inline-flex items-center gap-2 px-7 py-4 bg-violet-600 text-white text-sm font-semibold hover:bg-violet-700 transition-all shadow-lg shadow-violet-200 hover:shadow-violet-300"
+                  className="group inline-flex items-center gap-2 px-7 py-4 bg-violet-600 text-white text-sm font-semibold hover:bg-violet-500 transition-all shadow-lg shadow-violet-900/50"
                 >
                   Explore Services
                   <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
                 </Link>
                 <Link
                   to="/contact"
-                  className="group inline-flex items-center gap-2 px-7 py-4 border border-gray-300 text-gray-700 text-sm hover:bg-gray-50 hover:border-violet-400 transition-all"
+                  className="group inline-flex items-center gap-2 px-7 py-4 border border-white/25 text-white/90 text-sm hover:bg-white/10 hover:border-white/50 transition-all backdrop-blur-sm"
                 >
                   Book a Consultation
                   <ArrowUpRight className="h-4 w-4" />
@@ -225,7 +236,7 @@ function Home() {
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ delay: 0.6, duration: 0.6 }}
-                className="mt-12 flex items-center gap-5 border-t border-gray-200 pt-8"
+                className="mt-12 flex items-center gap-5 border-t border-white/15 pt-8"
               >
                 <div className="flex gap-0.5">
                   {[...Array(5)].map((_, i) => (
@@ -233,12 +244,12 @@ function Home() {
                   ))}
                 </div>
                 <div>
-                  <div className="text-sm font-semibold text-gray-900">4.9 / 5 rating</div>
-                  <div className="text-xs text-gray-400">from 100+ enterprise clients</div>
+                  <div className="text-sm font-semibold text-white">4.9 / 5 rating</div>
+                  <div className="text-xs text-white/50">from 100+ enterprise clients</div>
                 </div>
-                <div className="w-px h-8 bg-gray-200" />
-                <div className="text-sm text-gray-500 font-light">
-                  Trusted across <span className="text-gray-900 font-medium">18 countries</span>
+                <div className="w-px h-8 bg-white/20" />
+                <div className="text-sm text-white/60 font-light">
+                  Trusted across <span className="text-white font-medium">18 countries</span>
                 </div>
               </motion.div>
             </div>
