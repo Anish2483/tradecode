@@ -284,7 +284,7 @@ export function ShootingStarsLogo({ className = "" }: ShootingStarsLogoProps) {
                 {/* Glow behind logo */}
                 <div
                   className="absolute inset-0 rounded-full blur-2xl pointer-events-none"
-                  style={{ background: "radial-gradient(circle, rgba(124,58,237,0.25) 0%, transparent 70%)" }}
+                  style={{ background: "radial-gradient(circle, rgba(124,58,237,0.40) 0%, rgba(109,40,217,0.15) 50%, transparent 75%)" }}
                 />
                 <img
                   src={logoImg}
@@ -292,8 +292,7 @@ export function ShootingStarsLogo({ className = "" }: ShootingStarsLogoProps) {
                   style={{
                     width: 180,
                     height: "auto",
-                    filter: "drop-shadow(0 4px 24px rgba(124,58,237,0.4)) brightness(0.88) contrast(1.1)",
-                    mixBlendMode: "multiply",
+                    filter: "sepia(1) saturate(6) hue-rotate(220deg) brightness(0.75) contrast(1.2) drop-shadow(0 6px 28px rgba(124,58,237,0.55))",
                   }}
                 />
               </div>
