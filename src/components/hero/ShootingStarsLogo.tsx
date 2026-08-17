@@ -292,7 +292,7 @@ export function ShootingStarsLogo({ className = "" }: ShootingStarsLogoProps) {
                   style={{
                     width: 180,
                     height: "auto",
-                    filter: "sepia(1) saturate(6) hue-rotate(220deg) brightness(0.75) contrast(1.2) drop-shadow(0 6px 28px rgba(124,58,237,0.55))",
+                    filter: "sepia(1) saturate(8) hue-rotate(220deg) brightness(0.52) contrast(1.5) drop-shadow(0 6px 32px rgba(109,40,217,0.65))",
                   }}
                 />
               </div>
@@ -306,13 +306,13 @@ export function ShootingStarsLogo({ className = "" }: ShootingStarsLogoProps) {
               >
                 <div
                   className="text-[11px] uppercase tracking-[0.35em] font-semibold"
-                  style={{ color: "rgba(109,40,217,0.7)", letterSpacing: "0.35em" }}
+                  style={{ color: "rgba(88,28,180,0.92)", letterSpacing: "0.35em" }}
                 >
                   Tradecode
                 </div>
                 <div
                   className="mt-1 text-[9px] uppercase tracking-[0.2em]"
-                  style={{ color: "rgba(109,40,217,0.4)" }}
+                  style={{ color: "rgba(88,28,180,0.65)" }}
                 >
                   Innovations
                 </div>
