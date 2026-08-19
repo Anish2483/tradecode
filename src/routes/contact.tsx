@@ -3,6 +3,7 @@ import { useState } from "react";
 import { motion } from "framer-motion";
 import { MapPin, Phone, Mail, Twitter, Linkedin, Instagram, Facebook, Youtube, GraduationCap, MessageCircle, Send } from "lucide-react";
 import { PageHeader } from "@/components/layout/PageShell";
+import heroContact from "@/assets/hero-contact.jpg";
 
 export const Route = createFileRoute("/contact")({
   head: () => ({ meta: [{ title: "Contact — Tradecode" }, { name: "description", content: "Get in touch with Tradecode. Dehradun office. Reach us on any channel." }] }),
@@ -36,7 +37,12 @@ function Contact() {
   };
   return (
     <>
-      <PageHeader eyebrow="Contact" title="Let's talk." description="Tell us about your project. We respond within one business day." />
+      <PageHeader
+        eyebrow="Contact"
+        title="Let's talk."
+        description="Tell us about your project. We respond within one business day."
+        heroImage={heroContact}
+      />
       <section className="container-x py-20 grid gap-14 lg:grid-cols-[1.2fr_1fr]">
         <div>
           <h2 className="font-display text-2xl font-bold">Send us a message</h2>
