@@ -10,7 +10,7 @@ import {
 import { AnimatedLogo, SmallLogo } from "@/components/brand/AnimatedLogo";
 import { CursorTrail } from "@/components/effects/CursorTrail";
 import { ShootingStarsLogo } from "@/components/hero/ShootingStarsLogo";
-import heroHomepage from "@/assets/hero-homepage.jpg";
+import { HeroAnimationBg } from "@/components/hero/HeroAnimationBg";
 import yogendraImg from "@/assets/tradecode.jpeg";
 import ctoImg from "@/assets/myimg.jpeg";
 import showcaseAiDashboard from "@/assets/showcase-ai-dashboard.jpg";
@@ -147,28 +147,25 @@ function Home() {
     <>
       {/* ── HERO ──────────────────────────────────────────────────────────── */}
       <section ref={heroRef} className="relative min-h-screen flex flex-col justify-center overflow-hidden">
-        {/* Cinematic hero background image */}
-        <div
-          className="absolute inset-0 bg-cover bg-center bg-no-repeat"
-          style={{ backgroundImage: `url(${heroHomepage})` }}
-        />
-        {/* Left-weighted dark overlay — text on left, image shows on right */}
-        <div className="absolute inset-0 bg-gradient-to-r from-[#050810]/95 via-[#0a0e1a]/80 to-[#0a0e1a]/30" />
-        {/* Bottom fade into next section — matching sub-pages style */}
-        <div className="absolute bottom-0 inset-x-0 h-36 bg-gradient-to-t from-background via-background/60 to-transparent pointer-events-none z-10" />
+        {/* ── Animated canvas background — Tradecode cube + atmosphere ── */}
+        <HeroAnimationBg />
 
-        {/* Particle animation — contained to hero only */}
+        {/* Left-weighted dark gradient so text stays legible */}
+        <div className="absolute inset-0 bg-gradient-to-r from-[#050810]/90 via-[#0a0e1a]/60 to-transparent pointer-events-none" style={{ zIndex: 1 }} />
+
+        {/* Bottom fade into next section */}
+        <div className="absolute bottom-0 inset-x-0 h-36 bg-gradient-to-t from-background via-background/60 to-transparent pointer-events-none" style={{ zIndex: 2 }} />
+
+        {/* Cursor-reactive particle trail */}
         <CursorTrail />
-        {/* Aurora orb background — ChatGPT Codex style */}
-        <AuroraOrbs />
 
-        {/* Dot grid — tinted for dark bg */}
-        <div className="absolute inset-0 pointer-events-none opacity-15 bg-grid" />
+        {/* Dot grid overlay */}
+        <div className="absolute inset-0 pointer-events-none opacity-10 bg-grid" style={{ zIndex: 1 }} />
 
         {/* Top gradient bar */}
         <div className="absolute top-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-violet-400/60 to-transparent" />
 
-        <motion.div style={{ opacity: heroOpacity, y: heroY }} className="relative container-x pt-20 pb-16 md:pt-32 md:pb-20">
+        <motion.div style={{ opacity: heroOpacity, y: heroY, zIndex: 10, position: "relative" }} className="container-x pt-20 pb-16 md:pt-32 md:pb-20">
           <div className="grid lg:grid-cols-[1fr_auto] gap-12 xl:gap-20 items-center">
             <div className="max-w-3xl">
               {/* Eyebrow */}
