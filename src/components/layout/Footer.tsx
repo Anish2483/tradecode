@@ -51,7 +51,7 @@ const footerNav = [
 ];
 
 const social = [
-  { icon: Linkedin, label: "LinkedIn", href: "https://linkedin.com/company/tradecode" },
+  { icon: Linkedin, label: "LinkedIn", href: "https://www.linkedin.com/company/102699488/" },
   { icon: Twitter,  label: "Twitter / X", href: "https://twitter.com/tradecode" },
   { icon: Youtube,  label: "YouTube", href: "https://youtube.com/@tradecode" },
   { icon: Github,   label: "GitHub", href: "https://github.com/Anish2483/tradecode" },

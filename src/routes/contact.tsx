@@ -12,7 +12,7 @@ export const Route = createFileRoute("/contact")({
 
 const channels = [
   { icon: Twitter, label: "Twitter", href: "https://twitter.com" },
-  { icon: Linkedin, label: "LinkedIn", href: "https://linkedin.com" },
+  { icon: Linkedin, label: "LinkedIn", href: "https://www.linkedin.com/company/102699488/" },
   { icon: Instagram, label: "Instagram", href: "https://instagram.com" },
   { icon: Facebook, label: "Facebook", href: "https://facebook.com" },
   { icon: Youtube, label: "YouTube", href: "https://youtube.com" },
