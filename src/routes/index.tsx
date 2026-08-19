@@ -9,7 +9,6 @@ import {
 } from "lucide-react";
 import { AnimatedLogo, SmallLogo } from "@/components/brand/AnimatedLogo";
 import { CursorTrail } from "@/components/effects/CursorTrail";
-import { ShootingStarsLogo } from "@/components/hero/ShootingStarsLogo";
 import { HeroAnimationBg } from "@/components/hero/HeroAnimationBg";
 import yogendraImg from "@/assets/tradecode.jpeg";
 import ctoImg from "@/assets/myimg.jpeg";
@@ -166,8 +165,7 @@ function Home() {
         <div className="absolute top-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-violet-400/60 to-transparent" />
 
         <motion.div style={{ opacity: heroOpacity, y: heroY, zIndex: 10, position: "relative" }} className="container-x pt-20 pb-16 md:pt-32 md:pb-20">
-          <div className="grid lg:grid-cols-[1fr_auto] gap-12 xl:gap-20 items-center">
-            <div className="max-w-3xl">
+          <div className="max-w-3xl">
               {/* Eyebrow */}
               <motion.div
                 initial={{ opacity: 0, x: -20 }}
@@ -250,17 +248,6 @@ function Home() {
                 </div>
               </motion.div>
             </div>
-
-            {/* ── Shooting Stars → Logo reveal ── */}
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 0.6, delay: 0.3 }}
-              className="hidden lg:flex items-center justify-center shrink-0"
-            >
-              <ShootingStarsLogo />
-            </motion.div>
-          </div>
         </motion.div>
 
         {/* Scroll indicator */}
