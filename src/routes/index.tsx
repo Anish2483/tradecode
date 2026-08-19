@@ -640,7 +640,7 @@ function Home() {
             >
               Ready to ship something remarkable?
             </motion.h2>
-            <motion.p {...fadeUp} className="mt-5 text-white/70 leading-relaxed">
+            <motion.p {...fadeUp} className="mt-5 leading-relaxed font-light text-lg" style={{ color: "#ffffff" }}>
               Tell us about your product, your data and your goals. We'll respond within one business day.
             </motion.p>
           </div>
