@@ -55,7 +55,10 @@ export function HeroAnimationBg() {
     const logo = new Image();
     logo.src = logoSrc;
     let logoReady = false;
-    logo.onload = () => { logoReady = true; };
+    // Store natural pixel dimensions once the image has decoded so the
+    // aspect ratio is never approximated with a magic-number fallback.
+    let natW = 0, natH = 0;
+    logo.onload = () => { logoReady = true; natW = logo.naturalWidth; natH = logo.naturalHeight; };
 
     // Offscreen canvas: violet-gradient masked to the logo's alpha channel
     const off    = document.createElement("canvas");
@@ -121,20 +124,20 @@ export function HeroAnimationBg() {
       if (!t0) t0 = ts;
       const elapsed = (ts - t0) / 1000; // seconds
 
-      // ── logo geometry (recomputed every frame to handle resize) ─────────────
-      // Logo sits in the RIGHT 38% of the viewport so it never overlaps the
-      // left-aligned text content (max-w-3xl ≈ first 60 % of viewport width).
-      const lh = Math.min(H * 0.56, 360);
-      const lw = logoReady
-        ? (logo.naturalWidth || 400) * (lh / (logo.naturalHeight || 450))
-        : lh * 0.88;
-      // Centre the logo at 74 % across; clamp so it never bleeds off-screen.
-      const lcx = Math.min(W * 0.745, W - lw * 0.5 - 24);
-      const lcy = H * 0.465;
+      // ── logo geometry – EXACT natural aspect ratio ─────────────────────────
+      // Drive from width so the logo stays in its original proportions.
+      // The available zone is roughly the right-most 38 % of the viewport.
+      // natW / natH is the true pixel ratio of the PNG (set once on load).
+      const aspect = natW && natH ? natW / natH : 1.0;
+      const lw = Math.min(W * 0.36, 340);
+      const lh = lw / aspect;
+      // Centre the logo at ~73 % across; clamp so it never bleeds off-screen.
+      const lcx = Math.min(W * 0.73, W - lw * 0.5 - 24);
+      const lcy = H * 0.46;
       const lx  = lcx - lw / 2;
       const ly  = lcy - lh / 2;
 
-      // Rebuild offscreen if logo size changed
+      // Rebuild offscreen only when the rendered pixel size changes.
       if (logoReady && (Math.ceil(lw) !== lastOW || Math.ceil(lh) !== lastOH)) {
         buildVioletLogo(lw, lh);
         lastOW = Math.ceil(lw);
@@ -248,19 +251,17 @@ export function HeroAnimationBg() {
           ctx.fill();
           ctx.restore();
 
-          // ── Clip to revealed band and draw logo ────────────────────────────
+          // ── Clip to revealed band, draw logo ONCE with shadowBlur glow ─────
           ctx.save();
           ctx.beginPath();
           ctx.rect(lx - 24, ly, lw + 48, revealedH + 2);
           ctx.clip();
-
-          // Outer soft glow copy (slightly upscaled)
-          ctx.globalAlpha = 0.28;
-          ctx.drawImage(off, lx - 10, ly - 10, lw + 20, lh + 20);
-
-          // Crisp logo
-          ctx.globalAlpha = 0.93;
+          // Single draw with violet shadow = glow without any double-layer ghost
+          ctx.shadowColor = "rgba(167, 139, 250, 0.85)";
+          ctx.shadowBlur  = 18;
+          ctx.globalAlpha = 0.92;
           ctx.drawImage(off, lx, ly, lw, lh);
+          ctx.shadowBlur  = 0;
           ctx.globalAlpha = 1;
           ctx.restore();
 
@@ -302,13 +303,13 @@ export function HeroAnimationBg() {
           ctx.fill();
           ctx.restore();
 
-          // Glow copy behind
+          // Single draw, shadowBlur provides the glow – no double layer
           ctx.save();
-          ctx.globalAlpha = 0.28;
-          ctx.drawImage(off, lx - 10, ly - 10, lw + 20, lh + 20);
-          // Crisp logo on top
-          ctx.globalAlpha = 0.94;
+          ctx.shadowColor = "rgba(167, 139, 250, 0.75)";
+          ctx.shadowBlur  = 20;
+          ctx.globalAlpha = 0.93;
           ctx.drawImage(off, lx, ly, lw, lh);
+          ctx.shadowBlur  = 0;
           ctx.globalAlpha = 1;
           ctx.restore();
         }
