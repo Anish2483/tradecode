@@ -33,12 +33,12 @@ export function PageHeader({
             className="absolute inset-0 w-full h-full object-cover object-center pointer-events-none"
             style={{ zIndex: 0 }}
           />
-          {/* Dark overlay gradient so white text stays crisp & legible */}
+          {/* Dark overlay gradient — lightened right side so hero image artwork is brightly visible */}
           <div
             className="absolute inset-0 pointer-events-none"
             style={{
               background:
-                "linear-gradient(to right, rgba(10,14,26,0.92) 0%, rgba(10,14,26,0.72) 50%, rgba(10,14,26,0.30) 100%)",
+                "linear-gradient(to right, rgba(10,14,26,0.72) 0%, rgba(10,14,26,0.40) 45%, rgba(10,14,26,0.08) 100%)",
               zIndex: 1,
             }}
           />

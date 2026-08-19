@@ -2,6 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { motion } from "framer-motion";
 import { Target, Eye, Rocket, Users, Award, Globe, FlaskConical, BookOpen } from "lucide-react";
 import { PageHeader } from "@/components/layout/PageShell";
+import heroAbout from "@/assets/hero-about.jpg";
 
 export const Route = createFileRoute("/about")({
   head: () => ({ meta: [
@@ -41,6 +42,7 @@ function About() {
         eyebrow="About Tradecode"
         title={<>A deep-tech firm built by <span className="text-gradient-brand">operators, for operators.</span></>}
         description="We are a Dehradun-headquartered consultancy building agentic AI, robotics and automation systems for teams that need to ship."
+        heroImage={heroAbout}
       />
 
       {/* Pillars */}

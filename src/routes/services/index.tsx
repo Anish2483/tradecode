@@ -3,6 +3,7 @@ import { motion } from "framer-motion";
 import { ArrowRight } from "lucide-react";
 import { PageHeader } from "@/components/layout/PageShell";
 import { services } from "@/content/services";
+import heroServices from "@/assets/hero-services.jpg";
 
 export const Route = createFileRoute("/services/")({
   head: () => ({ meta: [{ title: "Services — Tradecode" }, { name: "description", content: "The full Tradecode service catalog: AI, robotics, data, software, consulting and training." }] }),
@@ -17,6 +18,7 @@ function ServicesIndex() {
         eyebrow="Services"
         title="The full deep-tech stack, delivered by one partner."
         description="From agentic AI and robotics to data platforms, consulting and training — every service is delivered by senior teams with formal customer agreements, documentation and long-term support."
+        heroImage={heroServices}
       />
       <section className="container-x py-20">
         <div className="grid gap-px bg-border rounded-2xl overflow-hidden md:grid-cols-2">

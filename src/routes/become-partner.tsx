@@ -3,6 +3,7 @@ import { motion } from "framer-motion";
 import { Send } from "lucide-react";
 import { useState } from "react";
 import { PageHeader } from "@/components/layout/PageShell";
+import heroPartner from "@/assets/hero-partner.jpg";
 
 export const Route = createFileRoute("/become-partner")({
   head: () => ({ meta: [{ title: "Become a Partner — Tradecode" }, { name: "description", content: "Partner with Tradecode. Comprehensive partnership programs for institutes and industry." }] }),
@@ -25,6 +26,7 @@ function Partner() {
         eyebrow="Become an Official Partner"
         title={<>Partner with <span className="text-gradient-brand">Tradecode.</span></>}
         description="For institutes, universities, industries and enterprises seeking a strategic deep-tech partner. Tell us about your organization — we'll route you to the right partner lead."
+        heroImage={heroPartner}
       />
       <section className="container-x py-20 grid gap-12 lg:grid-cols-[1.2fr_1fr]">
         <motion.form initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} onSubmit={submit} className="space-y-5">
