@@ -148,13 +148,7 @@ export function HeroAnimationBg() {
       ctx.fillStyle = "rgba(5, 8, 18, 0.91)";
       ctx.fillRect(0, 0, W, H);
 
-      // Radial violet warmth emanating from logo position
-      const warm = ctx.createRadialGradient(lcx, lcy, 0, lcx, lcy, lw * 1.15);
-      warm.addColorStop(0,   "rgba(60, 22, 118, 0.45)");
-      warm.addColorStop(0.55,"rgba(22,  9,  52, 0.20)");
-      warm.addColorStop(1,   "rgba( 5,  8,  18, 0)");
-      ctx.fillStyle = warm;
-      ctx.fillRect(0, 0, W, H);
+      // (No warm radial — logo renders without extra ambient light)
 
       // ── Aurora ribbons ──────────────────────────────────────────────────────
       waves.forEach(w => {
@@ -239,29 +233,14 @@ export function HeroAnimationBg() {
         const revealedH = lh * scanProg;
 
         if (scanProg > 0) {
-          // ── Background bloom behind logo ───────────────────────────────────
-          ctx.save();
-          const bloom = ctx.createRadialGradient(lcx, lcy, 0, lcx, lcy, lw * 0.95);
-          bloom.addColorStop(0,    `rgba(108, 52, 228, ${0.42 * scanProg})`);
-          bloom.addColorStop(0.45, `rgba( 82, 38, 182, ${0.20 * scanProg})`);
-          bloom.addColorStop(1,    `rgba( 52, 20, 100, 0)`);
-          ctx.fillStyle = bloom;
-          ctx.beginPath();
-          ctx.arc(lcx, lcy, lw * 0.95, 0, Math.PI * 2);
-          ctx.fill();
-          ctx.restore();
-
-          // ── Clip to revealed band, draw logo ONCE with shadowBlur glow ─────
+          // ── Clip to revealed band, draw logo ONCE — no bloom ──────────────
           ctx.save();
           ctx.beginPath();
           ctx.rect(lx - 24, ly, lw + 48, revealedH + 2);
           ctx.clip();
-          // Single draw with violet shadow = glow without any double-layer ghost
-          ctx.shadowColor = "rgba(167, 139, 250, 0.85)";
-          ctx.shadowBlur  = 18;
-          ctx.globalAlpha = 0.92;
+          // Clean single draw — no shadow, no glow
+          ctx.globalAlpha = 0.90;
           ctx.drawImage(off, lx, ly, lw, lh);
-          ctx.shadowBlur  = 0;
           ctx.globalAlpha = 1;
           ctx.restore();
 
@@ -288,28 +267,11 @@ export function HeroAnimationBg() {
           }
         }
 
-        // ── Steady-state: pulsing bloom + redraw logo ──────────────────────
+        // ── Steady-state: just redraw logo cleanly (no halo, no bloom) ─────
         if (scanProg >= 1) {
-          const pulse = 0.76 + 0.24 * Math.sin(elapsed * 1.85);
-
           ctx.save();
-          const halo = ctx.createRadialGradient(lcx, lcy, lw * 0.04, lcx, lcy, lw * 1.08);
-          halo.addColorStop(0,   `rgba(142, 96, 252, ${0.22 * pulse})`);
-          halo.addColorStop(0.5, `rgba(108, 56, 218, ${0.11 * pulse})`);
-          halo.addColorStop(1,   "rgba( 76, 32, 168, 0)");
-          ctx.fillStyle = halo;
-          ctx.beginPath();
-          ctx.arc(lcx, lcy, lw * 1.08, 0, Math.PI * 2);
-          ctx.fill();
-          ctx.restore();
-
-          // Single draw, shadowBlur provides the glow – no double layer
-          ctx.save();
-          ctx.shadowColor = "rgba(167, 139, 250, 0.75)";
-          ctx.shadowBlur  = 20;
-          ctx.globalAlpha = 0.93;
+          ctx.globalAlpha = 0.90;
           ctx.drawImage(off, lx, ly, lw, lh);
-          ctx.shadowBlur  = 0;
           ctx.globalAlpha = 1;
           ctx.restore();
         }
