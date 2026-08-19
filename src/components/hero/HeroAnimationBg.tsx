@@ -1,36 +1,28 @@
 /**
- * HeroAnimationBg — "Assembly from the Void"
- * ─────────────────────────────────────────────
- * The Tradecode logo is sampled pixel-by-pixel.
- * Each logo pixel becomes a particle that starts far outside the viewport,
- * flying inward like a comet (velocity-based streak trail), and snaps to its
- * exact pixel position — assembling the full logo from stardust.
- *
- * After assembly the particles breathe with subtle drift and random sparkle.
- * The left-half canvas stays atmospheric (bg stars, aurora, shooting stars).
+ * HeroAnimationBg — "Assembly from the Void → Crisp Flat Logo"
+ * ─────────────────────────────────────────────────────────────
+ * 1. Thousands of violet particles fly in from space like a comet shower.
+ * 2. They land on target logo pixel positions to assemble the shape.
+ * 3. Once assembled, they seamlessly crossfade into the exact flat, clean, crisp
+ *    violet PNG logo image (no extra light/glow, same color & design).
  */
 
 import { useEffect, useRef } from "react";
 import logoSrc from "@/assets/tradecode-wireframe-logo.png";
 
-// ── types ─────────────────────────────────────────────────────────────────────
 interface BgDot  { x:number; y:number; vx:number; vy:number; r:number; a:number; hue:number; phase:number; dspd:number; }
 interface SStar  { x:number; y:number; vx:number; vy:number; trail:{x:number;y:number}[]; alpha:number; hue:number; active:boolean; timer:number; next:number; }
 interface LPart  {
-  x:number;  y:number;   // current position
-  px:number; py:number;  // previous position (velocity trail)
-  tx:number; ty:number;  // target pixel on logo
-  r:number;              // radius
+  x:number; y:number;
+  px:number; py:number;
+  tx:number; ty:number;
+  r:number;
   hue:number;
-  delay:number;          // stagger delay in seconds
-  spd:number;            // convergence speed (lerp factor)
-  dspd:number;           // drift speed after assembly
-  phase:number;          // drift phase
+  delay:number;
+  spd:number;
   assembled:boolean;
-  sparkle:number;        // 0-1 sparkle brightness boost
 }
 
-// ── component ─────────────────────────────────────────────────────────────────
 export function HeroAnimationBg() {
   const cvs = useRef<HTMLCanvasElement>(null);
 
@@ -45,11 +37,33 @@ export function HeroAnimationBg() {
     const onResize = () => { W = canvas.width = window.innerWidth; H = canvas.height = window.innerHeight; };
     window.addEventListener("resize", onResize);
 
-    // ── Logo load ─────────────────────────────────────────────────────────────
+    // ── Logo image load ───────────────────────────────────────────────────────
     const logo = new Image();
     logo.src = logoSrc;
     let natW = 0, natH = 0, logoReady = false;
     logo.onload = () => { logoReady = true; natW = logo.naturalWidth; natH = logo.naturalHeight; };
+
+    // ── Offscreen canvas for flat violet logo ────────────────────────────────
+    const off    = document.createElement("canvas");
+    const offCtx = off.getContext("2d")!;
+    let lastOW = 0, lastOH = 0;
+
+    function buildVioletLogo(lw: number, lh: number) {
+      off.width  = Math.ceil(lw);
+      off.height = Math.ceil(lh);
+      offCtx.clearRect(0, 0, off.width, off.height);
+
+      const g = offCtx.createLinearGradient(0, 0, lw * 0.7, lh);
+      g.addColorStop(0,   "rgba(220, 208, 255, 1)");
+      g.addColorStop(0.45,"rgba(167, 139, 250, 1)");
+      g.addColorStop(1,   "rgba(109,  58, 230, 1)");
+      offCtx.fillStyle = g;
+      offCtx.fillRect(0, 0, lw, lh);
+
+      offCtx.globalCompositeOperation = "destination-in";
+      offCtx.drawImage(logo, 0, 0, lw, lh);
+      offCtx.globalCompositeOperation = "source-over";
+    }
 
     // ── Logo particle state ───────────────────────────────────────────────────
     let lparts: LPart[] = [];
@@ -67,7 +81,6 @@ export function HeroAnimationBg() {
     function buildParticles() {
       const { lw, lh, lx, ly, lcx, lcy } = getLogoDims();
 
-      // Sample logo pixels on an offscreen canvas
       const samp   = document.createElement("canvas");
       samp.width   = Math.ceil(lw);
       samp.height  = Math.ceil(lh);
@@ -75,16 +88,15 @@ export function HeroAnimationBg() {
       sc.drawImage(logo, 0, 0, samp.width, samp.height);
       const id = sc.getImageData(0, 0, samp.width, samp.height);
 
-      const STEP   = 3; // sample every 3rd pixel for ~2 k particles
+      const STEP   = 3;
       const maxR   = Math.max(W, H) * 1.3;
       const result: LPart[] = [];
 
       for (let py = 0; py < samp.height; py += STEP) {
         for (let px = 0; px < samp.width; px += STEP) {
           const alpha = id.data[(py * samp.width + px) * 4 + 3];
-          if (alpha < 80) continue;   // transparent — not part of logo
+          if (alpha < 80) continue;
 
-          // Start far outside the viewport (random angle from logo centre)
           const angle = Math.random() * Math.PI * 2;
           const dist  = maxR * (0.6 + Math.random() * 0.7);
           result.push({
@@ -95,22 +107,19 @@ export function HeroAnimationBg() {
             tx: lx + px,
             ty: ly + py,
             r:    0.9 + Math.random() * 0.8,
-            hue:  258 + Math.floor(Math.random() * 28),  // violet range
-            delay: Math.random() * 2.0,    // staggered over 2 s
+            hue:  258 + Math.floor(Math.random() * 28),
+            delay: Math.random() * 1.8,
             spd:   0.05 + Math.random() * 0.06,
-            dspd:  0.018 + Math.random() * 0.022,
-            phase: Math.random() * Math.PI * 2,
             assembled: false,
-            sparkle: 0,
           });
         }
       }
 
-      lparts    = result;
+      lparts     = result;
       partsBuilt = true;
     }
 
-    // ── Background starfield ──────────────────────────────────────────────────
+    // ── Background starfield & Aurora ─────────────────────────────────────────
     const HUES = [260, 275, 245, 215] as const;
     const bgDots: BgDot[] = Array.from({ length: 120 }, () => ({
       x:     Math.random() * 1920,
@@ -124,37 +133,41 @@ export function HeroAnimationBg() {
       dspd:  0.016 + Math.random() * 0.024,
     }));
 
-    // ── Shooting stars ────────────────────────────────────────────────────────
     const sstars: SStar[] = Array.from({ length: 4 }, () => ({
       x:0, y:0, vx:0, vy:0, trail:[], alpha:0, hue:270,
       active:false, timer:0, next:80 + Math.random() * 140,
     }));
 
-    // ── Aurora ribbons ────────────────────────────────────────────────────────
     const waves = [
       { ry:0.20, amp:0.07, spd:0.00017, hue:262, ph:0.0 },
       { ry:0.54, amp:0.05, spd:0.00013, hue:280, ph:2.2 },
       { ry:0.78, amp:0.06, spd:0.00015, hue:248, ph:4.3 },
     ];
 
-    // ── Timeline ──────────────────────────────────────────────────────────────
-    const ASSEMBLE_AFTER = 0.9; // seconds before first particle launches
-
+    const ASSEMBLE_AFTER = 0.8;
     let t0 = 0, raf: number;
 
-    // ── Render loop ───────────────────────────────────────────────────────────
     const frame = (ts: number) => {
       if (!t0) t0 = ts;
       const elapsed = (ts - t0) / 1000;
 
-      // Build particles once, right after logo loads
-      if (logoReady && !partsBuilt) buildParticles();
+      const { lw, lh, lx, ly } = getLogoDims();
 
-      // ── BG fill (slightly transparent for motion trail on fast particles) ──
-      ctx.fillStyle = "rgba(5, 8, 18, 0.88)";
+      if (logoReady && !partsBuilt) {
+        buildParticles();
+      }
+
+      if (logoReady && (Math.ceil(lw) !== lastOW || Math.ceil(lh) !== lastOH)) {
+        buildVioletLogo(lw, lh);
+        lastOW = Math.ceil(lw);
+        lastOH = Math.ceil(lh);
+      }
+
+      // ── Background fill ─────────────────────────────────────────────────────
+      ctx.fillStyle = "rgba(5, 8, 18, 0.90)";
       ctx.fillRect(0, 0, W, H);
 
-      // ── Aurora ─────────────────────────────────────────────────────────────
+      // ── Aurora ribbons ──────────────────────────────────────────────────────
       waves.forEach(w => {
         const cy = H * w.ry + Math.sin(ts * w.spd + w.ph) * H * w.amp;
         const g  = ctx.createLinearGradient(0, cy - 90, 0, cy + 90);
@@ -167,7 +180,7 @@ export function HeroAnimationBg() {
         ctx.fillRect(0, cy - 90, W, 180);
       });
 
-      // ── Background starfield ────────────────────────────────────────────────
+      // ── Starfield ───────────────────────────────────────────────────────────
       bgDots.forEach(d => {
         d.x += d.vx; d.y += d.vy;
         if (d.x < 0) d.x = W; else if (d.x > W) d.x = 0;
@@ -215,79 +228,83 @@ export function HeroAnimationBg() {
         ctx.fillStyle = hg; ctx.fill();
       });
 
-      // ── Logo particle assembly ──────────────────────────────────────────────
+      // ── Logo particle assembly & crossfade into flat logo ───────────────────
       if (partsBuilt) {
         const assTime = Math.max(0, elapsed - ASSEMBLE_AFTER);
         ctx.lineCap = "round";
 
+        // Calculate overall assembly completion ratio
+        let assembledCount = 0;
         lparts.forEach(p => {
-          const pt = assTime - p.delay; // particle's personal elapsed time
-          if (pt <= 0) return;          // not yet launched
+          const pt = assTime - p.delay;
+          if (pt <= 0) return;
 
           if (!p.assembled) {
-            // ── Flying phase: lerp toward target ────────────────────────────
             p.px = p.x;
             p.py = p.y;
             p.x += (p.tx - p.x) * p.spd;
             p.y += (p.ty - p.y) * p.spd;
 
-            const dx   = p.tx - p.x;
-            const dy   = p.ty - p.y;
-            const dist = Math.sqrt(dx * dx + dy * dy);
-
-            if (dist < 1.2) {
+            const dx = p.tx - p.x;
+            const dy = p.ty - p.y;
+            if (Math.sqrt(dx * dx + dy * dy) < 1.2) {
               p.x = p.tx; p.y = p.ty;
               p.assembled = true;
-              return;
             }
-
-            // Velocity vector
-            const vx  = p.x - p.px;
-            const vy  = p.y - p.py;
-            const spd = Math.sqrt(vx * vx + vy * vy);
-
-            if (spd > 0.4) {
-              // Streak trail — length proportional to speed
-              const trailLen = Math.min(spd * 5, 28);
-              const inv      = 1 / spd;
-              const ox       = -vx * inv * trailLen;
-              const oy       = -vy * inv * trailLen;
-              const tg       = ctx.createLinearGradient(p.x + ox, p.y + oy, p.x, p.y);
-              tg.addColorStop(0, `hsla(${p.hue},90%,90%,0)`);
-              tg.addColorStop(1, `hsla(${p.hue},95%,96%,0.95)`);
-              ctx.beginPath();
-              ctx.moveTo(p.x + ox, p.y + oy);
-              ctx.lineTo(p.x, p.y);
-              ctx.strokeStyle = tg;
-              ctx.lineWidth   = p.r * 0.75;
-              ctx.stroke();
-            }
-
-            // Particle head (bright tip)
-            ctx.fillStyle = `hsla(${p.hue},90%,96%,0.95)`;
-            ctx.fillRect(p.x - p.r * 0.5, p.y - p.r * 0.5, p.r, p.r);
-
-          } else {
-            // ── Assembled phase: gentle drift + rare sparkle ─────────────
-            p.phase += p.dspd;
-            const drift = 0.7;
-            const ox    = Math.sin(p.phase) * drift;
-            const oy    = Math.cos(p.phase * 1.4) * drift;
-
-            // Random sparkle (very rare — feels organic)
-            p.sparkle = Math.max(0, p.sparkle - 0.04);
-            if (Math.random() < 0.00025) p.sparkle = 1.0;
-
-            const L = 72 + p.sparkle * 28;          // lightness
-            const a = 0.82 + p.sparkle * 0.18;      // alpha
-            ctx.fillStyle = `hsla(${p.hue},85%,${L}%,${a})`;
-            ctx.fillRect(
-              p.tx + ox - p.r * 0.5,
-              p.ty + oy - p.r * 0.5,
-              p.r, p.r,
-            );
           }
+          if (p.assembled) assembledCount++;
         });
+
+        const assRatio = lparts.length > 0 ? assembledCount / lparts.length : 0;
+        // Fade in the clean crisp violet logo PNG as particles finish assembling (from ratio 0.6 -> 1.0)
+        const logoAlpha = Math.min(0.92, Math.max(0, (assRatio - 0.6) / 0.4 * 0.92));
+        // Fade out particle streaks as logo alpha comes up
+        const particleAlpha = Math.max(0, 1 - logoAlpha * 1.08);
+
+        // 1. Draw particles if still assembling
+        if (particleAlpha > 0.01) {
+          lparts.forEach(p => {
+            const pt = assTime - p.delay;
+            if (pt <= 0) return;
+
+            if (!p.assembled) {
+              const vx  = p.x - p.px;
+              const vy  = p.y - p.py;
+              const spd = Math.sqrt(vx * vx + vy * vy);
+
+              if (spd > 0.4) {
+                const trailLen = Math.min(spd * 5, 28);
+                const inv      = 1 / spd;
+                const ox       = -vx * inv * trailLen;
+                const oy       = -vy * inv * trailLen;
+                const tg       = ctx.createLinearGradient(p.x + ox, p.y + oy, p.x, p.y);
+                tg.addColorStop(0, `hsla(${p.hue},90%,90%,0)`);
+                tg.addColorStop(1, `hsla(${p.hue},95%,96%,${0.95 * particleAlpha})`);
+                ctx.beginPath();
+                ctx.moveTo(p.x + ox, p.y + oy);
+                ctx.lineTo(p.x, p.y);
+                ctx.strokeStyle = tg;
+                ctx.lineWidth   = p.r * 0.75;
+                ctx.stroke();
+              }
+
+              ctx.fillStyle = `hsla(${p.hue},90%,96%,${0.95 * particleAlpha})`;
+              ctx.fillRect(p.x - p.r * 0.5, p.y - p.r * 0.5, p.r, p.r);
+            } else {
+              ctx.fillStyle = `hsla(${p.hue},85%,78%,${0.85 * particleAlpha})`;
+              ctx.fillRect(p.tx - p.r * 0.5, p.ty - p.r * 0.5, p.r, p.r);
+            }
+          });
+        }
+
+        // 2. Draw the exact crisp flat violet PNG logo (crossfaded in cleanly, no extra glow/bloom)
+        if (logoAlpha > 0.01 && off.width > 0) {
+          ctx.save();
+          ctx.globalAlpha = logoAlpha;
+          ctx.drawImage(off, lx, ly, lw, lh);
+          ctx.globalAlpha = 1;
+          ctx.restore();
+        }
       }
 
       raf = requestAnimationFrame(frame);

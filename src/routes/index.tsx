@@ -184,12 +184,12 @@ function Home() {
                 initial={{ opacity: 0, y: 40 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.9, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
-                className="text-[clamp(2.8rem,6vw,5.5rem)] font-light leading-[1.04] tracking-tight text-white"
+                className="text-[clamp(2.8rem,6vw,5.5rem)] font-light leading-[1.04] tracking-tight"
               >
-                Building intelligent<br />
-                solutions for a{" "}
-                <span className="text-gradient-brand">smarter</span><br />
-                tomorrow.
+                <span className="text-gradient-hero">Building intelligent</span><br />
+                <span className="text-gradient-hero">solutions for a </span>
+                <span className="text-gradient-brand font-normal">smarter</span><br />
+                <span className="text-gradient-hero">tomorrow.</span>
               </motion.h1>
 
               <motion.p
