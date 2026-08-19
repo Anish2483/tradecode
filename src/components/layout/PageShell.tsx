@@ -11,54 +11,88 @@ export function PageHeader({
   description?: ReactNode;
   heroImage?: string;
 }) {
+  const imageSrc =
+    typeof heroImage === "string"
+      ? heroImage
+      : (heroImage as any)?.default || heroImage;
+
   return (
-    <section className="relative overflow-hidden border-b border-border" style={{ minHeight: heroImage ? "420px" : undefined }}>
-      {/* Hero background image */}
-      {heroImage && (
+    <section
+      className="relative overflow-hidden border-b border-border"
+      style={{
+        minHeight: heroImage ? "420px" : undefined,
+        backgroundColor: heroImage ? "#0a0e1a" : undefined,
+      }}
+    >
+      {/* Bulletproof HTML <img> background tag */}
+      {imageSrc && (
         <>
-          <div
-            className="absolute inset-0 bg-cover bg-center bg-no-repeat"
-            style={{ backgroundImage: `url(${heroImage})` }}
+          <img
+            src={imageSrc}
+            alt=""
+            className="absolute inset-0 w-full h-full object-cover object-center pointer-events-none"
+            style={{ zIndex: 0 }}
           />
-          {/* Dark overlay gradient so text stays readable — inline style prevents styles.css #FAFAFA override */}
+          {/* Dark overlay gradient so white text stays crisp & legible */}
           <div
-            className="absolute inset-0"
-            style={{ background: "linear-gradient(to right, rgba(10,14,26,0.92) 0%, rgba(10,14,26,0.72) 50%, rgba(10,14,26,0.30) 100%)" }}
+            className="absolute inset-0 pointer-events-none"
+            style={{
+              background:
+                "linear-gradient(to right, rgba(10,14,26,0.92) 0%, rgba(10,14,26,0.72) 50%, rgba(10,14,26,0.30) 100%)",
+              zIndex: 1,
+            }}
           />
           {/* Bottom fade */}
-          <div className="absolute bottom-0 inset-x-0 h-24 bg-gradient-to-t from-background to-transparent" />
+          <div
+            className="absolute bottom-0 inset-x-0 h-24 pointer-events-none"
+            style={{
+              background:
+                "linear-gradient(to top, var(--background) 0%, transparent 100%)",
+              zIndex: 2,
+            }}
+          />
         </>
       )}
 
       {/* Fallback pattern when no image */}
-      {!heroImage && (
+      {!imageSrc && (
         <>
           <div className="absolute inset-0 bg-brand-radial" />
           <div className="absolute inset-0 bg-grid opacity-40 pointer-events-none" />
         </>
       )}
 
-      {/* Dot grid overlay always */}
-      {heroImage && (
-        <div className="absolute inset-0 bg-grid opacity-10 pointer-events-none" />
+      {/* Dot grid overlay always when image present */}
+      {imageSrc && (
+        <div
+          className="absolute inset-0 bg-grid opacity-10 pointer-events-none"
+          style={{ zIndex: 3 }}
+        />
       )}
 
-      <div className={`container-x relative ${heroImage ? "py-24 md:py-36" : "py-20 md:py-28"}`}>
+      {/* Content wrapper sitting firmly on top of all background layers */}
+      <div
+        className={`container-x relative ${imageSrc ? "py-24 md:py-36" : "py-20 md:py-28"}`}
+        style={{ zIndex: 10 }}
+      >
         {eyebrow && (
-          <span className="inline-flex items-center rounded-full border border-white/20 bg-white/10 px-3 py-1 text-xs font-medium uppercase tracking-wider text-white/80 backdrop-blur">
+          <span
+            className="inline-flex items-center rounded-full border border-white/20 bg-white/10 px-3 py-1 text-xs font-medium uppercase tracking-wider backdrop-blur"
+            style={{ color: imageSrc ? "rgba(255,255,255,0.90)" : undefined }}
+          >
             {eyebrow}
           </span>
         )}
         <h1
           className="mt-4 max-w-4xl text-4xl md:text-6xl font-bold tracking-tight"
-          style={{ color: heroImage ? "#ffffff" : undefined }}
+          style={{ color: imageSrc ? "#ffffff" : undefined }}
         >
           {title}
         </h1>
         {description && (
           <p
             className="mt-5 max-w-2xl text-lg leading-relaxed"
-            style={{ color: heroImage ? "rgba(255,255,255,0.75)" : undefined }}
+            style={{ color: imageSrc ? "rgba(255,255,255,0.80)" : undefined }}
           >
             {description}
           </p>
