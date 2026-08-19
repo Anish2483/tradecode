@@ -20,8 +20,11 @@ export function PageHeader({
             className="absolute inset-0 bg-cover bg-center bg-no-repeat"
             style={{ backgroundImage: `url(${heroImage})` }}
           />
-          {/* Dark overlay gradient so text stays readable */}
-          <div className="absolute inset-0 bg-gradient-to-r from-[#0a0e1a]/90 via-[#0a0e1a]/70 to-[#0a0e1a]/30" />
+          {/* Dark overlay gradient so text stays readable — inline style prevents styles.css #FAFAFA override */}
+          <div
+            className="absolute inset-0"
+            style={{ background: "linear-gradient(to right, rgba(10,14,26,0.92) 0%, rgba(10,14,26,0.72) 50%, rgba(10,14,26,0.30) 100%)" }}
+          />
           {/* Bottom fade */}
           <div className="absolute bottom-0 inset-x-0 h-24 bg-gradient-to-t from-background to-transparent" />
         </>
