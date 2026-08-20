@@ -16,6 +16,8 @@ import showcaseAiDashboard from "@/assets/showcase-ai-dashboard.jpg";
 import showcaseRobotics from "@/assets/showcase-robotics.jpg";
 import showcaseChatbot from "@/assets/showcase-chatbot.jpg";
 import showcaseIot from "@/assets/showcase-iot.jpg";
+import productBattery from "@/assets/product-battery.jpg";
+import productMissKaur from "@/assets/product-miss-kaur.jpg";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -349,6 +351,92 @@ function Home() {
               View all services <ArrowRight className="h-4 w-4" />
             </Link>
           </motion.div>
+        </div>
+      </section>
+
+      {/* ── HARDWARE PRODUCTS SHOWCASE ────────────────────────────────────── */}
+      <section className="bg-[#0a0e1a] border-b border-white/6 py-24">
+        <div className="container-x">
+          <motion.div {...fadeUp} className="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-6">
+            <div>
+              <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-[#78a9ff] mb-4">Proprietary Hardware</p>
+              <h2 className="text-4xl md:text-5xl font-light text-white leading-tight">
+                Engineered in our labs.<br />Built for high performance.
+              </h2>
+            </div>
+            <Link
+              to="/products"
+              className="inline-flex items-center gap-2 text-sm font-medium text-[#4589ff] hover:text-[#78a9ff] transition-colors"
+            >
+              Explore hardware products <ArrowRight className="h-4 w-4" />
+            </Link>
+          </motion.div>
+
+          <div className="grid lg:grid-cols-2 gap-8">
+            {/* Battery card */}
+            <motion.div
+              {...fadeUp}
+              className="group rounded-3xl border border-white/10 bg-[#0d1120] overflow-hidden hover:border-[#4589ff]/50 transition-all duration-300"
+            >
+              <div className="aspect-[16/10] overflow-hidden relative">
+                <img
+                  src={productBattery}
+                  alt="TradeCell Custom Smart Battery Systems"
+                  className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                />
+                <div className="absolute top-4 left-4 flex gap-2">
+                  <span className="rounded-full bg-violet-600/90 backdrop-blur px-3 py-1 text-xs font-semibold text-white">
+                    Blade Cells • 5G IoT
+                  </span>
+                </div>
+              </div>
+              <div className="p-8">
+                <div className="text-xs uppercase tracking-wider text-[#4589ff] font-semibold">Clean Energy & Mobility</div>
+                <h3 className="text-2xl font-semibold text-white mt-2">TradeCell™ Smart Battery Systems</h3>
+                <p className="mt-3 text-sm text-white/60 leading-relaxed">
+                  Ultra-compact Lithium-Ion & LFP blade cell battery packs customized for residential ESS, commercial shops, and electric vehicles with Smart BMS and 5G telemetry.
+                </p>
+                <div className="mt-6 flex items-center justify-between pt-6 border-t border-white/8">
+                  <span className="text-xs text-white/40">Super small & ultralight design</span>
+                  <Link to="/products" className="inline-flex items-center gap-1.5 text-xs font-semibold text-[#4589ff] group-hover:gap-2.5 transition-all">
+                    View Specs <ArrowRight className="h-3.5 w-3.5" />
+                  </Link>
+                </div>
+              </div>
+            </motion.div>
+
+            {/* Miss Kaur card */}
+            <motion.div
+              {...fadeUp}
+              className="group rounded-3xl border border-white/10 bg-[#0d1120] overflow-hidden hover:border-[#4589ff]/50 transition-all duration-300"
+            >
+              <div className="aspect-[16/10] overflow-hidden relative">
+                <img
+                  src={productMissKaur}
+                  alt="Miss Kaur Humanoid Robot"
+                  className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                />
+                <div className="absolute top-4 left-4 flex gap-2">
+                  <span className="rounded-full bg-violet-600/90 backdrop-blur px-3 py-1 text-xs font-semibold text-white">
+                    Design Patented
+                  </span>
+                </div>
+              </div>
+              <div className="p-8">
+                <div className="text-xs uppercase tracking-wider text-[#4589ff] font-semibold">Autonomous Service Robotics</div>
+                <h3 className="text-2xl font-semibold text-white mt-2">Miss Kaur™ Humanoid Receptionist</h3>
+                <p className="mt-3 text-sm text-white/60 leading-relaxed">
+                  Autonomous roaming information center with official design patent, designed to serve as an intelligent interactive reception desk across massive enterprise infrastructures.
+                </p>
+                <div className="mt-6 flex items-center justify-between pt-6 border-t border-white/8">
+                  <span className="text-xs text-white/40">Autonomous SLAM & Interactive Touchscreen</span>
+                  <Link to="/products" className="inline-flex items-center gap-1.5 text-xs font-semibold text-[#4589ff] group-hover:gap-2.5 transition-all">
+                    View Robot <ArrowRight className="h-3.5 w-3.5" />
+                  </Link>
+                </div>
+              </div>
+            </motion.div>
+          </div>
         </div>
       </section>
 

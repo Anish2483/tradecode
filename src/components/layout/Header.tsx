@@ -18,6 +18,7 @@ const services = [
 ];
 
 const nav = [
+  { label: "Products", to: "/products" },
   { label: "About", to: "/about" },
   { label: "R&D", to: "/rnd" },
   { label: "Partners", to: "/partners" },

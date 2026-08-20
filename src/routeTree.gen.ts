@@ -12,6 +12,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as TeamRouteImport } from './routes/team'
 import { Route as RndRouteImport } from './routes/rnd'
 import { Route as ReviewsRouteImport } from './routes/reviews'
+import { Route as ProductsRouteImport } from './routes/products'
 import { Route as PressRouteImport } from './routes/press'
 import { Route as PartnersRouteImport } from './routes/partners'
 import { Route as GalleryRouteImport } from './routes/gallery'
@@ -50,6 +51,11 @@ const RndRoute = RndRouteImport.update({
 const ReviewsRoute = ReviewsRouteImport.update({
   id: '/reviews',
   path: '/reviews',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ProductsRoute = ProductsRouteImport.update({
+  id: '/products',
+  path: '/products',
   getParentRoute: () => rootRouteImport,
 } as any)
 const PressRoute = PressRouteImport.update({
@@ -183,6 +189,7 @@ export interface FileRoutesByFullPath {
   '/gallery': typeof GalleryRoute
   '/partners': typeof PartnersRoute
   '/press': typeof PressRoute
+  '/products': typeof ProductsRoute
   '/reviews': typeof ReviewsRoute
   '/rnd': typeof RndRoute
   '/team': typeof TeamRoute
@@ -212,6 +219,7 @@ export interface FileRoutesByTo {
   '/gallery': typeof GalleryRoute
   '/partners': typeof PartnersRoute
   '/press': typeof PressRoute
+  '/products': typeof ProductsRoute
   '/reviews': typeof ReviewsRoute
   '/rnd': typeof RndRoute
   '/team': typeof TeamRoute
@@ -242,6 +250,7 @@ export interface FileRoutesById {
   '/gallery': typeof GalleryRoute
   '/partners': typeof PartnersRoute
   '/press': typeof PressRoute
+  '/products': typeof ProductsRoute
   '/reviews': typeof ReviewsRoute
   '/rnd': typeof RndRoute
   '/team': typeof TeamRoute
@@ -273,6 +282,7 @@ export interface FileRouteTypes {
     | '/gallery'
     | '/partners'
     | '/press'
+    | '/products'
     | '/reviews'
     | '/rnd'
     | '/team'
@@ -302,6 +312,7 @@ export interface FileRouteTypes {
     | '/gallery'
     | '/partners'
     | '/press'
+    | '/products'
     | '/reviews'
     | '/rnd'
     | '/team'
@@ -331,6 +342,7 @@ export interface FileRouteTypes {
     | '/gallery'
     | '/partners'
     | '/press'
+    | '/products'
     | '/reviews'
     | '/rnd'
     | '/team'
@@ -361,6 +373,7 @@ export interface RootRouteChildren {
   GalleryRoute: typeof GalleryRoute
   PartnersRoute: typeof PartnersRoute
   PressRoute: typeof PressRoute
+  ProductsRoute: typeof ProductsRoute
   ReviewsRoute: typeof ReviewsRoute
   RndRoute: typeof RndRoute
   TeamRoute: typeof TeamRoute
@@ -402,6 +415,13 @@ declare module '@tanstack/react-router' {
       path: '/reviews'
       fullPath: '/reviews'
       preLoaderRoute: typeof ReviewsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/products': {
+      id: '/products'
+      path: '/products'
+      fullPath: '/products'
+      preLoaderRoute: typeof ProductsRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/press': {
@@ -585,6 +605,7 @@ const rootRouteChildren: RootRouteChildren = {
   GalleryRoute: GalleryRoute,
   PartnersRoute: PartnersRoute,
   PressRoute: PressRoute,
+  ProductsRoute: ProductsRoute,
   ReviewsRoute: ReviewsRoute,
   RndRoute: RndRoute,
   TeamRoute: TeamRoute,

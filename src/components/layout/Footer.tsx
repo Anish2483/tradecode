@@ -4,6 +4,14 @@ import { SmallLogo } from "@/components/brand/AnimatedLogo";
 
 const footerNav = [
   {
+    title: "Products",
+    links: [
+      { label: "TradeCell™ Smart Batteries", to: "/products" },
+      { label: "Miss Kaur™ Humanoid Robot", to: "/products" },
+      { label: "Hardware Catalog", to: "/products" },
+    ],
+  },
+  {
     title: "Services",
     links: [
       { label: "Agentic AI & Automation", to: "/services/agentic-ai" },
