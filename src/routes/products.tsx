@@ -32,7 +32,6 @@ import {
 import { PageHeader } from "@/components/layout/PageShell";
 import heroProducts from "@/assets/hero-products.jpg";
 import productBattery from "@/assets/product-battery.jpg";
-import productMissKaur from "@/assets/product-miss-kaur.jpg";
 import productScanner from "@/assets/product-scanner.jpg";
 import productLvd from "@/assets/product-lvd.jpg";
 import productParking from "@/assets/product-parking.jpg";
@@ -42,7 +41,6 @@ import { products, productCategories, ProductItem } from "@/content/products";
 
 const productImages: Record<string, string> = {
   tradecell: productBattery,
-  "miss-kaur": productMissKaur,
   scanner: productScanner,
   "lvd-controller": productLvd,
   parking: productParking,
@@ -57,7 +55,7 @@ export const Route = createFileRoute("/products")({
       {
         name: "description",
         content:
-          "Enterprise hardware catalog by Tradecode: Custom Lithium/LFP Blade Cell Batteries, Miss Kaur Patented Humanoid Robot, 100*100 X-Ray Baggage Scanners, SISPL LVD Controllers, Smart Parking Guidance, Proximity RFID Readers, and Robotic PTZ Cameras.",
+          "Enterprise hardware catalog by Tradecode: Custom Lithium/LFP Blade Cell Batteries, 100*100 X-Ray Baggage Scanners, SISPL LVD Controllers, Smart Parking Guidance, Proximity RFID Readers, and Robotic PTZ Cameras.",
       },
     ],
   }),

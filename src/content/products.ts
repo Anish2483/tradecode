@@ -12,7 +12,7 @@ export interface ProductApplication {
 export interface ProductItem {
   id: string;
   slug: string;
-  category: "energy" | "robotics" | "security" | "access";
+  category: "energy" | "security" | "access";
   categoryLabel: string;
   badge: string;
   name: string;
@@ -32,7 +32,6 @@ export interface ProductItem {
 export const productCategories = [
   { id: "all", label: "All Products" },
   { id: "energy", label: "Clean Energy & Power" },
-  { id: "robotics", label: "Autonomous Robotics" },
   { id: "security", label: "Security & Surveillance" },
   { id: "access", label: "Smart Infrastructure & Access" },
 ] as const;
@@ -98,65 +97,6 @@ export const products: Record<string, ProductItem> = {
       },
     ],
     warranty: "Complete Manufacturer Guarantee & Comprehensive Performance Warranty with dedicated service support.",
-  },
-
-  // ─── 2. MISS KAUR HUMANOID ROBOT ─────────────────────────────────────────────
-  "miss-kaur-robot": {
-    id: "miss-kaur",
-    slug: "miss-kaur-humanoid",
-    category: "robotics",
-    categoryLabel: "Autonomous Robotics",
-    badge: "Design Patented Robotics",
-    name: "Miss Kaur™ Autonomous Humanoid Receptionist",
-    tagline: "The roaming digital information center and hospitality concierge for modern enterprise campuses.",
-    description:
-      "Miss Kaur is a patented humanoid service robot engineered to transform front-desk operations, visitor management, and concierge services in large organizations. Functioning as an autonomous roaming reception desk, Miss Kaur greets visitors, provides interactive facility navigation, answers complex organizational queries, and seamlessly coordinates guest check-ins.",
-    usp: "Design-patented humanoid form factor acting as a fully mobile roaming information center across massive infrastructure facilities.",
-    image: "/tradecode/assets/product-miss-kaur.jpg",
-    patent: "Official Design Patented Humanoid Architecture & Chassis",
-    specs: [
-      { label: "Category", value: "Autonomous Humanoid Service Robot" },
-      { label: "Navigation", value: "LiDAR + 3D Depth Vision Autonomous SLAM Navigation" },
-      { label: "Display", value: "Interactive HD Touchscreen & Multi-Emotion Facial Screen" },
-      { label: "AI Engine", value: "Multilingual Conversational LLM with Custom Knowledge Base" },
-      { label: "Mobility", value: "Smooth omnidirectional roaming with smart obstacle avoidance" },
-      { label: "Battery Runtime", value: "Up to 12 hours continuous operation with auto-docking" },
-    ],
-    features: [
-      "Roaming Information Center: Navigates across multi-floor lobbies, atriums, and tech parks autonomously",
-      "Interactive Touchscreen Console: Displays interactive floor plans, tenant directories, and queue management",
-      "Patented Humanoid Ergonomics: Friendly aesthetic with expressive visual interactions and natural voice dialogue",
-      "Enterprise Check-in & Badging: Integrates with visitor management systems for digital OTP & badge verification",
-      "Autonomous Charging: Returns to self-docking station automatically when battery threshold is reached",
-    ],
-    applications: [
-      {
-        title: "Corporate Headquarters & Tech Parks",
-        desc: "Greets corporate visitors, guides clients to meeting conference rooms, and relieves front-desk congestion in high-traffic campuses.",
-        icon: "Building2",
-      },
-      {
-        title: "Hospitals & Healthcare Facilities",
-        desc: "Assists patients and visitors in finding OPD departments, diagnostic labs, and doctor consultation rooms with voice and visual maps.",
-        icon: "Activity",
-      },
-      {
-        title: "Universities & Convention Centers",
-        desc: "Provides event agendas, booth directories, campus guidance, and real-time announcements in massive infrastructure complexes.",
-        icon: "GraduationCap",
-      },
-    ],
-    options: [
-      {
-        title: "Deployment Mode",
-        choices: ["Stationary Concierge Dock", "Autonomous Roaming Guide", "Multi-Robot Fleet Sync"],
-      },
-      {
-        title: "AI Knowledge Integration",
-        choices: ["Custom Enterprise ERP/CRM Sync", "Standalone Multi-lingual AI Concierge"],
-      },
-    ],
-    warranty: "Full OEM Warranty, On-Site Deployment Calibration & Continuous Software/AI Firmware Updates.",
   },
 
   // ─── 3. DUAL-ENERGY X-RAY BAGGAGE SCANNER 100*100 ────────────────────────────

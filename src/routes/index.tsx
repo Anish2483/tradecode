@@ -17,7 +17,7 @@ import showcaseRobotics from "@/assets/showcase-robotics.jpg";
 import showcaseChatbot from "@/assets/showcase-chatbot.jpg";
 import showcaseIot from "@/assets/showcase-iot.jpg";
 import productBattery from "@/assets/product-battery.jpg";
-import productMissKaur from "@/assets/product-miss-kaur.jpg";
+import productScanner from "@/assets/product-scanner.jpg";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -405,33 +405,33 @@ function Home() {
               </div>
             </motion.div>
 
-            {/* Miss Kaur card */}
+            {/* X-Ray Baggage Scanner card */}
             <motion.div
               {...fadeUp}
               className="group rounded-3xl border border-white/10 bg-[#0d1120] overflow-hidden hover:border-[#4589ff]/50 transition-all duration-300"
             >
               <div className="aspect-[16/10] overflow-hidden relative">
                 <img
-                  src={productMissKaur}
-                  alt="Miss Kaur Humanoid Robot"
+                  src={productScanner}
+                  alt="Dual-Energy X-Ray Baggage Scanner 100*100"
                   className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
                 />
                 <div className="absolute top-4 left-4 flex gap-2">
                   <span className="rounded-full bg-violet-600/90 backdrop-blur px-3 py-1 text-xs font-semibold text-white">
-                    Design Patented
+                    1005×1000mm • 140KV
                   </span>
                 </div>
               </div>
               <div className="p-8">
-                <div className="text-xs uppercase tracking-wider text-[#4589ff] font-semibold">Autonomous Service Robotics</div>
-                <h3 className="text-2xl font-semibold text-white mt-2">Miss Kaur™ Humanoid Receptionist</h3>
+                <div className="text-xs uppercase tracking-wider text-[#4589ff] font-semibold">Security & Screening</div>
+                <h3 className="text-2xl font-semibold text-white mt-2">Dual-Energy X-Ray Baggage Scanner</h3>
                 <p className="mt-3 text-sm text-white/60 leading-relaxed">
-                  Autonomous roaming information center with official design patent, designed to serve as an intelligent interactive reception desk across massive enterprise infrastructures.
+                  High-throughput 100×100 inspection system with dual 21.5" LCD color displays, 250kg conveyor rating, and 1TB SSD image archive for transit and enterprise checkpoints.
                 </p>
                 <div className="mt-6 flex items-center justify-between pt-6 border-t border-white/8">
-                  <span className="text-xs text-white/40">Autonomous SLAM & Interactive Touchscreen</span>
+                  <span className="text-xs text-white/40">100% Duty Cycle & ISO 1600 Film Safe</span>
                   <Link to="/products" className="inline-flex items-center gap-1.5 text-xs font-semibold text-[#4589ff] group-hover:gap-2.5 transition-all">
-                    View Robot <ArrowRight className="h-3.5 w-3.5" />
+                    View Scanner <ArrowRight className="h-3.5 w-3.5" />
                   </Link>
                 </div>
               </div>

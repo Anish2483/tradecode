@@ -7,8 +7,9 @@ const footerNav = [
     title: "Products",
     links: [
       { label: "TradeCell™ Smart Batteries", to: "/products" },
-      { label: "Miss Kaur™ Humanoid Robot", to: "/products" },
-      { label: "Hardware Catalog", to: "/products" },
+      { label: "Dual-Energy X-Ray Scanners", to: "/products" },
+      { label: "SISPL LVD Power Controllers", to: "/products" },
+      { label: "Full Hardware Catalog", to: "/products" },
     ],
   },
   {
