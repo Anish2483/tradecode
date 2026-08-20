@@ -17,7 +17,7 @@ const channels = [
   { icon: Facebook, label: "Facebook", href: "https://facebook.com" },
   { icon: Youtube, label: "YouTube", href: "https://youtube.com" },
   { icon: GraduationCap, label: "Google Scholar", href: "https://scholar.google.com" },
-  { icon: Mail, label: "Email", href: "mailto:hello@tradecode.in" },
+  { icon: Mail, label: "Email", href: "mailto:connect@tradecode.co.in" },
   { icon: Phone, label: "Phone", href: "tel:+910000000000" },
   { icon: MessageCircle, label: "WhatsApp", href: "https://wa.me/910000000000" },
 ];
@@ -32,7 +32,7 @@ function Contact() {
     const message = (form.elements.namedItem("message") as HTMLTextAreaElement).value;
     const subject = encodeURIComponent(`New enquiry from ${first} ${last}`);
     const body = encodeURIComponent(`Name: ${first} ${last}\n\n${message}`);
-    window.location.href = `mailto:hello@tradecode.in?subject=${subject}&body=${body}`;
+    window.location.href = `mailto:connect@tradecode.co.in?subject=${subject}&body=${body}`;
     setStatus("sent");
   };
   return (

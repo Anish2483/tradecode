@@ -43,7 +43,7 @@ function Careers() {
         </div>
         <p className="mt-10 text-sm text-muted-foreground max-w-2xl">
           Don't see your role? We're always interested in outstanding operators. Write to us at{" "}
-          <a href="mailto:careers@tradecode.in" className="text-brand-glow font-semibold">careers@tradecode.in</a>.
+          <a href="mailto:connect@tradecode.co.in" className="text-brand-glow font-semibold">connect@tradecode.co.in</a>.
         </p>
       </section>
     </>

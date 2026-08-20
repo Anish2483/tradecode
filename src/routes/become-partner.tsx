@@ -17,7 +17,7 @@ function Partner() {
     const fd = new FormData(e.currentTarget);
     const body = Array.from(fd.entries()).map(([k, v]) => `${k}: ${v}`).join("\n");
     const subject = encodeURIComponent(`Partnership enquiry — ${fd.get("org")}`);
-    window.location.href = `mailto:partners@tradecode.in?subject=${subject}&body=${encodeURIComponent(body)}`;
+    window.location.href = `mailto:connect@tradecode.co.in?subject=${subject}&body=${encodeURIComponent(body)}`;
     setSent(true);
   };
   return (
