@@ -141,7 +141,7 @@ const showcaseProjects = [
     title: "Yogartha",
     category: "Wellness & HealthTech",
     desc: "Classical Hatha Yoga & wellness platform certified under Sadhguru Gurukulam.",
-    url: "https://yogartha.com/admin",
+    url: "https://yogartha.com/",
   },
 ];
 
