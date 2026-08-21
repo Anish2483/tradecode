@@ -12,10 +12,8 @@ import { CursorTrail } from "@/components/effects/CursorTrail";
 import { HeroAnimationBg } from "@/components/hero/HeroAnimationBg";
 import yogendraImg from "@/assets/tradecode.jpeg";
 import ctoImg from "@/assets/myimg.jpeg";
-import showcaseAiDashboard from "@/assets/showcase-ai-dashboard.jpg";
-import showcaseRobotics from "@/assets/showcase-robotics.jpg";
-import showcaseChatbot from "@/assets/showcase-chatbot.jpg";
-import showcaseIot from "@/assets/showcase-iot.jpg";
+import showcasePriPri from "@/assets/showcase-pripridesign.jpg";
+import showcaseYogartha from "@/assets/showcase-yogartha.jpg";
 import productBattery from "@/assets/product-battery.jpg";
 import productScanner from "@/assets/product-scanner.jpg";
 
@@ -131,10 +129,20 @@ const partners = [
 ];
 
 const showcaseProjects = [
-  { image: showcaseAiDashboard, title: "NeuralForge Analytics",    category: "Agentic AI",     desc: "Real-time AI analytics dashboard with predictive insights" },
-  { image: showcaseRobotics,    title: "Helix Robotics Control",   category: "Robotics",       desc: "Industrial robotic arm control and monitoring platform" },
-  { image: showcaseChatbot,     title: "Kairos Support Agent",     category: "Conversational AI", desc: "Autonomous customer support chatbot with sentiment analysis" },
-  { image: showcaseIot,         title: "Meridian IoT Monitor",     category: "IoT / Hardware",  desc: "Smart factory sensor monitoring and predictive maintenance" },
+  {
+    image: showcasePriPri,
+    title: "PriPri Design",
+    category: "Luxury Art & E-Commerce",
+    desc: "Hand-painted original art, limited-edition prints & luxury fashion storefront.",
+    url: "https://pripridesign.com/",
+  },
+  {
+    image: showcaseYogartha,
+    title: "Yogartha",
+    category: "Wellness & HealthTech",
+    desc: "Classical Hatha Yoga & wellness platform certified under Sadhguru Gurukulam.",
+    url: "https://yogartha.com/admin",
+  },
 ];
 
 // ─── Component ───────────────────────────────────────────────────────────────
@@ -645,7 +653,7 @@ function Home() {
             {...fadeUp}
             className="text-xs font-semibold uppercase tracking-[0.2em] text-violet-500 mb-4"
           >
-            Portfolio
+            Portfolio & Client Work
           </motion.p>
           <motion.h2
             {...fadeUp}
@@ -658,7 +666,7 @@ function Home() {
             {...fadeUp}
             className="mt-5 text-gray-500 max-w-lg mx-auto text-base leading-relaxed"
           >
-            Real products we've shipped for founders and enterprises — from agentic AI dashboards to industrial robotics platforms.
+            Original client platforms and web applications engineered, built, and shipped by Tradecode.
           </motion.p>
         </div>
 
@@ -670,44 +678,61 @@ function Home() {
 
           {/* Row 1 — scroll left */}
           <div className="flex gap-6 mb-6 animate-marquee" style={{ width: "max-content" }}>
-            {[...showcaseProjects, ...showcaseProjects].map((project, i) => (
-              <div
+            {[...showcaseProjects, ...showcaseProjects, ...showcaseProjects, ...showcaseProjects].map((project, i) => (
+              <a
                 key={`row1-${i}`}
-                className="group relative w-[340px] md:w-[420px] shrink-0 rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-shadow duration-500"
+                href={project.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="group relative w-[360px] md:w-[480px] shrink-0 rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-500 block bg-white border border-violet-100/80 hover:border-violet-300"
               >
                 <img
                   src={project.image}
                   alt={project.title}
-                  className="w-full aspect-[16/10] object-cover transition-transform duration-700 group-hover:scale-105"
+                  className="w-full aspect-[16/10] object-cover object-top transition-transform duration-700 group-hover:scale-105"
                 />
                 {/* Overlay on hover */}
-                <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex flex-col justify-end p-6">
-                  <span className="text-xs font-semibold uppercase tracking-[0.15em] text-violet-300 mb-1">{project.category}</span>
-                  <h3 className="text-lg font-medium text-white">{project.title}</h3>
-                  <p className="text-sm text-white/70 mt-1">{project.desc}</p>
+                <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-6">
+                  <div className="flex items-center justify-between mb-1.5">
+                    <span className="text-xs font-semibold uppercase tracking-[0.15em] text-violet-300">{project.category}</span>
+                    <span className="inline-flex items-center gap-1 rounded-full bg-violet-600/90 px-3 py-1 text-xs font-medium text-white shadow-sm">
+                      Visit Site <ArrowUpRight className="h-3.5 w-3.5" />
+                    </span>
+                  </div>
+                  <h3 className="text-xl font-semibold text-white">{project.title}</h3>
+                  <p className="text-sm text-white/80 mt-1 leading-snug">{project.desc}</p>
                 </div>
-              </div>
+              </a>
             ))}
           </div>
 
           {/* Row 2 — scroll right (reverse) */}
           <div className="flex gap-6 animate-marquee" style={{ width: "max-content", animationDirection: "reverse", animationDuration: "60s" }}>
-            {[...showcaseProjects.slice().reverse(), ...showcaseProjects.slice().reverse()].map((project, i) => (
-              <div
+            {[...showcaseProjects, ...showcaseProjects, ...showcaseProjects, ...showcaseProjects].map((project, i) => (
+              <a
                 key={`row2-${i}`}
-                className="group relative w-[340px] md:w-[420px] shrink-0 rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-shadow duration-500"
+                href={project.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="group relative w-[360px] md:w-[480px] shrink-0 rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-500 block bg-white border border-violet-100/80 hover:border-violet-300"
               >
                 <img
                   src={project.image}
                   alt={project.title}
-                  className="w-full aspect-[16/10] object-cover transition-transform duration-700 group-hover:scale-105"
+                  className="w-full aspect-[16/10] object-cover object-top transition-transform duration-700 group-hover:scale-105"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex flex-col justify-end p-6">
-                  <span className="text-xs font-semibold uppercase tracking-[0.15em] text-violet-300 mb-1">{project.category}</span>
-                  <h3 className="text-lg font-medium text-white">{project.title}</h3>
-                  <p className="text-sm text-white/70 mt-1">{project.desc}</p>
+                {/* Overlay on hover */}
+                <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-6">
+                  <div className="flex items-center justify-between mb-1.5">
+                    <span className="text-xs font-semibold uppercase tracking-[0.15em] text-violet-300">{project.category}</span>
+                    <span className="inline-flex items-center gap-1 rounded-full bg-violet-600/90 px-3 py-1 text-xs font-medium text-white shadow-sm">
+                      Visit Site <ArrowUpRight className="h-3.5 w-3.5" />
+                    </span>
+                  </div>
+                  <h3 className="text-xl font-semibold text-white">{project.title}</h3>
+                  <p className="text-sm text-white/80 mt-1 leading-snug">{project.desc}</p>
                 </div>
-              </div>
+              </a>
             ))}
           </div>
         </div>
