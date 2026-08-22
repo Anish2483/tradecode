@@ -25,7 +25,18 @@ function ServicesIndex() {
           {list.map((s, i) => (
             <motion.div key={s.slug} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.03 }}>
               <Link to={`/services/${s.slug}`} className="group block bg-card p-8 hover:bg-accent/50 transition-colors h-full">
-                <div className="text-xs uppercase tracking-wider text-brand-glow font-semibold">{s.eyebrow}</div>
+                <div className="mb-3">
+                  <span
+                    className="inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-[11px] font-semibold uppercase tracking-wider"
+                    style={{
+                      backgroundColor: "rgba(124, 58, 237, 0.10)",
+                      border: "1px solid rgba(124, 58, 237, 0.25)",
+                      color: "#7c3aed",
+                    }}
+                  >
+                    {s.eyebrow}
+                  </span>
+                </div>
                 <h3 className="mt-2 font-display text-2xl font-bold">{s.title}</h3>
                 <p className="mt-3 text-sm text-muted-foreground">{s.intro}</p>
                 <span className="mt-5 inline-flex items-center gap-1.5 text-sm font-semibold text-brand-glow">

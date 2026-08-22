@@ -76,12 +76,25 @@ export function PageHeader({
         style={{ zIndex: 10 }}
       >
         {eyebrow && (
-          <span
-            className="inline-flex items-center rounded-full border border-white/20 bg-white/10 px-3 py-1 text-xs font-medium uppercase tracking-wider backdrop-blur"
-            style={{ color: imageSrc ? "rgba(255,255,255,0.90)" : undefined }}
-          >
-            {eyebrow}
-          </span>
+          <div className="mb-4">
+            <span
+              className="inline-flex items-center gap-2 rounded-full px-3.5 py-1 text-xs font-semibold uppercase tracking-widest"
+              style={{
+                backgroundColor: imageSrc ? "rgba(124, 58, 237, 0.32)" : "rgba(124, 58, 237, 0.12)",
+                border: imageSrc ? "1px solid rgba(167, 139, 250, 0.50)" : "1px solid rgba(124, 58, 237, 0.30)",
+                color: imageSrc ? "#f3e8ff" : "#7c3aed",
+                backdropFilter: "blur(10px)",
+                WebkitBackdropFilter: "blur(10px)",
+                boxShadow: imageSrc ? "0 0 16px rgba(124, 58, 237, 0.30)" : "none",
+              }}
+            >
+              <span
+                className="h-1.5 w-1.5 rounded-full"
+                style={{ backgroundColor: imageSrc ? "#c084fc" : "#7c3aed" }}
+              />
+              {eyebrow}
+            </span>
+          </div>
         )}
         <h1
           className="mt-4 max-w-4xl text-4xl md:text-6xl font-bold tracking-tight"

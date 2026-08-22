@@ -79,7 +79,7 @@ export function ServicePage({ content }: { content: ServiceContent }) {
           </ul>
         </div>
         <div className="rounded-2xl border border-border bg-card p-8">
-          <div className="text-xs uppercase tracking-wider text-brand-glow font-semibold">Engagement</div>
+          <div className="text-xs uppercase tracking-wider font-semibold" style={{ color: "#7c3aed" }}>Engagement</div>
           <h3 className="mt-2 font-display text-2xl font-bold">Ready when you are</h3>
           <p className="mt-3 text-sm text-muted-foreground">
             No project begins without a formally signed customer agreement. Full documentation, SLAs and
@@ -96,7 +96,7 @@ export function ServicePage({ content }: { content: ServiceContent }) {
           <div className="mt-10 grid gap-6 md:grid-cols-4">
             {content.process.map((p) => (
               <div key={p.step} className="rounded-xl border border-border bg-card p-6">
-                <div className="font-mono text-xs text-brand-glow">{p.step}</div>
+                <div className="font-mono text-xs font-semibold" style={{ color: "#7c3aed" }}>{p.step}</div>
                 <div className="mt-2 font-semibold">{p.title}</div>
                 <div className="mt-2 text-sm text-muted-foreground">{p.desc}</div>
               </div>
